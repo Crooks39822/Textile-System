@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
@@ -49,6 +50,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    static public function calculateLeaveDays($employmentDate)
+    {
+        $employmentDate = Carbon::parse($employmentDate);
+        $currentDate = Carbon::now();
+    
+        // Check if the employment anniversary has passed
+        $yearsWorked = $employmentDate->diffInYears($currentDate);
+        $lastEmploymentAnniversary = $employmentDate->copy()->addYears($yearsWorked);
+    
+        if ($currentDate->greaterThan($lastEmploymentAnniversary->addYear())) {
+            $lastEmploymentAnniversary = $lastEmploymentAnniversary->addYear();
+        }
+    
+        $monthsWorked = $lastEmploymentAnniversary->diffInMonths($currentDate);
+        $leaveDays = $monthsWorked * 1.25;
+    
+        return min($leaveDays, 15); // Cap at 15 days per year
+    }
     static public function getTotalUser($user_type)
         {
             return self::select('users.id')

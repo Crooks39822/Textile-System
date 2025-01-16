@@ -161,6 +161,7 @@
                         <th>Position</th>
                         <th>Join Date</th>
                         <th>Probation End Date</th>
+                        <th>Leave Days</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -203,6 +204,8 @@
                               Gone
                           @endif
                         </td>
+                        
+                        
 
                         <td style="min-width: 150px;">
                         <a href="{{url('admin/employee/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>

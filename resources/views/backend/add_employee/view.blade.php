@@ -63,7 +63,8 @@
               </li>
               <li class="list-group-item d-flex justify-content-center  p-3">
               <h4 class="mb-0">Position: ({{$getClass->position}}) </h4>
-               
+              
+              
                
               </li>
               
@@ -152,6 +153,15 @@
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">{{ old('roll_number',$getRecord->roll_number)}} </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Leave Days Now:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{$leaveDays}} </p>
               </div>
             </div>
             <hr>

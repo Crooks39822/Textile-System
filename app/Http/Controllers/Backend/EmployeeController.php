@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use Excel;
-use Carbon\Carbon;
 use App\Models\Exam;
 use App\Models\User;
 use App\Models\Setting;
@@ -12,6 +11,7 @@ use Illuminate\Support\Str;
 use App\Mail\UserCreateMail;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Exports\EmployeeExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -23,14 +23,18 @@ class EmployeeController extends Controller
 
     public function list(Request $request)
     {
+    
       $data['getPosition'] =Exam::getRecord();
       $data['getClass'] = Classroom::getClass();
       $data['header_title'] = 'Employee List';
-        $data['getStudent'] = User::getStudent();
+      $data['getStudent'] = User::getStudent();
+     
        
 
         return view('backend/add_employee/list',$data);
     }
+
+ 
 
     public function employee_export(Request $request)
     {
@@ -242,7 +246,9 @@ class EmployeeController extends Controller
     }
     public function view($id)
     {
-      
+      $employee = User::getSingle($id); // Replace with the employee's ID
+      $employmentDate = $employee->admission_date;
+      $data['leaveDays'] = User::calculateLeaveDays($employmentDate);
       $data['getClass'] = User::getSingleClass($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
