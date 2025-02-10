@@ -60,7 +60,7 @@
               <div class="inner">
                 <h3>{{ $TotalTeacher }}</h3>
 
-                <p>Total Supervisors/Leaders</p>
+                <p>Total Supervisors</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -108,7 +108,7 @@
               <div class="inner">
                 <h3>{{ $TotalClass }}</h3>
 
-                <p>Total Departments/Crews</p>
+                <p>Total Departments/Lines</p>
               </div>
               <div class="icon">
                 <i class="nav-icon fas fa-table"></i>
