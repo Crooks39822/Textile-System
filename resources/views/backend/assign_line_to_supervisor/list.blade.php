@@ -11,10 +11,10 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Assign Line Supervisor  </h1>
+            <h1>Assign  Supervisor to Department </h1>
           </div><!-- /.col -->
           <div class="col-sm-6" style="text-align:right;">
-            <a href="{{url('admin/assign_line_to_supervisor/add')}}" class="btn btn-primary mb-2">Add New Assign Line Supervisor</a>
+            <a href="{{url('admin/assign_line_to_supervisor/add')}}" class="btn btn-primary mb-2">Add New Assign Supervisor to Department</a>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -32,19 +32,19 @@
           <div class="card">
            <div class="card-header">
 
-            <h3 class="card-title">Search Assign Line Supervisor </h3>
+            <h3 class="card-title">Search Assign Supervisor to Department </h3>
         </div>
             <form method="get" action="">
                 <div class="card-body">
                     <div class="row">
 
                         <div class="form-group col-md-2">
-                            <label>Line Name</label>
-                            <input type="text" class="form-control" name="class_name" value="{{ Request()->class_name }}"  placeholder="Line Name">
+                            <label>Department Name</label>
+                            <input type="text" class="form-control" name="class_name" value="{{ Request()->class_name }}"  placeholder="Department Name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label>Supervisor Name</label>
-                            <input type="text" class="form-control" name="teacher_name" value="{{ Request()->teacher_name }}"  placeholder="Supervisor Name">
+                            <label>Supervisor/ Leader Name</label>
+                            <input type="text" class="form-control" name="teacher_name" value="{{ Request()->teacher_name }}"  placeholder="Supervisor/Leader Name">
                         </div>
                         <div class="form-group col-md-2">
                             <label>Date</label>
@@ -66,7 +66,7 @@
            <div class="card">
             <div class="card-header">
 
-            <h3 class="card-title">Assign Line Supervisor List</h3>
+            <h3 class="card-title">Assign Supervisor to Department List</h3>
             </div>
             <div class="card-body table-responsive p-0" style="overflow: auto;">
 <table class="table table-hover text-nowrap">
@@ -74,7 +74,7 @@
                       <tr>
                         <th>#</th>
                         <th >Supervisor Name</th>
-                        <th >Line Name</th>
+                        <th >Department Name</th>
                         <th >Status</th>
                         <th >Created By </th>
                         <th>Created Date</th>

@@ -41,7 +41,7 @@ class DashboardController extends Controller
             $data['TotalSubject'] = Subject::TotalSubject();
             $data['TotalAdmin'] = User::getTotalUser(1);
             $data['TotalTeacher'] = User::getTotalUser(2);
-            $data['TotalQC'] = User::getTotalUser(4);
+            $data['getExited'] = User::getExiteds();
             $data['TotalStudent'] = User::getTotalUser(3);
             $data['TotalStaff'] = User::getTotalUser(5);
             $data['usersWithProbation'] = User::whereDay('probation_date', now()->day)

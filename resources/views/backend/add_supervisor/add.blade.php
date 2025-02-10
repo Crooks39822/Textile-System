@@ -38,6 +38,13 @@
                   <div class="card-body">
                   <div class="row">
                   <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Employee Number</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control" value="{{ old('employee_number')}}"
+                       name="employee_number" placeholder="Enter Employee Number" onblur="duplicateEmployeeNumber(this)">
+                      <span style="color:red;" class="dublicate_message">{{$errors->first('employee_number')}}</span>
+                    </div>
+                  <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">First name</label>
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('name')}}" name="name" id="exampleInputEmail1" placeholder="Enter First Name">
@@ -72,15 +79,27 @@
                         </select>
                         <span style="color:red;">{{$errors->first('gender')}}</span>
                     </div>
-
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Rate per Hour / Day</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control" value="{{ old('roll_number')}}" name="roll_number" placeholder="Enter Rate">
+                      <span style="color:red;">{{$errors->first('roll_number')}}</span>
+                    </div>
 
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Date of Birth</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('date_of_birth')}}" name="date_of_birth">
+                      <input type="date" id="dob" class="form-control" value="{{ old('date_of_birth')}}" name="date_of_birth">
                       <span style="color:red;">{{$errors->first('date_of_birth')}}</span>
                     </div>
 
+
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Age</label>
+                      <span style="color:red;">*</span>
+                      <input type="number" id="age" class="form-control" value="{{ old('age')}}" name="age" readonly>
+                      <span style="color:red;">{{$errors->first('age')}}</span>
+                    </div>
 
                     
                     <div class="form-group col-md-6">
@@ -101,7 +120,12 @@
                       <input type="text" class="form-control" value="{{ old('id_number')}}" name="id_number" maxlength="13" placeholder="Enter ID Number">
                       <span style="color:red;">{{$errors->first('id_number')}}</span>
                     </div>
-
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">GRADED TAX NUMBER</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('tax_number')}}" name="tax_number" id="exampleInputEmail1" placeholder="Enter GRADED TAX NUMBER">
+                      <span style="color:red;">{{$errors->first('tax_number')}}</span>
+                    </div>
 
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Current Address</label>
@@ -159,6 +183,9 @@
                       <span style="color:red;"></span>
                       <input type="file" class="form-control"  name="document_file" id="exampleInputEmail1">
                     </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>BANKING  DETAILS</b>
+                </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Bank Name</label>
                       <span style="color:red;">*</span>
@@ -170,6 +197,29 @@
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('bank_account')}}" name="bank_account" placeholder="Enter Bank Account ">
                       
+                    </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>NEXT OF KIN</b>
+                </div>
+                <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Name</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_name')}}" name="nxt_name" placeholder="Enter Next of Kin Name">
+                      <span style="color:red;">{{$errors->first('nxt_name')}}</span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Contacts</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_contact')}}" name="nxt_contact" placeholder="Enter Next of Kin Contacts">
+                      <span style="color:red;">{{$errors->first('nxt_contact')}}</span>
+                    </div>
+                   
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Relationship</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('relationship')}}" name="relationship" placeholder="Enter Relationship">
+                      <span style="color:red;">{{$errors->first('relationship')}}</span>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Status</label>
@@ -199,8 +249,72 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.footer -->
+  
 
 
-  <!-- Control Sidebar -->
+  <script type="text/javascript">
+       function duplicateEmail(element)
+      {
+        var admission_number = $(element).val();
+        $.ajax({
+           type: "POST",
+           url: '{{ url('check_clock_number') }}',
+           data: {
+            admission_number: admission_number,
+            _token: "{{ csrf_token() }}"
+
+           },
+            dataType: "json",
+            success: function(res){
+            if(res.exists){
+              $(".dublicate_message").html("This Clock Number is Already Registered. Try Another one...");
+            }else{
+              $(".dublicate_message").html("");
+            }
+            },
+            error: function(jqXHR,exception){
+
+            }
+        });
+      }
+
+      function duplicateEmployeeNumber(element)
+      {
+        var employee_number = $(element).val();
+        $.ajax({
+           type: "POST",
+           url: '{{ url('check_employee_number') }}',
+           data: {
+            employee_number: employee_number,
+            _token: "{{ csrf_token() }}"
+
+           },
+            dataType: "json",
+            success: function(res){
+            if(res.exists){
+              $(".dublicate_message").html("This Employee Number is Already Registered. Try Another one...");
+            }else{
+              $(".dublicate_message").html("");
+            }
+            },
+            error: function(jqXHR,exception){
+
+            }
+        });
+      }
+      
+
+document.getElementById('dob').addEventListener('change', function() {
+    var dob = new Date(this.value);
+    var age = calculateAge(dob);
+    document.getElementById('age').value = age;
+});
+
+function calculateAge(dob) {
+    var diffMs = Date.now() - dob.getTime();
+    var ageDt = new Date(diffMs);
+
+    return Math.abs(ageDt.getUTCFullYear() - 1970);
+}
+</script>
   @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Exports\ENPFList;
 use Illuminate\Support\Str;
 use App\Mail\UserCreateMail;
 use App\Models\AcademicYear;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Excel;
 
 class StaffController extends Controller
 {
@@ -33,16 +35,22 @@ class StaffController extends Controller
     {
       //dd($request->all());
       request()->validate([
+        'employee_number' => 'required',
                 'phone' => 'min:8'
         ]);
       $user = new User;
       $user->name  =trim($request->name);
       $user->last_name  =trim($request->last_name);
-
-
+      $user->age  =trim($request->age);
+      $user->nxt_contact  =trim($request->nxt_contact);
+      $user->nxt_name  =trim($request->nxt_name);
+      $user->relationship  =trim($request->relationship);
+      $user->tax_number  =trim($request->tax_number);
+      $user->admission_number  = trim($request->employee_number);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
-
+      $user->qualification  =trim($request->qualification);
+      $user->roll_number  =trim($request->roll_number);
       $user->occupation  =trim($request->occupation);
       $user->address  =trim($request->address);
       $user->bank_account  =trim($request->bank_account);
@@ -119,12 +127,21 @@ class StaffController extends Controller
       request()->validate([
                  'phone' => 'min:8'
         ]);
+        
       $user = User::getSingle($id);
       $user->name  =trim($request->name);
       $user->last_name  =trim($request->last_name);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
+      $user->roll_number  =trim($request->roll_number);
       $user->address  =trim($request->address);
+      $user->age  =trim($request->age);
+      $user->qualification  =trim($request->qualification);
+      $user->nxt_contact  =trim($request->nxt_contact);
+      $user->nxt_name  =trim($request->nxt_name);
+      $user->relationship  =trim($request->relationship);
+      $user->tax_number  =trim($request->tax_number);
+      $user->admission_number  = trim($request->employee_number);
       $user->occupation  =trim($request->occupation);
       $user->probation_status  =trim($request->probation_status);
       $user->bank_account  =trim($request->bank_account);
@@ -198,7 +215,7 @@ class StaffController extends Controller
   
     public function view($id)
     {
-
+      
 $data['getClass'] = User::getSingleMember($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))

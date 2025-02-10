@@ -17,7 +17,7 @@ class AssignClassTeacherController extends Controller
     public function list()
     {
         $data['getRecord'] = AssignClassTeacher::getRecord();
-        $data['header_title'] = 'Assign Line Supervisor';
+        $data['header_title'] = 'Assign Supervisor to Department';
         return view('backend/assign_line_to_supervisor/list',$data);
 
     }
@@ -28,7 +28,7 @@ class AssignClassTeacherController extends Controller
         $data['getSubject'] = Subject::getSubject();
 
         $data['getTeacher'] = User::getTeacherClass();
-        $data['header_title'] = 'Line Supervisor Assign Add';
+        $data['header_title'] = 'Supervisor to Department Assign Add';
         return view('backend/assign_line_to_supervisor/add',$data);
 
 
@@ -61,7 +61,7 @@ class AssignClassTeacherController extends Controller
             }
 
         }
-        return redirect('admin/assign_line_to_supervisor')->with('success','Supervisor Assigned to Line Successfully Created');
+        return redirect('admin/assign_line_to_supervisor')->with('success',' Supervisor to Department Assigned Successfully Created');
         }
         else
         {
@@ -100,7 +100,7 @@ class AssignClassTeacherController extends Controller
             $data['getClass'] = Classroom::getClass();
             $data['getTeacher'] = User::getTeacherClass();
            
-            $data['header_title'] = 'Edit  Assign Line to Supervisor';
+            $data['header_title'] = 'Edit  Assign Supervisor to Department';
             return view('backend/assign_line_to_supervisor/edit',$data);
 
         }
@@ -142,7 +142,7 @@ class AssignClassTeacherController extends Controller
         }
 
 
-        return redirect('admin/assign_line_to_supervisor')->with('success','Line Assigned to Supervisor Successfully Created');
+        return redirect('admin/assign_line_to_supervisor')->with('success','Supervisor to Department Assigned Successfully Created');
 
        }
 
@@ -155,7 +155,7 @@ class AssignClassTeacherController extends Controller
             $data['getRecord'] = $getRecord;
             $data['getClass'] = Classroom::getClass();
             $data['getTeacher'] = User::getTeacherClass();
-            $data['header_title'] = 'Edit  Assign Line to Supervisor';
+            $data['header_title'] = 'Edit  Assign Supervisor to Department';
             return view('backend/assign_line_to_supervisor/single_edit',$data);
 
         }
@@ -187,7 +187,7 @@ class AssignClassTeacherController extends Controller
                 $save->save();
 
 
-                return redirect('admin/assign_line_to_supervisor')->with('success','Line Assigned to Supervisor Successfully Updated');
+                return redirect('admin/assign_line_to_supervisor')->with('success','Supervisor to Department Assigned Successfully Updated');
 
 
         }
@@ -202,7 +202,7 @@ class AssignClassTeacherController extends Controller
         $save->delete();
 
 
-        return redirect()->back()->with('success','Line Assigned to Supervisor Successfully Deleted');
+        return redirect()->back()->with('success','Supervisor to Department Assigned  Successfully Deleted');
 
 
     }

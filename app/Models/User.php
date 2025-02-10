@@ -3,7 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
@@ -50,25 +49,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    static public function calculateLeaveDays($employmentDate)
-    {
-        $employmentDate = Carbon::parse($employmentDate);
-        $currentDate = Carbon::now();
-    
-        // Check if the employment anniversary has passed
-        $yearsWorked = $employmentDate->diffInYears($currentDate);
-        $lastEmploymentAnniversary = $employmentDate->copy()->addYears($yearsWorked);
-    
-        if ($currentDate->greaterThan($lastEmploymentAnniversary->addYear())) {
-            $lastEmploymentAnniversary = $lastEmploymentAnniversary->addYear();
-        }
-    
-        $monthsWorked = $lastEmploymentAnniversary->diffInMonths($currentDate);
-        $leaveDays = $monthsWorked * 1.25;
-    
-        return min($leaveDays, 15); // Cap at 15 days per year
-    }
     static public function getTotalUser($user_type)
         {
             return self::select('users.id')
@@ -76,18 +56,37 @@ class User extends Authenticatable
                     ->where('is_delete','=',0)
                     ->count();
         }
+
+        static public function getExiteds()
+        {
+            return self::select('users.id')
+                    
+                    ->where('is_delete','=',1)
+                    ->count();
+        }
            static public function getSingleMember($id)
         {
             return self::select('users.*','academic_years.name as admin_position')
-             ->join('academic_years','academic_years.id', '=', 'users.occupation','left') 
+             ->join('academic_years','academic_years.id', '=', 'users.occupation') 
             ->where('users.id','=',$id)
             ->first();
         }
+        static public function getSingleSuper($id)
+        {
+            return self::select('users.*','classrooms.name as class_name')
+            ->join('assign_class_teachers','assign_class_teachers.teacher_id', '=', 'users.id')
+            ->join('classrooms','classrooms.id', '=', 'assign_class_teachers.class_id')
+            ->where('users.id','=',$id)
+            ->first();
+        }
+       
+
+
     static public function getSingleClass($id)
 {
 	return self::select('users.*','classrooms.name as class_name','exams.name as position')
 	->join('classrooms','classrooms.id','=','users.class_id')
-    ->join('exams','exams.id', '=', 'users.qualification','left')
+    ->join('exams','exams.id', '=', 'users.designation','left')
 	->where('users.id','=',$id)
 	->first();
 }
@@ -161,7 +160,9 @@ public function getDocument()
                      //->orderBy('id','desc')
                      //->paginate(10);
                      //return  $return;
-                     $return =self::select('users.*')
+                     $return =self::select('users.*','classrooms.name as class_name') 
+                                   ->join('assign_class_teachers','assign_class_teachers.teacher_id', '=', 'users.id')
+                                   ->join('classrooms','classrooms.id', '=', 'assign_class_teachers.class_id')
                                     ->where('users.is_role','=',2)
                                     ->where('users.is_delete','=',0);
 
@@ -200,7 +201,20 @@ public function getDocument()
                                       //search box end
 
                    $return = $return->orderBy('users.id','desc')
-                                ->paginate(20);
+                                ->paginate(10);
+                                        return  $return;
+    }
+
+    static public function getENPF(){
+        //$return =self::select('users.*')
+                     //->orderBy('id','desc')
+                     //->paginate(10);
+                     //return  $return;
+                     $return =self::select('users.*')
+                                    ->where('users.parent_id','=',0)
+                                    ->where('users.is_delete','=',0)
+                                    ->orderBy('users.id','desc')
+                                    ->get();
                                         return  $return;
     }
 
@@ -257,15 +271,15 @@ public function getDocument()
                                         return  $return;
     }
 
-    static public function getQC(){
+    static public function getExited(){
         //$return =self::select('users.*')
                      //->orderBy('id','desc')
                      //->paginate(10);
                      //return  $return;
                      $return =self::select('users.*','classrooms.name as class_name')
                                      ->join('classrooms','classrooms.id', '=', 'users.class_id','left')
-                                    ->where('users.is_role','=',4)
-                                    ->where('users.is_delete','=',0);
+                                     
+                                     ->where('users.is_delete','=',1);
 
 
                      //search box start
@@ -390,7 +404,7 @@ public function getDocument()
                      //return  $return;
                      $return =self::select('users.*','classrooms.name as class_name','exams.name as position')
                                      ->join('classrooms','classrooms.id', '=', 'users.class_id','left')
-                                     ->join('exams','exams.id', '=', 'users.qualification','left')
+                                     ->join('exams','exams.id', '=', 'users.designation','left')
                                     ->where('users.is_role','=',3)
                                     ->where('users.is_delete','=',0);
 
@@ -411,15 +425,16 @@ public function getDocument()
                    }
                    if(!empty(Request::get('id_number')))
                    {
-                       $return = $return->where('users.id_number','like', '%' .Request::get('id_number').'%');
+                       $return = $return->where('users.id_number','=',Request::get('id_number'));
                    }
+                 
                    if(!empty(Request::get('gender')))
                    {
                        $return = $return->where('users.gender','=', Request::get('gender'));
                    }
-                   if(!empty(Request::get('qualification')))
+                   if(!empty(Request::get('designation')))
                    {
-                       $return = $return->where('users.qualification','=', Request::get('qualification'));
+                       $return = $return->where('users.designation','=', Request::get('designation'));
                    }
                    if(!empty(Request::get('class_id')))
                    {
@@ -451,7 +466,7 @@ public function getDocument()
                    {
                     $return = $return->get();
                    }else{
-                    $return = $return->paginate(50);
+                    $return = $return->paginate(10);
                    }
                   
                  

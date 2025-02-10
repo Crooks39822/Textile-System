@@ -72,7 +72,7 @@
                     <thead>
                       <tr>
 
-                         <th>Clock Number</th>
+                         <th>EMPLOYEE NUMBER</th>
                          <th>FULLNAME</th>
                         <th>ATTENDANCE</th>
                       </tr>

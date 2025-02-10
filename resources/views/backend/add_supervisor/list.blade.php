@@ -102,19 +102,28 @@
             <div class="card-header">
 
             <h3 class="card-title">Supervisor List</h3>
+            <form style="float:right;" method="post" action="">
+            @csrf
+           
+              <a href="{{url('admin/enpf_export')}}" class="btn btn-success">Export ENPF</a>
+            
+             </form>
             </div>
             <div class="card-body table-responsive p-0" style="overflow: auto;">
             <table class="table table-hover text-nowrap">
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Profile Pic</th>
+                        <th> Pic</th>
                         <th >Supervisor Name</th>
+                        <th>Rate(Day/Hr)</th>
+                        <th>Department</th>
                         <th>Gender</th>
                         <th>ID</th>
                         <th>Phone</th>
+                        <th>EXIT</th>
                         <th>Join Date</th>
-                        <th>Probation End Date</th>
+                        <th>Probation End</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -128,12 +137,24 @@
    <img src="{{$value->getProfileDirectory()}}" style="width: 50px;height: 50px; border-radius: 50px;">
    @endif
  </td>
-   <td>{{ $value->name }} {{ $value->last_name }}</td>
-
-   
+   <td>{{ $value->name }} {{ $value->last_name }} ({{ $value->admission_number }})</td>
+   <td>{{ $value->roll_number }}</td>
+   <td>{{ $value->class_name }}</td>
    <td>{{ $value->gender }}</td>
    <td>{{ $value->id_number }}</td>
    <td>{{ $value->phone }}</td>
+   <td>
+                        @if(Auth::user()->parent_id == 2)
+                            
+                           
+                          @if($value->status == 0)
+<a onclick="return confirm('Are you sure this Employee has left the company?')"  href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-danger">EXIT</a>
+          @else
+          <a  href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-danger">OFF</a>       
+          
+          @endif
+          @endif
+</td>
    <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
    <td>
                         @if($value->probation_status == 0)

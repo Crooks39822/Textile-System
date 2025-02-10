@@ -14,26 +14,27 @@ use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Style;
 
-class EmployeeExport implements FromCollection, WithMapping,WithHeadings,WithStyles,WithEvents
+class ENPFList implements FromCollection, WithMapping,WithHeadings,WithStyles,WithEvents
 {
     use RegistersEventListeners;
     /**
     * @return \Illuminate\Support\Collection
     */
+   
     public function headings():array
     {
         return [
-           "Full Name",
-           "EMPLOYEE Number",
-           "Rate(DAY/HR)",
-           "Phone No",
-           "Department",
-           "Gender",
-           "ID NUMBER",
-           "Position",
+           "EMPLOYEENUMBER",
+           "FIRSTNAME",
+           "SURNAME",
            "DOB",
-           "AGE",
-           "Employement Date"
+           "IDNUMBER",
+           "GRADED TAX NUMBER",
+           "CONTRIBUTION",
+           "SUPPLEMENTARY CONT",
+           "MONTHLYPENSALARY",
+           "Gender",
+           "MobileNumber"
         ];
     }
     public static function afterSheet(AfterSheet $event)
@@ -61,26 +62,32 @@ class EmployeeExport implements FromCollection, WithMapping,WithHeadings,WithSty
     }
     public function map($value):array
     {
-        $student_name =  $value->name.' '. $value->last_name;
-        
+       $salary = $value->roll_number;
+       if($value->is_role == 5)
+       $salary;
+                      else
+                      $salary = " ";
+                     
+               
         return [
-            $student_name,
             $value->admission_number,
-            "E ".$value->roll_number,
-            $value->phone,
-            $value->class_name,
-            $value->gender,
+            $value->name,
+            $value->last_name,
+            date('d-m-Y',strtotime($value->admission_date )),
             "'".$value->id_number,
-            $value->position,
-            date('d-m-Y',strtotime($value->date_of_birth )),
-            $value->age,
-            date('d-m-Y',strtotime($value->admission_date ))
-           
+            "'".$value->tax_number,
+            " ",
+            " ",
+            $salary,
+            $value->gender,
+            $value->phone,
+                     
         ];
+        
     }
     public function collection()
     {
         $remove_pagination = 1;
-        return User::getStudent($remove_pagination);
+        return User::getENPF($remove_pagination);
     }
 }

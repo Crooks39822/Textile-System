@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Admin Staff Profile</h1>
+            <h1 class="m-0">Employee Profile</h1>
           </div><!-- /.col -->
          
         </div><!-- /.row -->
@@ -29,7 +29,7 @@
            <div class="card-header">
             <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Staff Profile</h3>
+                  <h3 class="card-title">Employee Profile</h3>
                 </div>
                 <div class="row">
       <div class="col-lg-4">
@@ -41,30 +41,25 @@
               class="rounded-circle img-fluid" style="width: 150px;">
               @endif
             <h5 class="my-3">{{ old('name',$getRecord->name)}} {{ old('last_name',$getRecord->last_name)}}</h5>
-            <p class="text-muted mb-1">{{ old('email',$getRecord->email)}}</p>
-            <p class="text-muted mb-4">Member Since: {{ old('admission_date',$getRecord->admission_date)}}</p>
-            
+            <p class="text-muted mb-4">Employee Number: {{ old('admission_number',$getRecord->admission_number)}}</p>
+            <p class="text-muted mb-4">Admission Date: {{ old('admission_date',$getRecord->admission_date)}}</p>
+            <p class="text-muted mb-1">Status:
+            @if($getRecord->status == 0)
+                                  Active
+                          @else
+                                  Inacive
+                          @endif
+            </p>
           </div>
         </div>
+        
         <div class="card mb-4 mb-lg-0">
           <div class="card-body p-0">
             <ul class="list-group list-group-flush rounded-3">
-              <li class="list-group-item d-flex justify-content-center align-items-center p-3">
-                
-                <h3 class="mb-0">Position: </h3>
-                
+                <li class="list-group-item d-flex justify-content-center  p-3">
+              <p class="mb-0">Designation: ({{$getClass->admin_position}}) </p>
+                              
               </li>
-              <li class="list-group-item d-flex justify-content-center  p-3">
-               
-                <p class="mb-0">{{old('occupation',$getClass->admin_position)}}</p>
-              </li>
-             
-            </ul>
-          </div>
-        </div>
-        <div class="card mb-4 mb-lg-0">
-          <div class="card-body p-0">
-            <ul class="list-group list-group-flush rounded-3">
               <li class="list-group-item d-flex justify-content-center align-items-center p-3">
                 
                 <h3 class="mb-0">Banking Details: </h3>
@@ -82,7 +77,7 @@
               </li>
               
               <div class="card-footer">
-                    <a href="{{url('admin/staff')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/supervisor')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                        
                   </div>
             </ul>
@@ -121,64 +116,92 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Marital Status:</p>
+                <p class="mb-0">Age:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ old('marital_status',$getRecord->marital_status)}}</p>
+                <p class="text-muted mb-0">{{ old('age',$getRecord->age)}} </p>
               </div>
             </div>
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">ID Number:</p>
+                <p class="mb-0">ID No:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ old('id_number',$getRecord->id_number)}}</p>
+                <p class="text-muted mb-0">{{ old('id_number',$getRecord->id_number)}} </p>
               </div>
             </div>
             <hr>
-           
-           
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Physical Address:</p>
+                <p class="mb-0">GRADED TAX NUMBER:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ old('tax_number',$getRecord->tax_number)}} </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Fixed Salary:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">E {{ old('roll_number',$getRecord->roll_number)}} </p>
+              </div>
+            </div>
+            <hr>
+            
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Next of Kin:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ old('nxt_name',$getRecord->nxt_name)}} ({{ old('nxt_contact',$getRecord->nxt_contact)}}) {{ old('relationship',$getRecord->relationship)}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Residential:</p>
               </div>
               <div class="col-sm-9">
                 <p class="text-muted mb-0">{{old('address',$getRecord->address)}}</p>
               </div>
             </div>
             <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0"> Probation End Date:</p>
-              </div>
-              <div class="col-sm-9">
-              <p class="mb-1" style="font-size: .99rem;">{{old('probation_date',$getRecord->probation_date)}}</p>
+            
+            
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1">Previous</span>  Employer:
+                </p>
+                <p class="mb-1" style="font-size: .99rem;">{{old('previous_school',$getRecord->previous_school)}}</p>
+                <p class="mb-1" style="font-size: .99rem;">Qualification: {{old('qualification',$getRecord->qualification)}}</p>
               </div>
             </div>
-            <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Status:</p>
-              </div>
-              <div class="col-sm-9">
-              @if($getRecord->status == 1)
-                    
-                    <p class="text-muted mb-0" style="font-size: .99rem;">Inactive</p>
-                @else
-                <p class="text-muted mb-0" style="font-size: .99rem;">Active</p>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4"><span class="text-primary font-italic me-1"></span> Probation End Date
+                </p>
+                <p class="mb-1" style="font-size: .99rem;">{{old('probation_date',$getRecord->probation_date)}}</p>
                 
-                @endif
-               
+                </div>
+                
               </div>
             </div>
-            <hr>
-            @if(!empty($getRecord->getDocument()))
+          </div>
+          
+         
+        </div>
+        @if(!empty($getRecord->getDocument()))
                       
                       <iframe src="{{$getRecord->getDocument()}}" width="100%" height="600px">Preview</iframe>
 
                       @endif
-        </div>
       </div>
     </div>
 

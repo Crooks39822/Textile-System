@@ -45,8 +45,12 @@
                             <input type="text" class="form-control" name="name" value="{{ Request::get('name') }}"  placeholder="First Name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label>Clock Number</label>
-                            <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="Clock number">
+                            <label>ID Number</label>
+                            <input type="text" class="form-control" name="id_number" value="{{ Request::get('id_number') }}"  placeholder="ID number">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Employee Number</label>
+                            <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="Employee number">
                         </div>
                         <div class="form-group col-md-2">
                             <label>Department Name</label>
@@ -59,11 +63,11 @@
                         </div>
 
                         <div class="form-group col-md-2">
-                            <label>Position Name</label>
-                            <select class="form-control" name="qualification">
-                        <option value="">Select Position</option>
+                            <label>Designation </label>
+                            <select class="form-control" name="designation">
+                        <option value="">Select Designation</option>
                         @foreach($getPosition as $position)
-                        <option  {{(Request::get('qualification') == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
+                        <option  {{(Request::get('designation') == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
                         @endforeach
                         </select>
                         </div>
@@ -80,10 +84,7 @@
                         </div>
 
                         
-                        <div class="form-group col-md-2">
-                            <label>ID Number</label>
-                            <input type="text" class="form-control" name="id_number" value="{{ Request::get('id_number') }}"  placeholder="ID Number ">
-                        </div>
+                        
                          <div class="form-group col-md-2">
                             <label>Probation Status</label>
                             <select class="form-control" name="probation_status">
@@ -137,15 +138,17 @@
             <input type="hidden"  name="name" value="{{ Request::get('name') }}">
             <input type="hidden"  name="admission_number" value="{{ Request::get('admission_number') }}">
             <input type="hidden"  name="class_id" value="{{ Request::get('class_id') }}">
-            <input type="hidden"  name="qualification" value="{{ Request::get('qualification') }}">
+            <input type="hidden"  name="designation" value="{{ Request::get('designation') }}">
             <input type="hidden"  name="gender" value="{{ Request::get('gender') }}">
-            <input type="hidden"  name="admission_number" value="{{ Request::get('admission_number') }}">
+            
             <input type="hidden"  name="id_number" value="{{ Request::get('id_number') }}">
             <input type="hidden"  name="probation_status" value="{{ Request::get('probation_status') }}">
             <input type="hidden"  name="status" value="{{ Request::get('status') }}">
             <input type="hidden"  name="admission_date" value="{{ Request::get('admission_date') }}">
+            <a href="{{url('admin/enpf_export')}}" class="btn btn-success">Export ENPF</a>
             <button type="submit" class="btn btn-primary">Export Excel</button>
             </form>
+            
             </div>
             <div class="card-body table-responsive p-0" style="overflow: auto;">
             <table class="table table-hover text-nowrap">
@@ -154,14 +157,14 @@
                         <th>#</th>
                         <th >Pic</th>
                         <th >Fullname</th>
-                        <th >Rate/hr</th>
+                        <th >Rate/hr/Day</th>
                         <th>Phone</th>
-                         <th>Department</th>
+                         <th>Department/Line</th>
                         <th>Gender</th>
-                        <th>Position</th>
+                        <th>Designation</th>
+                        <th>EXIT</th>
                         <th>Join Date</th>
                         <th>Probation End Date</th>
-                        <th>Leave Days</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
@@ -184,6 +187,18 @@
                         <td>{{ $value->class_name }}</td>
                          <td>{{ $value->gender }}</td>
                         <td>{{ $value->position }}</td>
+                        <td>
+                        @if(Auth::user()->parent_id == 2)
+                            
+                           
+                          @if($value->status == 0)
+<a onclick="return confirm('Are you sure this Employee has left the company?')"  href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-danger">EXIT</a>
+          @else
+          <a  href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-danger">OFF</a>       
+          
+          @endif
+          @endif
+</td>
                         <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
                         <td>
                         @if($value->probation_status == 0)
@@ -204,8 +219,6 @@
                               Gone
                           @endif
                         </td>
-                        
-                        
 
                         <td style="min-width: 150px;">
                         <a href="{{url('admin/employee/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>

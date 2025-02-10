@@ -35,6 +35,13 @@
                     @csrf
                   <div class="card-body">
                   <div class="row">
+                  <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Employee Number</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control" value="{{ old('employee_number')}}"
+                       name="employee_number" placeholder="Enter Employee Number" onblur="duplicateEmployeeNumber(this)">
+                      <span style="color:red;" class="dublicate_message">{{$errors->first('employee_number')}}</span>
+                    </div>
                   
                   <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">First name</label>
@@ -50,30 +57,46 @@
                       <input type="text" class="form-control" value="{{ old('last_name')}}" name="last_name" id="exampleInputEmail1" placeholder="Enter Last Name">
                       <span style="color:red;">{{$errors->first('name')}}</span>
                     </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">GRADED TAX NUMBER</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('tax_number')}}" name="tax_number" id="exampleInputEmail1" placeholder="Enter GRADED TAX NUMBER">
+                      <span style="color:red;">{{$errors->first('tax_number')}}</span>
+                    </div>
 
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">Clock Number</label>
+                      <label for="exampleInputEmail1">ID Number</label>
                       <span style="color:red;"></span>
                       <input type="number" class="form-control" value="{{ old('admission_number')}}"
-                       name="admission_number" placeholder="Enter Clock Number" onblur="duplicateEmail(this)">
+                       name="admission_number" placeholder="Enter ID Number" onblur="duplicateEmail(this)">
                       <span style="color:red;" class="dublicate_message">{{$errors->first('admission_number')}}</span>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">Rate per Hour</label>
+                      <label for="exampleInputEmail1">Marital Status</label>
+                      <span style="color:red;">*</span>
+                      <select class="form-control" name="marital_status">
+
+                        <option {{(old('marital_status') == 'Single') ? 'selected' : ''}}  value="Single">Single</option>
+                        <option {{(old('marital_status') == 'Married') ? 'selected' : ''}}  value="Married">Married</option>
+                        </select>
+                        <span style="color:red;">{{$errors->first('status')}}</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Rate per Hour/ Day</label>
                       <span style="color:red;"></span>
                       <input type="text" class="form-control" value="{{ old('roll_number')}}" name="roll_number" placeholder="Enter Rate">
                       <span style="color:red;">{{$errors->first('roll_number')}}</span>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">Position</label>
+                      <label for="exampleInputEmail1">Designation</label>
                       <span style="color:red;">*</span>
-                      <select class="form-control" name="qualification">
-                        <option value="">Select Position</option>
+                      <select class="form-control" name="designation">
+                        <option value="">Select Designation</option>
                         @foreach($getPosition as $position)
-                        <option  {{(old('qualification') == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
+                        <option  {{(old('designation') == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
                         @endforeach
                         </select>
-                        <span style="color:red;">{{$errors->first('qualification')}}</span>
+                        <span style="color:red;">{{$errors->first('designation')}}</span>
                     </div>
                     
                     
@@ -129,14 +152,6 @@
 
 
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">ID Number</label>
-                      <span style="color:red;">*</span>
-                      <input type="number" class="form-control" value="{{ old('id_number')}}" name="id_number" placeholder="Enter ID Number (13 Digits)">
-                      <span style="color:red;">{{$errors->first('id_number')}}</span>
-                    </div>
-
-
-                    <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Physical Address</label>
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('address')}}" name="address" placeholder="Enter Physical Address">
@@ -150,7 +165,12 @@
                       <span style="color:red;">{{$errors->first('previous_school')}}</span>
                     </div>
 
-
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1"> Qualification</label>
+                      <span style="color:red;">*</span>
+                      <textarea class="form-control" name="qualification">{{old('qualification')}}</textarea>
+                      <span style="color:red;">{{$errors->first('qualification')}}</span>
+                    </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Admission Date</label>
                       <span style="color:red;">*</span>
@@ -175,6 +195,9 @@
                       </div>
                       <span style="color:red;">{{$errors->first('avatar')}}</span>
                     </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>BANKING  DETAILS</b>
+                </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Bank Name</label>
                       <span style="color:red;">*</span>
@@ -187,6 +210,30 @@
                       <input type="text" class="form-control" value="{{ old('bank_account')}}" name="bank_account" placeholder="Enter Bank Account ">
                       
                     </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>NEXT OF KIN</b>
+                </div>
+                <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Name</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_name')}}" name="nxt_name" placeholder="Enter Next of Kin Name">
+                      <span style="color:red;">{{$errors->first('nxt_name')}}</span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Contacts</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_contact')}}" name="nxt_contact" placeholder="Enter Next of Kin Contacts">
+                      <span style="color:red;">{{$errors->first('nxt_contact')}}</span>
+                    </div>
+                   
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Relationship</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('relationship')}}" name="relationship" placeholder="Enter Relationship">
+                      <span style="color:red;">{{$errors->first('relationship')}}</span>
+                    </div>
+
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Status</label>
                       <span style="color:red;">*</span>
@@ -244,6 +291,32 @@
             }
         });
       }
+
+      function duplicateEmployeeNumber(element)
+      {
+        var employee_number = $(element).val();
+        $.ajax({
+           type: "POST",
+           url: '{{ url('check_employee_number') }}',
+           data: {
+            employee_number: employee_number,
+            _token: "{{ csrf_token() }}"
+
+           },
+            dataType: "json",
+            success: function(res){
+            if(res.exists){
+              $(".dublicate_message").html("This Employee Number is Already Registered. Try Another one...");
+            }else{
+              $(".dublicate_message").html("");
+            }
+            },
+            error: function(jqXHR,exception){
+
+            }
+        });
+      }
+      
 
 document.getElementById('dob').addEventListener('change', function() {
     var dob = new Date(this.value);

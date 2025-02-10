@@ -1,10 +1,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{!empty($header_title) ? $header_title : ''}} - Mtfombeni Investments</title>
+   
     @php 
 $getHeaderSetting = App\Models\Setting::getSingle();
     @endphp
+    <title>{{!empty($header_title) ? $header_title : ''}} - {{$getHeaderSetting->name}}</title>
     <link href="{{ $getHeaderSetting->getFavicon()}}" rel="icon" type="image/jpg"/>
 
     <!-- Google Font: Source Sans Pro -->
@@ -74,6 +75,6 @@ $getHeaderSetting = App\Models\Setting::getSingle();
    @if(!empty($getHeaderSetting->getLogo()))
     <img  src="{{ $getHeaderSetting->getLogo()}}" style="width: auto; height: 60px;border-radius:5px;">
 @else
-    <span class="brand-text font-weight-light">School</span>
+    <span class="brand-text font-weight-light"></span>
     @endif
   </a>

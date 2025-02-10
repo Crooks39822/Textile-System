@@ -41,7 +41,7 @@
               class="rounded-circle img-fluid" style="width: 150px;">
               @endif
             <h5 class="my-3">{{ old('name',$getRecord->name)}} {{ old('last_name',$getRecord->last_name)}}</h5>
-            <p class="text-muted mb-1">{{ old('admission_number',$getRecord->admission_number)}}</p>
+            <p class="text-muted mb-4">Employee Number: {{ old('admission_number',$getRecord->admission_number)}}</p>
             <p class="text-muted mb-4">Admission Date: {{ old('admission_date',$getRecord->admission_date)}}</p>
             <p class="text-muted mb-1">Status:
             @if($getRecord->status == 0)
@@ -57,15 +57,13 @@
             <ul class="list-group list-group-flush rounded-3">
               <li class="list-group-item d-flex justify-content-center align-items-center p-3">
                 
-                <h3 class="mb-0">Department:({{$getClass->class_name}}) </h3>
+                <p class="mb-0">Department:({{$getClass->class_name}}) </p>
                 
                 
               </li>
               <li class="list-group-item d-flex justify-content-center  p-3">
-              <h4 class="mb-0">Position: ({{$getClass->position}}) </h4>
-              
-              
-               
+              <p class="mb-0">Designation: ({{$getClass->position}}) </p>
+                              
               </li>
               
               
@@ -140,10 +138,19 @@
             <hr>
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">Clock No:</p>
+                <p class="mb-0">ID No:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ old('admission_number',$getRecord->admission_number)}} </p>
+                <p class="text-muted mb-0">{{ old('id_number',$getRecord->id_number)}} </p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">GRADED TAX NUMBER:</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">{{ old('tax_number',$getRecord->tax_number)}} </p>
               </div>
             </div>
             <hr>
@@ -156,22 +163,13 @@
               </div>
             </div>
             <hr>
-            <div class="row">
-              <div class="col-sm-3">
-                <p class="mb-0">Leave Days Now:</p>
-              </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0">{{$leaveDays}} </p>
-              </div>
-            </div>
-            <hr>
             
             <div class="row">
               <div class="col-sm-3">
-                <p class="mb-0">ID Number:</p>
+                <p class="mb-0">Next of Kin:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ old('id_number',$getRecord->id_number)}}</p>
+                <p class="text-muted mb-0">{{ old('nxt_name',$getRecord->nxt_name)}} ({{ old('nxt_contact',$getRecord->nxt_contact)}}) {{ old('relationship',$getRecord->relationship)}}</p>
               </div>
             </div>
             <hr>
@@ -193,7 +191,7 @@
                 <p class="mb-4"><span class="text-primary font-italic me-1">Previous</span>  Employer:
                 </p>
                 <p class="mb-1" style="font-size: .99rem;">{{old('previous_school',$getRecord->previous_school)}}</p>
-                
+                <p class="mb-1" style="font-size: .99rem;">Qualification: {{old('qualification',$getRecord->qualification)}}</p>
               </div>
             </div>
           </div>

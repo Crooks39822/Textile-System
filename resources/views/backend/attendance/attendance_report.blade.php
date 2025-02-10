@@ -29,8 +29,8 @@
                     <div class="row">
 
                     <div class="form-group col-md-2">
-                            <label>Clock Number</label>
-                            <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="Clock Number">
+                            <label>EMPLOYEE NUMBER</label>
+                            <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="EMPLOYEE NUMBER">
                         </div>
                     <div class="form-group col-md-2">
                             <label> Fullname</label>
@@ -93,7 +93,7 @@
                     <thead>
                       <tr>
 
-                         <th>CLOCK NUMBER</th>
+                         <th>EMPLOYEE NUMBER</th>
                          <th>EMPLOYEE NAME</th>
                          <th>DEPARTMENT NAME</th>
                         <th>ATTENDANCE</th>

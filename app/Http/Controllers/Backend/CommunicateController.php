@@ -36,11 +36,11 @@ class CommunicateController extends Controller
             }
             elseif($value->is_role == 2)
             {
-                $type = 'Teacher';
+                $type = 'Supervisor';
             }
             elseif($value->is_role == 3)
             {
-                $type = 'Student';
+                $type = 'Employee';
             }
             elseif($value->is_role == 4)
             {

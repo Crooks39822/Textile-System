@@ -34,16 +34,16 @@
        @if(Auth::user()->parent_id == 2)
         <li class="nav-item">
             <a href="{{ url('admin/users') }}" class="nav-link @if(Request::segment(2) == 'users') active @endif">
-              <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon far fa-angry"></i>
               <p>
-                  Admins
+                  System Users
               </p>
             </a>
           </li>
           @endif
           <li class="nav-item">
             <a href="{{ url('admin/supervisor') }}" class="nav-link @if(Request::segment(2) == 'supervisor') active @endif">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
               Supervisors
               </p>
@@ -53,31 +53,32 @@
             <a href="{{ url('admin/employee') }}" class="nav-link @if(Request::segment(2) == 'employee') active @endif">
               <i class="nav-icon fas fa-users"></i>
               <p>
-              Employee
+              Manage Employees
               </p>
             </a>
           </li>
+
           <li class="nav-item">
             <a href="{{ url('admin/staff') }}" class="nav-link @if(Request::segment(2) == 'staff') active @endif">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-user"></i>
               <p>
-              Admin Staff
+              Manage Staff
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ url('admin/admin_positions') }}" class="nav-link @if(Request::segment(2) == 'admin_positions') active @endif">
-              <i class="nav-icon fas fa-user"></i>
+            <i class="nav-icon fas fa-book-reader"></i>
               <p>
-              Admin Positions
+              Admin Postions
               </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ url('admin/positions') }}" class="nav-link @if(Request::segment(2) == 'positions') active @endif">
-              <i class="nav-icon fas fa-table"></i>
+            <i class="nav-icon fas fa-cash-register"></i>
               <p>
-              Textile Positions
+               Employee Designation
               </p>
             </a>
           </li>
@@ -96,34 +97,19 @@
             <a href="{{ url('admin/department') }}" class="nav-link @if(Request::segment(2) == 'department') active @endif">
             <i class="far fa-circle nav-icon"></i>
               <p>
-                Manage  Departments
+                Manage Departments
               </p>
             </a>
           </li>
 
-          <li class="nav-item">
-            <a href="{{ url('admin/machine') }}" class="nav-link @if(Request::segment(2) == 'machine') active @endif">
-            <i class="far fa-circle nav-icon"></i>
-              <p>
-                 Manage Machine
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url('admin/assign_machine') }}" class="nav-link @if(Request::segment(2) == 'assign_machine') active @endif">
-            <i class="far fa-circle nav-icon"></i>
-              <p>
-                 Manage Matrix
-              </p>
-            </a>
-          </li>
+          
           
 
           <li class="nav-item">
             <a href="{{ url('admin/assign_line_to_supervisor') }}" class="nav-link @if(Request::segment(2) == 'assign_line_to_supervisor') active @endif">
             <i class="far fa-circle nav-icon"></i>
               <p>
-              Assign Line to Supervisor
+              Assign Supervisor - Department
               </p>
             </a>
           </li>
@@ -164,9 +150,17 @@
           </li>
       
 
+          <li class="nav-item">
+            <a href="{{ url('admin/exited_employees') }}" class="nav-link @if(Request::segment(2) == 'exited_employees') active @endif">
+            <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+              Exited Employees
+              </p>
+            </a>
+          </li>
           <li class="nav-item  @if(Request::segment(2) == 'communicate') menu-is-opening menu-open  @endif">
             <a href="#" class="nav-link  @if(Request::segment(2) == 'communicate') active  @endif">
-             <i class="nav-icon fas fa-columns"></i>
+             <i class="nav-icon far fa-comments"></i>
              <p>
                 Communicate
                <i class="fas fa-angle-left right"></i>
@@ -199,7 +193,7 @@
 
           <li class="nav-item">
             <a href="{{ url('admin/settings') }}" class="nav-link @if(Request::segment(2) == 'settings') active @endif">
-              <i class="nav-icon fas fa-edit"></i>
+            <i class="nav-icon fas fa-cogs"></i>
               <p>
                   Settings
               </p>
@@ -207,8 +201,8 @@
           </li>
           <li class="nav-item">
             <a href="{{ url('admin/account') }}" class="nav-link @if(Request::segment(2) == 'account') active @endif">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
+            <i class="nav-icon fas fa-user-circle"></i>
+                          <p>
                   My Account
               </p>
             </a>

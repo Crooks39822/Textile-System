@@ -11,13 +11,9 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>QC List  (Total: {{$getStudent->total()}})</h1>
+            <h1>Total Exited Employees List  (Total: {{$getStudent->total()}})</h1>
           </div><!-- /.col -->
-          @if(Auth::user()->parent_id == 2)
-          <div class="col-sm-6" style="text-align:right;">
-            <a href="{{url('admin/qc/add')}}" class="btn btn-primary mb-2">Add New QC</a>
-            @endif
-          </div><!-- /.col -->
+         
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -33,7 +29,7 @@
           <div class="col-md-12">
             <div class="card">
            <div class="card-header">
-           <h3 class="card-title">Search QC </h3>
+           <h3 class="card-title">Search Exited Employee </h3>
 </div>
            <form method="get" action="">
                 <div class="card-body">
@@ -45,7 +41,7 @@
                             <input type="text" class="form-control" name="name" value="{{ Request::get('name') }}"  placeholder="First Name">
                         </div>
                         <div class="form-group col-md-2">
-                            <label>Clock Number</label>
+                            <label>Employee Number</label>
                             <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="Clock number">
                         </div>
                         <div class="form-group col-md-2">
@@ -74,23 +70,14 @@
                             <input type="text" class="form-control" name="id_number" value="{{ Request::get('id_number') }}"  placeholder="ID Number ">
                         </div>
 
-                        <div class="form-group col-md-2">
-                            <label>Status</label>
-                            <select class="form-control" name="status">
-                            <option value="">Select Status</option>
-                            <option {{ (Request::get('status') == 100) ? 'selected' : ''}} value="100">Active</option>
-                            <option {{ (Request::get('status') == 1) ? 'selected' : ''}} value="1">Suspended</option>
-                            <option {{ (Request::get('status') == 2) ? 'selected' : ''}} value="2">Layoff</option>
-                            </select>
-
-                        </div>
+                        
                         <div class="form-group col-md-2">
                             <label>Admission Date</label>
                             <input type="date" class="form-control" name="admission_date" value="{{ Request()->admission_date}}">
                         </div>
                         <div class="form-group col-md-2">
                        <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
-                       <a href="{{url('admin/qc')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
+                       <a href="{{url('admin/exited_employees')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
                         </div>
 
                     </div>
@@ -108,7 +95,7 @@
            <div class="card">
             <div class="card-header">
 
-            <h3 class="card-title">QC List</h3>
+            <h3 class="card-title">Exited Employee List</h3>
             </div>
             <div class="card-body table-responsive p-0" style="overflow: auto;">
             <table class="table table-hover text-nowrap">
@@ -117,14 +104,12 @@
                         <th>#</th>
                         <th >Pic</th>
                         <th >Fullname</th>
-                        <th >Rate/hr</th>
+                        <th >Rate(Day/Hr)</th>
                         <th>Phone</th>
                          <th>Department</th>
                         <th>Gender</th>
-                        <th>Join Date</th>
-                        <th>Probation End Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>Activate</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
@@ -144,35 +129,19 @@
                        
                         <td>{{ $value->class_name }}</td>
                         <td>{{ $value->gender }}</td>
-                        <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
-                        <td>
-                        @if($value->probation_status == 0)
-                       <spam class="btn-danger"> {{ date('d-m-Y',strtotime($value->probation_date ))}}</spam>
-                          @else
-                          <spam class="btn-success"> {{ date('d-m-Y',strtotime($value->probation_date ))}}</spam>
-                          @endif
-                          
-                       </td>
-                        <td>
-                        @if($value->status == 0)
-                                  Active
-                          @elseif($value->status ==1)
-                                  Suspended
-                                  @elseif($value->status ==2)
-                                  Layoff
-                           @else
-                              Gone
-                          @endif
-                        </td>
-
                         <td style="min-width: 150px;">
-                        <a href="{{url('admin/qc/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>
-                            <a href="{{url('admin/qc/edit/'.$value->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                            @if(Auth::user()->parent_id == 2)
-                            <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/qc/delete/'.$value->id)}}" class="btn btn-danger btn-sm">Delete</a>
-                            @endif
+                        @if(Auth::user()->parent_id == 2)
+                            
                            
-                          </td>
+                          @if($value->status == 1)
+<a href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-success">Bring Back</a>
+          @else
+          <a onclick="return confirm('Are you sure you want to bring this employee Back?')"  href="{{url('admin/employee_update/'.$value->id)}}" class="btn btn-success">Bring Back</a>       
+          
+          @endif
+          @endif
+</td>
+                       
                       </tr>
                       @empty
 

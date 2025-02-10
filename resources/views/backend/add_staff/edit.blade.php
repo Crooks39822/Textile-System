@@ -38,6 +38,13 @@
                   <div class="card-body">
                   <div class="row">
                   <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Employee Number</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control" value="{{ old('employee_number',$getRecord->admission_number)}}"
+                       name="employee_number" placeholder="Enter Employee Number" onblur="duplicateEmployeeNumber(this)">
+                      <span style="color:red;" class="dublicate_message">{{$errors->first('employee_number')}}</span>
+                    </div>
+                  <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">First name</label>
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('name',$getRecord->name)}}" name="name" id="exampleInputEmail1" placeholder="Enter First Name">
@@ -67,13 +74,28 @@
                       <select class="form-control" name="occupation">
                         <option value="">Select Position Name</option>
                         @foreach($getRecords as $position)
-                        <option  {{(old('occupation',$getRecord->qualification) == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
+                        <option  {{(old('occupation',$getRecord->occupation) == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
                         @endforeach
                         </select>
                         <span style="color:red;">{{$errors->first('occupation')}}</span>
                     </div>
 
-
+                    @if(Auth::user()->parent_id == 2)
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Salary</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control" value="{{ old('roll_number',$getRecord->roll_number)}}" name="roll_number" placeholder="Enter Salary">
+                      <span style="color:red;">{{$errors->first('roll_number')}}</span>
+                    </div>
+                    @else
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Salary</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control"  value="{{ old('roll_number',$getRecord->roll_number)}}" name="roll_number" readonly >
+                      </span>
+                    </div>
+                    
+                    @endif
                     
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Admission Date</label>
@@ -95,8 +117,14 @@
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Date of Birth</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('date_of_birth',$getRecord->date_of_birth)}}" name="date_of_birth">
+                      <input type="date" id="dob" class="form-control" value="{{ old('date_of_birth',$getRecord->date_of_birth)}}" name="date_of_birth">
                       <span style="color:red;">{{$errors->first('date_of_birth')}}</span>
+                    </div>
+                     <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Age</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('age',$getRecord->age)}}" id="age" name="age" placeholder="Enter Age">
+                      <span style="color:red;">{{$errors->first('id_number')}}</span>
                     </div>
 
 
@@ -118,6 +146,12 @@
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('id_number',$getRecord->id_number)}}" name="id_number" placeholder="Enter ID Number">
                       <span style="color:red;">{{$errors->first('id_number')}}</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">GRADED TAX NUMBER</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('tax_number', $getRecord->tax_number)}}" name="tax_number" id="exampleInputEmail1" placeholder="Enter GRADED TAX NUMBER">
+                      <span style="color:red;">{{$errors->first('tax_number')}}</span>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Physical Address</label>
@@ -150,6 +184,9 @@
 
                       @endif
                     </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>BANKING  DETAILS</b>
+                </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Bank Name</label>
                       <span style="color:red;">*</span>
@@ -161,6 +198,35 @@
                       <span style="color:red;">*</span>
                       <input type="text" class="form-control" value="{{ old('bank_account',$getRecord->bank_account)}}" name="bank_account" placeholder="Enter Bank Account ">
                       <span style="color:red;">{{$errors->first('bank_name')}}</span>
+                    </div>
+                    <div class="card-footer form-group col-md-12">
+                <b>NEXT OF KIN</b>
+                </div>
+                <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Name</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_name',$getRecord->nxt_name)}}" name="nxt_name" placeholder="Enter Next of Kin Name">
+                      <span style="color:red;">{{$errors->first('nxt_name')}}</span>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1"> Qualification</label>
+                      <span style="color:red;">*</span>
+                      <textarea class="form-control" name="qualification">{{old('qualification',$getRecord->qualification)}}</textarea>
+                      <span style="color:red;">{{$errors->first('qualification')}}</span>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Contacts</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('nxt_contact',$getRecord->nxt_contact)}}" name="nxt_contact" placeholder="Enter Next of Kin Contacts">
+                      <span style="color:red;">{{$errors->first('nxt_contact')}}</span>
+                    </div>
+                   
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Relationship</label>
+                      <span style="color:red;">*</span>
+                      <input type="text" class="form-control" value="{{ old('relationship',$getRecord->relationship)}}" name="relationship" placeholder="Enter Relationship">
+                      <span style="color:red;">{{$errors->first('relationship')}}</span>
                     </div>
 
                     <div class="form-group col-md-6">
@@ -204,8 +270,18 @@
     </section>
     <!-- /.content -->
   </div>
-  <!-- /.footer -->
+  <script type="text/javascript">
+document.getElementById('dob').addEventListener('change', function() {
+    var dob = new Date(this.value);
+    var age = calculateAge(dob);
+    document.getElementById('age').value = age;
+});
 
+function calculateAge(dob) {
+    var diffMs = Date.now() - dob.getTime();
+    var ageDt = new Date(diffMs);
 
-  <!-- Control Sidebar -->
+    return Math.abs(ageDt.getUTCFullYear() - 1970);
+}
+</script>
   @endsection

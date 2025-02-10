@@ -4,23 +4,24 @@
 use App\Models\ClassSubjectTimetable;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Backend\QCsController;
 use App\Http\Controllers\Backend\ChatController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\UsersContoller;
 use App\Http\Controllers\Backend\StaffController;
-use App\Http\Controllers\Backend\EmployeeController;
-use App\Http\Controllers\Backend\QCsController;
+use App\Http\Controllers\Backend\ExitedController;
 use App\Http\Controllers\Backend\SubjectController;
 use App\Http\Controllers\Backend\TeacherController;
 use App\Http\Controllers\Backend\CalendarController;
+use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\ClassroomController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\PositionsController;
 use App\Http\Controllers\Backend\AssignmentController;
 use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\CommunicateController;
-use App\Http\Controllers\Backend\AdminPositionController;
 use App\Http\Controllers\Backend\ClassSubjectController;
-use App\Http\Controllers\Backend\PositionsController;
+use App\Http\Controllers\Backend\AdminPositionController;
 use App\Http\Controllers\Backend\ClassTimetableController;
 use App\Http\Controllers\Backend\FeesCollectionController;
 use App\Http\Controllers\Backend\AssignClassTeacherController;
@@ -86,7 +87,7 @@ Route::group(['middleware' => 'admin'], function(){
     
 
 
-    //student
+    //employee
     Route::get('admin/employee',[EmployeeController::class, 'list'])->name('list');
     Route::get('admin/employee/add',[EmployeeController::class, 'add'])->name('add');
     Route::post('admin/employee/add',[EmployeeController::class, 'insert'])->name('insert');
@@ -95,16 +96,13 @@ Route::group(['middleware' => 'admin'], function(){
     Route::post('admin/employee/edit/{id}',[EmployeeController::class, 'update'])->name('update');
     Route::get('admin/employee/delete/{id}',[EmployeeController::class, 'delete'])->name('delete');
     Route::post(' admin/employee_export',[EmployeeController::class, 'employee_export']);
-   
+    Route::get(' admin/enpf_export',[EmployeeController::class, 'enpf_export']);
     Route::post('check_clock_number',[EmployeeController::class, 'checkClockNumber']);
-    //QCs
-    Route::get('admin/qc',[QCsController::class, 'list'])->name('list');
-    Route::get('admin/qc/add',[QCsController::class, 'add'])->name('add');
-    Route::post('admin/qc/add',[QCsController::class, 'insert'])->name('insert');
-    Route::get('admin/qc/edit/{id}',[QCsController::class, 'edit'])->name('edit');
-    Route::get('admin/qc/view/{id}',[QCsController::class, 'view']);
-    Route::post('admin/qc/edit/{id}',[QCsController::class, 'update'])->name('update');
-    Route::get('admin/qc/delete/{id}',[QCsController::class, 'delete'])->name('delete');
+    Route::post('check_employee_number',[EmployeeController::class, 'checkEmployeeNumber']);
+    Route::get('admin/employee_update/{id}',[EmployeeController::class, 'employee_update']);
+    //Exited Employees
+    Route::get('admin/exited_employees',[ExitedController::class, 'list'])->name('list');
+    
 
     //staff
     Route::get('admin/staff',[StaffController::class, 'list'])->name('list');

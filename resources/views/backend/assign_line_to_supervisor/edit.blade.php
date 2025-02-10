@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Edit Assign Line Supervisor</h1>
+            <h1 class="m-0">Edit Assign Supervisor to Department</h1>
           </div><!-- /.col -->
 
         </div><!-- /.row -->
@@ -29,7 +29,7 @@
            <div class="card-header">
             <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Edit Assign  Line Supervisor</h3>
+                  <h3 class="card-title">Edit Assign Supervisor to Department</h3>
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
@@ -37,10 +37,10 @@
                     @csrf
                   <div class="card-body">
                     <div class="form-group">
-                      <label for="exampleInputEmail1"> Line Name</label>
+                      <label for="exampleInputEmail1"> Department Name</label>
                       <span style="color:red;">*</span>
                       <select class="form-control getClass" name="class_id" required>
-                        <option value="">Select Line</option>
+                        <option value="">Select Department</option>
                         @foreach($getClass as $class)
                         <option {{($getRecord->class_id  == $class->id) ? 'selected' : ''}} value="{{$class->id}}">{{$class->name}}</option>
                         @endforeach
@@ -52,7 +52,7 @@
                     <span style="color:red;">{{$errors->first('subject_id')}}</span>
 
                     <div class="form-group">
-                      <label for="exampleInputEmail1">Supervisor Name</label>
+                      <label for="exampleInputEmail1">Supervisor/Leader Name</label>
                       <span style="color:red;">*</span>
 
 

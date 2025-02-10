@@ -40,27 +40,27 @@
               <a href="{{ url('admin/employee') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <!-- <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6">
 
-<div class="small-box bg-warning">
-  <div class="inner">
-    <h3>{{ $TotalQC }}</h3>
+          <div class="small-box bg-danger">
+            <div class="inner">
+              <h3>{{ $getExited }}</h3>
 
-    <p>Total QCs</p>
-  </div>
-  <div class="icon">
-    <i class="ion ion-person-add"></i>
-  </div>
-  <a href="{{ url('admin/qc') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-</div>
-</div> -->
+              <p>Total Exited</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person"></i>
+            </div>
+            <a href="{{ url('admin/exited_employees') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+          </div>
           <div class="col-lg-3 col-6">
 
             <div class="small-box bg-primary">
               <div class="inner">
                 <h3>{{ $TotalTeacher }}</h3>
 
-                <p>Total Supervisors</p>
+                <p>Total Supervisors/Leaders</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -76,7 +76,7 @@
               <div class="inner">
                 <h3>{{ $TotalAdmin }}</h3>
 
-                <p>Total Users</p>
+                <p>Total System Users</p>
               </div>
               <div class="icon">
                 <i class="ion ion-person-add"></i>
@@ -87,7 +87,7 @@
           @endif
           <div class="col-lg-3 col-6">
 
-            <div class="small-box bg-danger">
+            <div class="small-box bg-primary">
               <div class="inner">
                 <h3>{{ $TotalStaff }}</h3>
 
@@ -104,11 +104,11 @@
             
           <div class="col-lg-3 col-6">
 
-            <div class="small-box bg-primary">
+            <div class="small-box bg-warning">
               <div class="inner">
                 <h3>{{ $TotalClass }}</h3>
 
-                <p>Total Departments</p>
+                <p>Total Departments/Crews</p>
               </div>
               <div class="icon">
                 <i class="nav-icon fas fa-table"></i>
@@ -135,8 +135,7 @@
                     <th>Name</th>
                     <th>Employemnt</th>
                     <th>Rate</th>
-                    
-                    <th>Clock Number</th>
+                    <th>Employee Number</th>
                     <th>Join Date</th>
                     <th>Probation Date</th>
                      </tr>
@@ -155,16 +154,27 @@
                     <td> @if($value->is_role == 1)
                                   Admin
                           @elseif($value->is_role == 2)
-                                  Supervisor
+                                  Supervisor/Leader
                            @elseif($value->is_role == 3)
-                                  Textile Employee
+                                   Employee
                                   @elseif($value->is_role == 5)
                                   Admin Staff
                           @endif</td>
-                          <td>{{$value->roll_number}}</td>
+                          <td>E {{$value->roll_number}}</td>
                           <!--<td>{{$value->occupation}}</td>-->
                           
-                          <td>{{$value->admission_number}}</td>
+                          <td>  
+                          
+                           @if($value->is_role == 2)
+                                  {{$value->admission_number}}
+                          @elseif($value->is_role == 3)
+                                  {{$value->admission_number}} 
+                           
+                                  @elseif($value->is_role == 5)
+                                  {{$value->admission_number}}
+                          @endif
+                          
+                          </td>
                           <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
                           <td>{{ date('d-m-Y',strtotime($value->probation_date ))}}</td>
                     

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use App\Mail\UserCreateMail;
-use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use App\Models\User;
+use App\Exports\ENPFList;
+use Illuminate\Support\Str;
+use App\Mail\UserCreateMail;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Excel;
 
 class TeacherController extends Controller
 {
@@ -30,9 +32,11 @@ class TeacherController extends Controller
     }
     public function insert(Request $request)
     {
+      
       //dd($request->all());
       request()->validate([
         'id_number' => 'max:13|min:13',
+        'employee_number' => 'required',  
         'phone' => 'min:8'
         ]);
       $user = new User;
@@ -43,6 +47,12 @@ class TeacherController extends Controller
       $user->work_experience  =trim($request->work_experience);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
+      $user->age  =trim($request->age);
+      $user->nxt_contact  =trim($request->nxt_contact);
+      $user->nxt_name  =trim($request->nxt_name);
+      $user->relationship  =trim($request->relationship);
+      $user->tax_number  =trim($request->tax_number);
+      $user->admission_number  = trim($request->employee_number);
       if(!empty($request->file('document_file')))
       {
         
@@ -60,6 +70,7 @@ class TeacherController extends Controller
 
       $user->occupation  =trim($request->occupation);
       $user->id_number  =trim($request->id_number);
+      $user->roll_number  =trim($request->roll_number);
       $user->address  =trim($request->address);
       $user->p_address  =trim($request->p_address);
       $user->probation_status  =trim($request->probation_status);
@@ -119,7 +130,8 @@ class TeacherController extends Controller
     public function view($id)
     {
 
-
+      
+      $data['getSingleSuper'] = User::getSingleSuper($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
       {
@@ -147,12 +159,19 @@ class TeacherController extends Controller
       $user->name  =trim($request->name);
       $user->last_name  =trim($request->last_name);
       $user->note  =trim($request->note);
+      $user->roll_number  =trim($request->roll_number);
       $user->qualification  =trim($request->qualification);
       $user->work_experience  =trim($request->work_experience);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
+      $user->age  =trim($request->age);
+      $user->nxt_contact  =trim($request->nxt_contact);
+      $user->nxt_name  =trim($request->nxt_name);
+      $user->relationship  =trim($request->relationship);
+      $user->tax_number  =trim($request->tax_number);
+      $user->admission_number  = trim($request->employee_number);
       if(!empty($request->file('document_file')))
         {
             if(!empty($user->getDocument()))
