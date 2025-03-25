@@ -121,9 +121,11 @@
                         <th>Gender</th>
                         <th>ID</th>
                         <th>Phone</th>
-                        <th>EXIT</th>
+                        <!-- <th>EXIT</th> -->
                         <th>Join Date</th>
                         <th>Probation End</th>
+                        <th>Status</th>
+                        <th>Update At</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -143,7 +145,7 @@
    <td>{{ $value->gender }}</td>
    <td>{{ $value->id_number }}</td>
    <td>{{ $value->phone }}</td>
-   <td>
+   <!-- <td>
                         @if(Auth::user()->parent_id == 2)
                             
                            
@@ -154,7 +156,7 @@
           
           @endif
           @endif
-</td>
+</td> -->
    <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
    <td>
                         @if($value->probation_status == 0)
@@ -164,6 +166,10 @@
                           @endif
                           
                        </td>
+                       <td>
+                       {{$value->employeestatus}} 
+                        </td>
+                        <td>{{ date('d-m-Y',strtotime($value->updated_at ))}}</td>
    <td style="min-width: 150px;">
    <a href="{{url('admin/supervisor/view/'.$value->id)}}" class="btn btn-success">View Profile</a>
        <a href="{{url('admin/supervisor/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>

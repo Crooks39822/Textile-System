@@ -4,6 +4,9 @@
 
 @section('content')
 
+@php 
+$EmployeeStatus = App\Models\EmployeeStatus::getRecord();
+    @endphp
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -14,9 +17,11 @@
             <h1>Employee List  (Total: {{$getStudent->total()}})</h1>
           </div><!-- /.col -->
           @if(Auth::user()->parent_id == 2)
+         
           <div class="col-sm-6" style="text-align:right;">
-            <a href="{{url('admin/employee/add')}}" class="btn btn-primary mb-2">Add New Employee</a>
+            <a href="{{url('admin/employee/0/add')}}" class="btn btn-primary mb-2">Add New Employee</a>
           </div><!-- /.col -->
+          
           @endif
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -35,6 +40,8 @@
            <div class="card-header">
            <h3 class="card-title">Search Employee </h3>
 </div>
+
+@if(!empty($EmployeeStatus->id )== 0)
            <form method="get" action="">
                 <div class="card-body">
                     <div class="row">
@@ -49,8 +56,16 @@
                             <input type="text" class="form-control" name="id_number" value="{{ Request::get('id_number') }}"  placeholder="ID number">
                         </div>
                         <div class="form-group col-md-2">
+                            <label>Rate</label>
+                            <input type="text" class="form-control" name="roll_number" value="{{ Request::get('roll_number') }}"  placeholder="Rate">
+                        </div>
+                        <div class="form-group col-md-2">
                             <label>Employee Number</label>
                             <input type="text" class="form-control" name="admission_number" value="{{ Request::get('admission_number') }}"  placeholder="Employee number">
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label>Qualifications</label>
+                            <input type="text" class="form-control" name="qualification" value="{{ Request::get('qualification') }}"  placeholder="Qualifications">
                         </div>
                         <div class="form-group col-md-2">
                             <label>Department Name</label>
@@ -97,23 +112,14 @@
                         </div>
                         
 
-                        <div class="form-group col-md-2">
-                            <label>Status</label>
-                            <select class="form-control" name="status">
-                            <option value="">Select Status</option>
-                            <option {{ (Request::get('status') == 100) ? 'selected' : ''}} value="100">Active</option>
-                            <option {{ (Request::get('status') == 1) ? 'selected' : ''}} value="1">Suspended</option>
-                            <option {{ (Request::get('status') == 2) ? 'selected' : ''}} value="2">Layoff</option>
-                            </select>
-
-                        </div>
+                        
                         <div class="form-group col-md-2">
                             <label>Admission Date</label>
                             <input type="date" class="form-control" name="admission_date" value="{{ Request()->admission_date}}">
                         </div>
                         <div class="form-group col-md-2">
                        <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
-                       <a href="{{url('admin/employee')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
+                       <a href="{{url('admin/employee/0')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
                         </div>
 
                     </div>
@@ -139,16 +145,17 @@
             <input type="hidden"  name="admission_number" value="{{ Request::get('admission_number') }}">
             <input type="hidden"  name="class_id" value="{{ Request::get('class_id') }}">
             <input type="hidden"  name="designation" value="{{ Request::get('designation') }}">
+            <input type="hidden"  name="qualification" value="{{ Request::get('qualification') }}">
             <input type="hidden"  name="gender" value="{{ Request::get('gender') }}">
             
             <input type="hidden"  name="id_number" value="{{ Request::get('id_number') }}">
             <input type="hidden"  name="probation_status" value="{{ Request::get('probation_status') }}">
-            <input type="hidden"  name="status" value="{{ Request::get('status') }}">
+            <input type="hidden"  name="roll_number" value="{{ Request::get('roll_number') }}">
             <input type="hidden"  name="admission_date" value="{{ Request::get('admission_date') }}">
             <a href="{{url('admin/enpf_export')}}" class="btn btn-success">Export ENPF</a>
             <button type="submit" class="btn btn-primary">Export Excel</button>
             </form>
-            
+            @endif
             </div>
             <div class="card-body table-responsive p-0" style="overflow: auto;">
             <table class="table table-hover text-nowrap">
@@ -158,14 +165,16 @@
                         <th >Pic</th>
                         <th >Fullname</th>
                         <th >Rate/hr/Day</th>
+                        <th>ID Number</th>
                         <th>Phone</th>
                          <th>Department/Line</th>
                         <th>Gender</th>
                         <th>Designation</th>
-                        <th>EXIT</th>
+                        <!-- <th>EXIT</th> -->
                         <th>Join Date</th>
                         <th>Probation End Date</th>
                         <th>Status</th>
+                        <th>Update At</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -181,13 +190,14 @@
                       </td>
                         <td>{{ $value->name }} {{ $value->last_name }} ({{ $value->admission_number }})</td>
                         <td>{{ $value->roll_number }}</td>
+                        <td>{{ $value->id_number }}</td>
                         
                         <td>{{ $value->phone }}</td>
                        
                         <td>{{ $value->class_name }}</td>
                          <td>{{ $value->gender }}</td>
                         <td>{{ $value->position }}</td>
-                        <td>
+                        <!-- <td>
                         @if(Auth::user()->parent_id == 2)
                             
                            
@@ -198,7 +208,7 @@
           
           @endif
           @endif
-</td>
+</td> -->
                         <td>{{ date('d-m-Y',strtotime($value->admission_date ))}}</td>
                         <td>
                         @if($value->probation_status == 0)
@@ -209,17 +219,9 @@
                           
                        </td>
                         <td>
-                        @if($value->status == 0)
-                                  Active
-                          @elseif($value->status ==1)
-                                  Suspended
-                                  @elseif($value->status ==2)
-                                  Layoff
-                           @else
-                              Gone
-                          @endif
+                       {{$value->employeestatus}} 
                         </td>
-
+                        <td>{{ date('d-m-Y',strtotime($value->updated_at ))}}</td>
                         <td style="min-width: 150px;">
                         <a href="{{url('admin/employee/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>
                             <a href="{{url('admin/employee/edit/'.$value->id)}}" class="btn btn-primary btn-sm">Edit</a>

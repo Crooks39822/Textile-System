@@ -23,6 +23,7 @@ use App\Http\Controllers\Backend\CommunicateController;
 use App\Http\Controllers\Backend\ClassSubjectController;
 use App\Http\Controllers\Backend\AdminPositionController;
 use App\Http\Controllers\Backend\ClassTimetableController;
+use App\Http\Controllers\Backend\EmployeeStatusController;
 use App\Http\Controllers\Backend\FeesCollectionController;
 use App\Http\Controllers\Backend\AssignClassTeacherController;
 
@@ -76,9 +77,9 @@ Route::group(['middleware' => 'admin'], function(){
         Route::post('admin/settings',[UsersContoller::class, 'Updatesettings']);
     //teacher
 
-    Route::get('admin/supervisor',[TeacherController::class, 'list'])->name('list');
-    Route::get('admin/supervisor/add',[TeacherController::class, 'add'])->name('add');
-    Route::post('admin/supervisor/add',[TeacherController::class, 'insert'])->name('insert');
+    Route::get('admin/supervisor/{id}',[TeacherController::class, 'list'])->name('list');
+    Route::get('admin/supervisor/0/add',[TeacherController::class, 'add'])->name('add');
+    Route::post('admin/supervisor/0/add',[TeacherController::class, 'insert'])->name('insert');
     Route::get('admin/supervisor/view/{id}',[TeacherController::class, 'view']);
     Route::get('admin/supervisor/edit/{id}',[TeacherController::class, 'edit'])->name('edit');
     Route::post('admin/supervisor/edit/{id}',[TeacherController::class, 'update'])->name('update');
@@ -88,15 +89,15 @@ Route::group(['middleware' => 'admin'], function(){
 
 
     //employee
-    Route::get('admin/employee',[EmployeeController::class, 'list'])->name('list');
-    Route::get('admin/employee/add',[EmployeeController::class, 'add'])->name('add');
-    Route::post('admin/employee/add',[EmployeeController::class, 'insert'])->name('insert');
+    Route::get('admin/employee/{id}',[EmployeeController::class, 'list'])->name('list');
+    Route::get('admin/employee/0/add',[EmployeeController::class, 'add'])->name('add');
+    Route::post('admin/employee/0/add',[EmployeeController::class, 'insert'])->name('insert');
     Route::get('admin/employee/edit/{id}',[EmployeeController::class, 'edit'])->name('edit');
     Route::get('admin/employee/view/{id}',[EmployeeController::class, 'view']);
     Route::post('admin/employee/edit/{id}',[EmployeeController::class, 'update'])->name('update');
     Route::get('admin/employee/delete/{id}',[EmployeeController::class, 'delete'])->name('delete');
-    Route::post(' admin/employee_export',[EmployeeController::class, 'employee_export']);
-    Route::get(' admin/enpf_export',[EmployeeController::class, 'enpf_export']);
+    Route::post('admin/employee_export',[EmployeeController::class, 'employee_export']);
+    Route::get('admin/enpf_export',[EmployeeController::class, 'enpf_export']);
     Route::post('check_clock_number',[EmployeeController::class, 'checkClockNumber']);
     Route::post('check_employee_number',[EmployeeController::class, 'checkEmployeeNumber']);
     Route::get('admin/employee_update/{id}',[EmployeeController::class, 'employee_update']);
@@ -129,7 +130,15 @@ Route::group(['middleware' => 'admin'], function(){
     Route::post('admin/admin_positions/add',[AdminPositionController::class, 'insert']);
     Route::get('admin_positions/edit/{id}',[AdminPositionController::class, 'edit']);
     Route::post('admin_positions/edit/{id}',[AdminPositionController::class, 'update']);
-    Route::get('admin_positions/delete/{id}',[AdminPositionController::class, 'delete']);
+    Route::get('admin_positions/delete/{id}',[AdminPositionController::class, 'delete']); 
+
+    //employee_status
+    Route::get('admin/employee_status',[EmployeeStatusController::class, 'list']);
+    Route::get('admin/employee_status/add',[EmployeeStatusController::class, 'add']);
+    Route::post('admin/employee_status/add',[EmployeeStatusController::class, 'insert']);
+    Route::get('employee_status/edit/{id}',[EmployeeStatusController::class, 'edit']);
+    Route::post('employee_status/edit/{id}',[EmployeeStatusController::class, 'update']);
+    Route::get('employee_status/delete/{id}',[EmployeeStatusController::class, 'delete']); 
 
 //admin/assignment/assignment
 Route::get('admin/assignment/assignment',[AssignmentController::class, 'list']);

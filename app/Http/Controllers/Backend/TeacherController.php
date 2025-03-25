@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\Backend;
 
+use Excel;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Exports\ENPFList;
 use Illuminate\Support\Str;
 use App\Mail\UserCreateMail;
 use Illuminate\Http\Request;
+use App\Models\EmployeeStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Excel;
 
 class TeacherController extends Controller
 {
-    public function list()
+    public function list($id)
     {
-		$data['getTeacher'] = User::getTeacher();
+      $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
+		$data['getTeacher'] = User::getTeacher($id);
 		$data['header_title'] = "Supervisor List";
 		return view('backend.add_supervisor.list',$data);
 
@@ -26,7 +28,7 @@ class TeacherController extends Controller
 
     public function add()
     {
-
+      $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
     $data['header_title'] = "Add New Supervisor";
 		return view('backend.add_supervisor.add',$data);
     }
@@ -97,14 +99,15 @@ class TeacherController extends Controller
         $probation_date =Carbon::parse(trim($request->admission_date))->addMonths(3);
         $user->probation_date  =$probation_date;
 
-      $user->status  =trim($request->status);
+        $user->status  =trim($request->status);
+        $user->is_delete  =trim($request->status);
       $user->is_role  = 2;
       
 
       $user->save();
       
 
-      return redirect('admin/supervisor')->with('success','Supervisor Successfully Added');
+      return redirect('admin/supervisor/0')->with('success','Supervisor Successfully Added');
 
     }
     public function edit($id)
@@ -114,7 +117,7 @@ class TeacherController extends Controller
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
       {
-
+        $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
         $data['header_title'] = 'Edit Supervisor';
          return view('backend/add_supervisor/edit',$data);
 
@@ -130,7 +133,7 @@ class TeacherController extends Controller
     public function view($id)
     {
 
-      
+      $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
       $data['getSingleSuper'] = User::getSingleSuper($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
@@ -227,11 +230,13 @@ class TeacherController extends Controller
       }
       $probation_date =Carbon::parse(trim($request->admission_date))->addMonths(3);
       $user->probation_date  =$probation_date;
+      $user->is_delete  =trim($request->status);
+      $user->status  =trim($request->status);
 
       $user->save();
      
 
-      return redirect('admin/supervisor')->with('success','Supervisor Successfully Updated');
+      return redirect('admin/supervisor/0')->with('success','Supervisor Successfully Updated');
 
 
     }
@@ -241,8 +246,8 @@ class TeacherController extends Controller
       $getRecord = User::getSingle($id);
       if(!empty($getRecord))
       {
-        $getRecord->is_delete = 1;
-        $getRecord->save();
+        
+        $getRecord->delete();
         return redirect()->back()->with('success','Supervisor Successfully Deleted');
       }else
       {

@@ -70,7 +70,7 @@ class ENPFList implements FromCollection, WithMapping,WithHeadings,WithStyles,Wi
                      
                
         return [
-            $value->admission_number,
+            "MTF".$value->admission_number,
             $value->name,
             $value->last_name,
             date('d-m-Y',strtotime($value->admission_date )),

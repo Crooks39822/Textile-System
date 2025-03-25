@@ -43,14 +43,7 @@
             <h5 class="my-3">{{ old('name',$getRecord->name)}} {{ old('last_name',$getRecord->last_name)}}</h5>
             <p class="text-muted mb-4">Employee Number: {{ old('admission_number',$getRecord->admission_number)}}</p>
             <p class="text-muted mb-4">Admission Date: {{ old('admission_date',$getRecord->admission_date)}}</p>
-            <p class="text-muted mb-1">Status:
-            @if($getRecord->status == 0)
-                                  Active
-                          @else
-                                  Inacive
-                          @endif
-            </p>
-          </div>
+           
         </div>
         
         <div class="card mb-4 mb-lg-0">
@@ -77,7 +70,7 @@
               </li>
               
               <div class="card-footer">
-                    <a href="{{url('admin/supervisor')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/supervisor/0')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                        
                   </div>
             </ul>

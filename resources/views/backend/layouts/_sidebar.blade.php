@@ -19,7 +19,9 @@
       </div>
 
     </div>
-
+    @php 
+$EmployeeStatus = App\Models\EmployeeStatus::getRecord();
+    @endphp
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           @if(Auth::user()->is_role == 1)
@@ -41,31 +43,65 @@
             </a>
           </li>
           @endif
-          <li class="nav-item">
-            <a href="{{ url('admin/supervisor') }}" class="nav-link @if(Request::segment(2) == 'supervisor') active @endif">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-              Supervisors
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url('admin/employee') }}" class="nav-link @if(Request::segment(2) == 'employee') active @endif">
+        
+         
+
+          <!-- //supervisor start -->
+
+          <li class="nav-item  @if(Request::segment(2) == 'supervisor') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(2) == 'supervisor') active  @endif">
               <i class="nav-icon fas fa-users"></i>
               <p>
-              Manage Employees
+              Manage Supervisors
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+           @foreach($EmployeeStatus as $supervisor)
+              <li class="nav-item">
+            <a href="{{ url('admin/supervisor/'.$supervisor->id) }}" class="nav-link @if(Request::segment(3) == $supervisor->id) active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              {{$supervisor->name}} Supervisors
               </p>
             </a>
           </li>
 
-          <li class="nav-item">
-            <a href="{{ url('admin/staff') }}" class="nav-link @if(Request::segment(2) == 'staff') active @endif">
-              <i class="nav-icon fas fa-user"></i>
+           @endforeach
+
+          
+
+            </ul>
+          </li>
+          <!-- //supervisor end -->
+           <!-- //employees start -->
+
+          <li class="nav-item  @if(Request::segment(2) == 'employee') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(2) == 'employee') active  @endif">
+              <i class="nav-icon fas fa-users"></i>
               <p>
-              Manage Staff
+              Manage Employees
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+           @foreach($EmployeeStatus as $employees)
+              <li class="nav-item">
+            <a href="{{ url('admin/employee/'.$employees->id) }}" class="nav-link @if(Request::segment(3) == $employees->id) active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              {{$employees->name}} Employees
               </p>
             </a>
           </li>
+
+           @endforeach
+
+          
+
+            </ul>
+          </li>
+          <!-- //employee end -->
           <li class="nav-item">
             <a href="{{ url('admin/admin_positions') }}" class="nav-link @if(Request::segment(2) == 'admin_positions') active @endif">
             <i class="nav-icon fas fa-book-reader"></i>
@@ -74,6 +110,15 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url('admin/staff') }}" class="nav-link @if(Request::segment(2) == 'staff') active @endif">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+              Manage Admin Staff
+              </p>
+            </a>
+          </li>
+          
           <li class="nav-item">
             <a href="{{ url('admin/positions') }}" class="nav-link @if(Request::segment(2) == 'positions') active @endif">
             <i class="nav-icon fas fa-cash-register"></i>
@@ -102,8 +147,7 @@
             </a>
           </li>
 
-          
-          
+           
 
           <li class="nav-item">
             <a href="{{ url('admin/assign_line_to_supervisor') }}" class="nav-link @if(Request::segment(2) == 'assign_line_to_supervisor') active @endif">
@@ -129,7 +173,7 @@
             <ul class="nav nav-treeview">
 
               <li class="nav-item">
-            <a href="{{ url('admin/attendance/employee') }}" class="nav-link @if(Request::segment(3) == 'student') active @endif">
+            <a href="{{ url('admin/attendance/employee') }}" class="nav-link @if(Request::segment(3) == 'employee') active @endif">
             <i class="far fa-circle nav-icon"></i>
               <p>
               Employee Attendance
@@ -149,12 +193,11 @@
            </ul>
           </li>
       
-
           <li class="nav-item">
-            <a href="{{ url('admin/exited_employees') }}" class="nav-link @if(Request::segment(2) == 'exited_employees') active @endif">
-            <i class="nav-icon fas fa-sign-out-alt"></i>
+            <a href="{{ url('admin/employee_status') }}" class="nav-link @if(Request::segment(2) == 'employee_status') active @endif">
+            <i class="nav-icon fas fa-book-reader"></i>
               <p>
-              Exited Employees
+              Employee Status
               </p>
             </a>
           </li>

@@ -239,9 +239,10 @@
                       <label for="exampleInputEmail1">Status</label>
                       <span style="color:red;">*</span>
                       <select class="form-control" name="status">
-                      
-                        <option {{(old('status',$getRecord->status) == '0') ? 'selected' : ''}}  value="0">Active</option>
-                        <option {{(old('status',$getRecord->status) == '1') ? 'selected' : ''}}  value="1">Suspended</option>
+                        <option value="">Select Status</option>
+                        @foreach($getEmpoyeeStatus as $position)
+                        <option  {{(old('status',$getRecord->status) == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
+                        @endforeach
                         </select>
                         <span style="color:red;">{{$errors->first('status')}}</span>
                     </div>

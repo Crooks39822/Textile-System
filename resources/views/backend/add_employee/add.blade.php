@@ -67,9 +67,9 @@
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">ID Number</label>
                       <span style="color:red;"></span>
-                      <input type="number" class="form-control" value="{{ old('admission_number')}}"
-                       name="admission_number" placeholder="Enter ID Number" onblur="duplicateEmail(this)">
-                      <span style="color:red;" class="dublicate_message">{{$errors->first('admission_number')}}</span>
+                      <input type="number" class="form-control" value="{{ old('id_number')}}"
+                       name="id_number" placeholder="Enter ID Number" onblur="duplicateEmail(this)">
+                      <span style="color:red;" class="dublicate_message">{{$errors->first('id_number')}}</span>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Marital Status</label>
@@ -238,19 +238,17 @@
                       <label for="exampleInputEmail1">Status</label>
                       <span style="color:red;">*</span>
                       <select class="form-control" name="status">
-
-                        <option {{(old('status') == '0') ? 'selected' : ''}}  value="0">Active</option>
-                        <option {{(old('status') == '1') ? 'selected' : ''}}  value="1">Suspended</option>
-                        <option {{(old('status') == '2') ? 'selected' : ''}}  value="2">Layoff</option>
-                        <option {{(old('status') == '3') ? 'selected' : ''}}  value="3">Gone</option>
-                       
+                        <option value="">Select status</option>
+                        @foreach($getEmpoyeeStatus as $position)
+                        <option  {{(old('status') == $position->id) ? 'selected' : ''}}  value="{{$position->id}}">{{$position->name}}</option>
+                        @endforeach
                         </select>
                         <span style="color:red;">{{$errors->first('status')}}</span>
                     </div>
 
                 </div>
                   <div class="card-footer">
-                    <a href="{{url('admin/employee')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/employee/0')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                         <button type="submit" class="btn btn-primary float-right">Submit</button>
                   </div>
                 </form>

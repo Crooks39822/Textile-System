@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Mail\UserCreateMail;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
+use App\Models\EmployeeStatus;
 use App\Exports\EmployeeExport;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -23,12 +24,14 @@ use Illuminate\Support\Facades\Mail;
 class EmployeeController extends Controller
 {
 
-    public function list(Request $request)
+    public function list($id,Request $request)
     {
+      $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
       $data['getPosition'] =Exam::getRecord();
       $data['getClass'] = Classroom::getClass();
       $data['header_title'] = 'Employee List';
-        $data['getStudent'] = User::getStudent();
+      $data['getStudent'] = User::getStudent();
+      $data['getStudent'] = User::getEmployee($id);
        
 
         return view('backend/add_employee/list',$data);
@@ -48,6 +51,7 @@ class EmployeeController extends Controller
     public function add()
     {
       $data['getPosition'] =Exam::getRecord();
+      $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
       $data['getClass'] = Classroom::getClass();
       $data['header_title'] = 'Add New Employee';
        return view('backend/add_employee/add',$data);
@@ -69,8 +73,8 @@ class EmployeeController extends Controller
 
     public function checkEmployeeNumber(Request $request)
     {
-        $employee_number = $request->input('employee_number');
-        $isExists = User::where('employee_number','=', $employee_number)->first();
+        $employee_number = $request->input('id_number');
+        $isExists = User::where('id_number','=', $employee_number)->first();
 
         if($isExists)
         {
@@ -92,12 +96,12 @@ class EmployeeController extends Controller
        'admission_date' => 'required',
         'last_name' => 'required',
         'phone' => 'min:8|unique:users',
-        'admission_number' => 'required|unique:users'
+        'id_number' => 'min:13|required|unique:users'
         ]);
         
       $user = new User;
        
-      $idno=$request->id_number;
+     
       $user->qualification  =trim($request->qualification); 
       $admission_number = $request->employee_number;
       $user->name  =trim($request->name);
@@ -112,6 +116,7 @@ class EmployeeController extends Controller
       $user->admission_number  = $admission_number;
       $user->roll_number  =trim($request->roll_number);
       $user->class_id  =trim($request->class_id);
+      $user->designation  =trim($request->designation);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
        $user->qualification  =trim($request->qualification);
@@ -155,10 +160,11 @@ class EmployeeController extends Controller
       $probation_date =Carbon::parse(trim($request->admission_date))->addMonths(3);
       $user->probation_date  =$probation_date;
       $user->status  =trim($request->status);
+      $user->is_delete  =trim($request->status);
       $user->is_role  = 3;
       $user->save();
       
-      return redirect('admin/employee')->with('success','Employee Successfully Added');
+      return redirect('admin/employee/0')->with('success','Employee Successfully Added');
 
     }
 
@@ -169,6 +175,7 @@ class EmployeeController extends Controller
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
       {
+        $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
         $data['getPosition'] =Exam::getRecord();
         $data['getClass'] = Classroom::getClass();
        
@@ -226,8 +233,10 @@ class EmployeeController extends Controller
       $user->last_name  =trim($request->last_name);
       $user->roll_number  =trim($request->roll_number);
       $user->class_id  =trim($request->class_id);
+      $user->designation  =trim($request->designation);
       $user->gender  =trim($request->gender);
       $user->phone  =trim($request->phone);
+      $user->is_delete  =trim($request->status);
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
       if(!empty($request->file('document_file')))
@@ -280,7 +289,7 @@ class EmployeeController extends Controller
       $user->save();
 
 
-      return redirect('admin/employee')->with('success','Employee Successfully Update');
+      return redirect('admin/employee/0')->with('success','Employee Successfully Update');
 
     }
 
@@ -289,8 +298,8 @@ class EmployeeController extends Controller
       $getRecord = User::getSingle($id);
       if(!empty($getRecord))
       {
-        $getRecord->is_delete = 1;
-        $getRecord->save();
+       
+        $getRecord->delete();
         return redirect()->back()->with('success','Employee Successfully Deleted');
       }else
       {
@@ -302,7 +311,7 @@ class EmployeeController extends Controller
     {
       
       $data['getClass'] = User::getSingleClass($id);
-      $data['getPosition'] =User::getStudent();
+      $data['getPosition'] =User::getStudent($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
       {

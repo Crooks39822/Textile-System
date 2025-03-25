@@ -51,7 +51,7 @@
             <div class="icon">
               <i class="ion ion-person"></i>
             </div>
-            <a href="{{ url('admin/exited_employees') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{ url('admin/employee/2') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
           </div>
           <div class="col-lg-3 col-6">
