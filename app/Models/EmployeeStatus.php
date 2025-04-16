@@ -31,7 +31,7 @@ class EmployeeStatus extends Model
 
                      //search box end
                    $return = $return->where('employee_status.is_delete','=',0)
-                                    ->orderBy('employee_status.id','desc')
+                                    ->orderBy('employee_status.id','asc')
                                     ->paginate(10);
                                 return  $return;
     }

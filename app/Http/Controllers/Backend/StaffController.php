@@ -143,9 +143,11 @@ class StaffController extends Controller
       $user->tax_number  =trim($request->tax_number);
       $user->admission_number  = trim($request->employee_number);
       $user->occupation  =trim($request->occupation);
-      $user->probation_status  =trim($request->probation_status);
+      
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
+      $user->new_rate  =trim($request->new_rate);
+     $user->probation_status  =trim($request->probation_status);
       if(!empty($request->file('document_file')))
         {
             if(!empty($user->getDocument()))

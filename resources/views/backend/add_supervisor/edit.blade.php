@@ -82,7 +82,13 @@
                     </div>
                     
                     @endif
-
+                     
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">New Rate</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control"  value="{{ old('new_rate',$getRecord->new_rate)}}" name="new_rate" placeholder="Enter New Rate">
+                      </span>
+                    </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Gender</label>
                       <span style="color:red;">*</span>
@@ -160,20 +166,22 @@
                       <span style="color:red;">{{$errors->first('work_experience')}}</span>
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="exampleInputEmail1">  Probation Date</label>
-                      <span style="color:red;">*</span>
-                      <textarea class="form-control" name="note">{{old('probation_status',$getRecord->probation_status)}}</textarea>
-                      <span style="color:red;">{{$errors->first('note')}}</span>
-                    </div>
-                    
-
-                    <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Date of Joining</label>
                       <span style="color:red;">*</span>
                       <input type="date" class="form-control" value="{{ old('admission_date',$getRecord->admission_date)}}" name="admission_date" placeholder="Enter Admission Date ">
                     </div>
                     <span style="color:red;">{{$errors->first('admission_date')}}</span>
 
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">  Probation Date</label>
+                      <span style="color:red;">*</span>
+                      <input type="date" class="form-control" value="{{ old('probation_date',$getRecord->probation_date)}}" name="probation_date" placeholder="Enter Admission Date ">
+                    
+                      <span style="color:red;">{{$errors->first('probation_date')}}</span>
+                    </div>
+                    
+
+                    
                     <div class="form-group col-md-6">
                       <label for="exampleInputFile">Supervisor Photo</label>
                       <div class="input-group">

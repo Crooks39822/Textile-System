@@ -388,9 +388,15 @@ public function getDocument()
                         $probation_status = (Request::get('probation_status') == 100) ? 0 : 1;
                        $return = $return->where('users.probation_status','=', $probation_status);
                    }
-                   if(!empty(Request::get('admission_date')))
+                  
+
+                   if(!empty(Request::get('from_admission_date')))
                    {
-                       $return = $return->whereDate('users.admission_date','=', (Request::get('admission_date')));
+                       $return = $return->where('users.admission_date','>=', (Request::get('from_admission_date')));
+                   }
+                   if(!empty(Request::get('to_admission_date')))
+                   {
+                       $return = $return->where('users.admission_date','<=', (Request::get('to_admission_date')));
                    }
 
                      //search box end
@@ -462,9 +468,13 @@ public function getDocument()
                         $probation_status = (Request::get('probation_status') == 100) ? 0 : 1;
                        $return = $return->where('users.probation_status','=', $probation_status);
                    }
-                   if(!empty(Request::get('admission_date')))
+                   if(!empty(Request::get('from_admission_date')))
                    {
-                       $return = $return->whereDate('users.admission_date','=', (Request::get('admission_date')));
+                       $return = $return->where('users.admission_date','>=', (Request::get('from_admission_date')));
+                   }
+                   if(!empty(Request::get('to_admission_date')))
+                   {
+                       $return = $return->where('users.admission_date','<=', (Request::get('to_admission_date')));
                    }
 
                      //search box end
@@ -543,9 +553,13 @@ public function getDocument()
                         $probation_status = (Request::get('probation_status') == 100) ? 0 : 1;
                        $return = $return->where('users.probation_status','=', $probation_status);
                    }
-                   if(!empty(Request::get('admission_date')))
+                   if(!empty(Request::get('from_admission_date')))
                    {
-                       $return = $return->whereDate('users.admission_date','=', (Request::get('admission_date')));
+                       $return = $return->where('users.admission_date','>=', (Request::get('from_admission_date')));
+                   }
+                   if(!empty(Request::get('to_admission_date')))
+                   {
+                       $return = $return->where('users.admission_date','<=', (Request::get('to_admission_date')));
                    }
 
                      //search box end

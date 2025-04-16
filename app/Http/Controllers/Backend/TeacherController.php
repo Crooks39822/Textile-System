@@ -170,11 +170,17 @@ class TeacherController extends Controller
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
       $user->age  =trim($request->age);
+     
       $user->nxt_contact  =trim($request->nxt_contact);
       $user->nxt_name  =trim($request->nxt_name);
       $user->relationship  =trim($request->relationship);
       $user->tax_number  =trim($request->tax_number);
       $user->admission_number  = trim($request->employee_number);
+      if(!empty($request->new_rate))
+      {
+       $user->new_rate  =trim($request->new_rate);   
+        $user->probation_status  = 1;  
+      }
       if(!empty($request->file('document_file')))
         {
             if(!empty($user->getDocument()))

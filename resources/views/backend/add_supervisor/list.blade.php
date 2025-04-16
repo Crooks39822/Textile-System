@@ -14,7 +14,7 @@
             <h1>Supervisor List  (Total: {{$getTeacher->total()}})</h1>
           </div><!-- /.col -->
           <div class="col-sm-6" style="text-align:right;">
-            <a href="{{url('admin/supervisor/add')}}" class="btn btn-primary mb-2">Add New Supervisor</a>
+            <a href="{{url('admin/supervisor/0/add')}}" class="btn btn-primary mb-2">Add New Supervisor</a>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -140,7 +140,14 @@
    @endif
  </td>
    <td>{{ $value->name }} {{ $value->last_name }} ({{ $value->admission_number }})</td>
-   <td>{{ $value->roll_number }}</td>
+  <td>
+                        @if(!empty($value->new_rate))
+                            {{ $value->new_rate }} <span class="right badge badge-success"> New Rate</span>
+                          @else
+                          {{ $value->roll_number }}<span class="right badge badge-danger"> Old Rate</span>
+                          @endif
+                          
+                       </td>
    <td>{{ $value->class_name }}</td>
    <td>{{ $value->gender }}</td>
    <td>{{ $value->id_number }}</td>

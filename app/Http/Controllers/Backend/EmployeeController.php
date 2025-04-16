@@ -239,6 +239,11 @@ class EmployeeController extends Controller
       $user->is_delete  =trim($request->status);
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
+      if(!empty($request->new_rate))
+      {
+       $user->new_rate  =trim($request->new_rate);   
+        $user->probation_status  = 1;  
+      }
       if(!empty($request->file('document_file')))
         {
             if(!empty($user->getDocument()))
@@ -259,7 +264,7 @@ class EmployeeController extends Controller
         {
           $user->date_of_birth  =trim($request->date_of_birth);
         }
-      $user->probation_status  =trim($request->probation_status);
+      
      
       
       $user->address  =trim($request->address);

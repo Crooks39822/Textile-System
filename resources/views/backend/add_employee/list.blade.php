@@ -110,13 +110,15 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
                             </select>
 
                         </div>
-                        
-
-                        
                         <div class="form-group col-md-2">
-                            <label>Admission Date</label>
-                            <input type="date" class="form-control" name="admission_date" value="{{ Request()->admission_date}}">
+                            <label>From Admission Date</label>
+                            <input type="date" class="form-control" name="from_admission_date" value="{{ Request()->from_admission_date}}">
                         </div>
+                        <div class="form-group col-md-2">
+                            <label>To Admission Date</label>
+                            <input type="date" class="form-control" name="to_admission_date" value="{{ Request()->to_admission_date}}">
+                        </div> 
+
                         <div class="form-group col-md-2">
                        <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
                        <a href="{{url('admin/employee/0')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
@@ -151,7 +153,8 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
             <input type="hidden"  name="id_number" value="{{ Request::get('id_number') }}">
             <input type="hidden"  name="probation_status" value="{{ Request::get('probation_status') }}">
             <input type="hidden"  name="roll_number" value="{{ Request::get('roll_number') }}">
-            <input type="hidden"  name="admission_date" value="{{ Request::get('admission_date') }}">
+            <input type="hidden"  name="from_admission_date" value="{{ Request::get('from_admission_date') }}">
+            <input type="hidden"  name="to_admission_date" value="{{ Request::get('to_admission_date') }}">
             <a href="{{url('admin/enpf_export')}}" class="btn btn-success">Export ENPF</a>
             <button type="submit" class="btn btn-primary">Export Excel</button>
             </form>
@@ -189,7 +192,15 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
                         @endif
                       </td>
                         <td>{{ $value->name }} {{ $value->last_name }} ({{ $value->admission_number }})</td>
-                        <td>{{ $value->roll_number }}</td>
+                        <td>
+                        @if(!empty($value->new_rate))
+                            {{ $value->new_rate }} <span class="right badge badge-success"> New Rate</span>
+                          @else
+                          {{ $value->roll_number }}<span class="right badge badge-danger"> Old Rate</span>
+                          @endif
+                          
+                       </td>
+                       
                         <td>{{ $value->id_number }}</td>
                         
                         <td>{{ $value->phone }}</td>

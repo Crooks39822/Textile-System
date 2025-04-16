@@ -87,6 +87,12 @@
                     
                     @endif
                     <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">New Rate</label>
+                      <span style="color:red;"></span>
+                      <input type="text" class="form-control"  value="{{ old('new_rate',$getRecord->new_rate)}}" name="new_rate" placeholder="Enter New Rate">
+                      </span>
+                    </div>
+                    <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Designation </label>
                       <span style="color:red;">*</span>
                       <select class="form-control" name="designation">
