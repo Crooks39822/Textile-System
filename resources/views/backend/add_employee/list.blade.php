@@ -196,7 +196,11 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
                         @if(!empty($value->new_rate))
                             {{ $value->new_rate }} <span class="right badge badge-success"> New Rate</span>
                           @else
+                          @if($value->probation_date >= date('Y-m-d'))
+                          {{ $value->roll_number }}<span class="right badge badge-warning"> Probation</span>
+                          @else
                           {{ $value->roll_number }}<span class="right badge badge-danger"> Old Rate</span>
+                          @endif
                           @endif
                           
                        </td>
