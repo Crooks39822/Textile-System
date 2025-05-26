@@ -811,7 +811,12 @@ public function getDocument()
 
     }
 
+    public function attendances()
+    {
 
+    return $this->hasMany(Attendance::class,'employee_id');
+
+    }
 
 
 }

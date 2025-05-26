@@ -26,6 +26,7 @@ class EmployeeController extends Controller
 
     public function list($id,Request $request)
     {
+      
       $data['getEmpoyeeStatus'] = EmployeeStatus::getRecord();
       $data['getPosition'] =Exam::getRecord();
       $data['getClass'] = Classroom::getClass();
@@ -105,6 +106,7 @@ class EmployeeController extends Controller
       $user->qualification  =trim($request->qualification); 
       $admission_number = $request->employee_number;
       $user->name  =trim($request->name);
+      $user->biometric_uid  = $admission_number;
       $user->marital_status  =trim($request->marital_status);
       $user->nxt_contact  =trim($request->nxt_contact);
       $user->nxt_name  =trim($request->nxt_name);
@@ -314,7 +316,8 @@ class EmployeeController extends Controller
     }
     public function view($id)
     {
-      
+      $employee = User::with('attendances')->find($id);
+      $data['getAttendance'] = $employee;
       $data['getClass'] = User::getSingleClass($id);
       $data['getPosition'] =User::getStudent($id);
       $data['getRecord'] = User::getSingle($id);
