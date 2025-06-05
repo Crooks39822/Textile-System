@@ -61,7 +61,7 @@ class User extends Authenticatable
         {
             return self::select('users.id')
                     
-                    ->where('is_delete','=',1)
+                    ->where('is_delete','=',2)
                     ->count();
         }
            static public function getSingleMember($id)
@@ -811,12 +811,7 @@ public function getDocument()
 
     }
 
-    public function attendances()
-    {
 
-    return $this->hasMany(Attendance::class,'employee_id');
-
-    }
 
 
 }

@@ -14,7 +14,6 @@ use App\Http\Controllers\Backend\SubjectController;
 use App\Http\Controllers\Backend\TeacherController;
 use App\Http\Controllers\Backend\CalendarController;
 use App\Http\Controllers\Backend\EmployeeController;
-use App\Http\Controllers\Backend\BiometricController;
 use App\Http\Controllers\Backend\ClassroomController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PositionsController;
@@ -86,10 +85,7 @@ Route::group(['middleware' => 'admin'], function(){
     Route::post('admin/supervisor/edit/{id}',[TeacherController::class, 'update'])->name('update');
     Route::get('admin/supervisor/delete/{id}',[TeacherController::class, 'delete'])->name('delete');
 
-    // routes/web.php
-
-     Route::get('biometric/sync', [BiometricController::class, 'syncLogs']);
-
+    
 
 
     //employee
