@@ -217,7 +217,8 @@ class StaffController extends Controller
   
     public function view($id)
     {
-      
+       $getRecordleave = User::with('leaves')->find($id);
+       $data['getLeaves'] = $getRecordleave;
 $data['getClass'] = User::getSingleMember($id);
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))

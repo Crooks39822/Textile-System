@@ -8,6 +8,7 @@ use App\Http\Controllers\Backend\QCsController;
 use App\Http\Controllers\Backend\ChatController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Backend\UsersContoller;
+use App\Http\Controllers\Backend\LeaveController;
 use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\Backend\ExitedController;
 use App\Http\Controllers\Backend\SubjectController;
@@ -116,13 +117,22 @@ Route::group(['middleware' => 'admin'], function(){
     
 
 
-    //class url
+    //Deapartment url
     Route::get('admin/department',[ClassroomController::class, 'list']);
     Route::get('admin/department/add',[ClassroomController::class, 'add']);
     Route::post('admin/department/add',[ClassroomController::class, 'register']);
     Route::get('admin/department/edit/{id}',[ClassroomController::class, 'edit']);
     Route::post('admin/department/edit/{id}',[ClassroomController::class, 'update']);
     Route::get('admin/department/delete/{id}',[ClassroomController::class, 'delete']);
+
+ //Leave url
+    Route::get('admin/leave',[LeaveController::class, 'list']);
+    Route::get('admin/leave/add',[LeaveController::class, 'add']);
+    Route::post('admin/leave/add',[LeaveController::class, 'register']);
+    Route::get('admin/leave/edit/{id}',[LeaveController::class, 'edit']);
+    Route::post('admin/leave/edit/{id}',[LeaveController::class, 'update']);
+    Route::get('admin/leave/delete/{id}',[LeaveController::class, 'delete']);
+    Route::get('admin/leave/search_user',[LeaveController::class, 'SearchUser']);
 
   //academic_year
     Route::get('admin/admin_positions',[AdminPositionController::class, 'list']);

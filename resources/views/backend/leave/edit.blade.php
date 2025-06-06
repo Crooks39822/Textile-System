@@ -19,7 +19,7 @@ height: 40px;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Leave Request</h1>
+            <h1 class="m-0">Leave Request Edit</h1>
           </div>
         </div>
       </div>
@@ -34,17 +34,13 @@ height: 40px;
            <div class="card-header">
             <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Leave Request</h3>
+                  <h3 class="card-title">Leave Request Edit</h3>
                 </div>
 
                 <form action="" method="post" enctype="multipart/form-data">
                     @csrf
                   <div class="card-body">
-                    <div class="form-group">
-                      <label for="exampleInputEmail1">Subject</label>
-                      <span style="color:red;"></span>
-                      <input type="text" class="form-control"  name="subject" id="exampleInputEmail1" placeholder="Enter Title ">
-                    </div>
+                  
                     
                     <div class="form-group">
                       <label for="exampleInputEmail1">Select (Employee  / Supervisor)</label>
@@ -57,62 +53,83 @@ height: 40px;
                         
                     </div>
 
-                    <select class="form-control select2" style="width: 100%;"  name="leave_type" id="leave_type" required>
                     
-                          <option value="Annual Leave">Annual Leave</option>
-                          <option value="Sick Leave">Sick Leave</option>
-                          <option value="Maternity Leave">Maternity Leave</option>
-                          <option value="Study Leave">Study Leave</option>
+                        <div class="form-group">
+                      <label for="exampleInputEmail1">Leave Type</label>
+                      <span style="color:red;">*</span>
+                      <select class="form-control" style="width: 100%;"  name="leave_type" id="leave_type" required>
+                        
+                    
+                           <option {{($getRecord->leave_type  == 1) ? 'selected' : ''}} value="1">Annual Leave</option>
+                        <option {{($getRecord->leave_type  == 2) ? 'selected' : ''}} value="2">Sick Leave</option>
+                        <option {{($getRecord->leave_type  ==3) ? 'selected' : ''}} value="3">Maternity Leave</option>
+                        <option {{($getRecord->leave_type  == 4) ? 'selected' : ''}} value="4">Study Leave</option>
                       </select>
-                    <div class="card-body">
+                    </div>
+                   
                     <div class="form-group">
                       <label for="exampleInputEmail1">Start Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('start_date')}}" name="start_date" id="start_date">
+                      <input type="date" class="form-control" value="{{ old('start_date' ,$getRecord->start_date)}}"  name="start_date" id="start_date">
                     </div>
                      
                     <div class="form-group">
                       <label for="exampleInputEmail1">End Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('end_date')}}" name="end_date" id="end_date">
+                      <input type="date" class="form-control" value="{{ old('end_date' ,$getRecord->end_date)}}" name="end_date" id="end_date">
                     </div>
-                    <div class="card-body">
+                    
                     <div class="form-group">
                       <label for="exampleInputEmail1">Number of Days</label>
                       <span style="color:red;">*</span>
-                       <input type="text" class="form-control" value="{{ old('number_of_days')}}" name="number_of_days" id="number_of_days" readonly>
+                       <input type="text" class="form-control"  value="{{ old('number_of_days' ,$getRecord->number_of_days)}}" name="number_of_days" id="number_of_days" readonly>
                     </div>
 
                     <div class="form-group">
                       <label for="exampleInputEmail1">Duration Type</label>
                      
-                 <select class="form-control select2" style="width: 100%;"  name="duration_type" id="duration_type" required>
-                    <option value="full">Full Day</option>
-                    <option value="half">Half Day</option>
-                 </select>
+                      <select class="form-control" style="width: 100%;"  name="duration_type" id="duration_type" required>
+                       
+                          <option {{($getRecord->duration_type  == 1) ? 'selected' : ''}} value="1">Full Day</option>
+                    <option {{($getRecord->duration_type  == 2) ? 'selected' : ''}} value="2">Half Day</option>
+                      </select>
                         
                     </div>
 
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Description </label>
-
-                        <textarea id="compose-textarea" name="message" class="form-control" style="height: 400px">
-
-                          </textarea>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1"> Description </label>
+                    <textarea class="form-control"  name="message" id="exampleFormControlTextarea1" rows="3">{{old('message',$getRecord->message)}}</textarea>
+                  
                       </div>
-                      <div class="form-group col-md-6">
+
+                      <div class="form-group">
                       <label for="exampleInputFile">Document Upload</label>
-                      <div class="input-group">
+                      
                         <div class="custom-file">
-                          <input type="file"  class="form-control" name="document" id="exampleInputFile">
+                          <input type="file"  class="form-control" name="document_file" id="exampleInputFile">
 
                         </div>
+                      @if(!empty($getRecord->getDocument()))
+                      
+                       <iframe src="{{$getRecord->getDocument()}}" width="100%" height="600px">Preview</iframe>
 
+                      @endif
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Status</label>
+                        <span style="color:red;">*</span>
+                        <select class="form-control" name="status">
+                          
+                        
+                       <option {{($getRecord->status  == 0) ? 'selected' : ''}} value="0">Approved</option>
+                         <option {{($getRecord->status  == 2) ? 'selected' : ''}} value="2">Pending</option>
+                        <option {{($getRecord->status  == 1) ? 'selected' : ''}} value="1">Rejected</option>
+                        </select>
                       </div>
 
                   <div class="card-footer">
-                    <a href="{{url('admin/leave/list')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
-                        <button type="submit" class="btn btn-primary float-right">Submit</button>
+                    <a href="{{url('admin/leave')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                        <button type="submit" class="btn btn-primary float-right">Update</button>
                   </div>
                 </form>
               </div>
@@ -127,15 +144,18 @@ height: 40px;
       </div>
   @endsection
   @section('script')
-
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="{{ asset('backend/plugins/summernote/summernote-bs4.min.js') }}"></script>
   <script src="{{ asset('backend/plugins/select2/js/select2.full.min.js')}}"></script>
-  <script>
+ 
+
+  <script type="text/javascript">
+
     $(function () {
 
         $('.select2').select2({
         ajax: {
-        url: '{{ url('admin/communicate/search_user') }}',
+        url: '{{ url('admin/leave/search_user') }}',
         dataType: 'json',
         delay: 250,
         data: function (data) {
@@ -145,6 +165,7 @@ height: 40px;
             };
         },
       
+        
         processResults: function (response){
                 return {
                 results:response
@@ -153,16 +174,14 @@ height: 40px;
             }
         });
 
-        $('#compose-textarea').summernote({
+       $('#compose-textarea').summernote({
             height: 250,   //set editable area's height
 
           });
 
     });
-  </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+   
     function calculateDays() {
         const start = new Date($('#start_date').val());
         const end = new Date($('#end_date').val());
@@ -188,6 +207,7 @@ height: 40px;
         calculateDays();
     });
 </script>
+
 
   @endsection
 

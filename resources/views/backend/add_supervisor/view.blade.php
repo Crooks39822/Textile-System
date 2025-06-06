@@ -208,7 +208,39 @@
 
         </div>
         <!-- /.row -->
-
+<div class="card mt-4">
+  <div class="card-header">
+    <h3 class="card-title">Leave History</h3>
+  </div>
+  <div class="card-body">
+    @if($getRecord->leaves->count() > 0)
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($getRecord->leaves as $leave)
+          <tr>
+            <td>{{ $leave->leave_type }}</td>
+            <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('d M Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('d M Y') }}</td>
+            <td>{{ ucfirst($leave->status) }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    @else
+      <p class="text-muted">No leave records available for this employee.</p>
+    @endif
+  </div>
+</div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

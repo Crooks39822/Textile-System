@@ -140,7 +140,8 @@ public function getDocument()
         $return = self::select('users.*')
                     ->where(function($query) use ($search){
                     $query->where('users.name','like','%'.$search.'%')
-                          ->orWhere('users.last_name','like','%'.$search.'%');
+                          ->orWhere('users.last_name','like','%'.$search.'%')
+                          ->orWhere('users.admission_number','like','%'.$search.'%');
                     })
         ->limit(10)
         ->get();
@@ -812,6 +813,9 @@ public function getDocument()
     }
 
 
-
+public function leaves()
+    {
+        return $this->hasMany(Leave::class,'user_id');
+    }
 
 }

@@ -219,6 +219,7 @@
                       @endif
       </div>
     </div>
+    
 
     
   </div>
@@ -230,9 +231,68 @@
 
         </div>
         <!-- /.row -->
+<div class="card mt-4">
+  <div class="card-header">
+    <h3 class="card-title">Leave History</h3>
+  </div>
+  <div class="card-body">
+    @if($getRecord->leaves->count() > 0)
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Leave Type</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Days</th>
+            <th>Description</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($getRecord->leaves as $leave)
+          <tr>
+             <th>{{ $loop->iteration }}</th>
+             <td>
+   @if($leave->leave_type == 1)
+            Annual Leave
+    @elseif($leave->leave_type == 2)
+        Sick Leave
+    @elseif($leave->leave_type == 3)
+       Maternity Leave
+     @else
+            Study Leave
+     @endif
+   </td>
+            <td>{{ \Carbon\Carbon::parse($leave->start_date)->format('d M Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($leave->end_date)->format('d M Y') }}</td>
+            <td>{{ $leave->number_of_days }}</td>
+            <td>{{ $leave->message }}</td>
+            
+              <td>
+                @if(ucfirst($leave->status == 0))
+                          Approved
+                  @elseif(ucfirst($leave->status == 1))
+                      Rejected
+                          @else
+                          Pending
+                  @endif
+                </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    @else
+      <p class="text-muted">No leave records available for this employee.</p>
+    @endif
+  </div>
+</div>
 
       </div><!-- /.container-fluid -->
     </section>
+    
     <!-- /.content -->
   </div>
   <!-- /.footer -->

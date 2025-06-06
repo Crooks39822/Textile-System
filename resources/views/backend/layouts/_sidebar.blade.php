@@ -160,7 +160,14 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
 
             </ul>
           </li>
-
+ <li class="nav-item">
+            <a href="{{ url('admin/leave') }}" class="nav-link @if(Request::segment(2) == 'leave') active @endif">
+            <i class="nav-icon fas fa-book-reader"></i>
+              <p>
+              Manage Leave
+              </p>
+            </a>
+          </li>
          
           <li class="nav-item  @if(Request::segment(2) == 'attendance') menu-is-opening menu-open  @endif">
              <a href="#" class="nav-link  @if(Request::segment(2) == 'attendance') active  @endif">

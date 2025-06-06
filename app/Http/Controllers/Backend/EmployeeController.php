@@ -316,7 +316,9 @@ class EmployeeController extends Controller
     {
       
       $data['getClass'] = User::getSingleClass($id);
+     
       $data['getPosition'] =User::getStudent($id);
+     
       $data['getRecord'] = User::getSingle($id);
       if(!empty($data['getRecord']))
       {

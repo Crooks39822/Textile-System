@@ -1,0 +1,176 @@
+
+
+@extends('backend.layouts.app')
+
+@section('content')
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>List Leave (Total: {{$getRecord->total()}}) </h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6" style="text-align:right;">
+            <a href="{{url('admin/leave/add')}}" class="btn btn-primary mb-2">Add New Leave Request</a>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+
+    <section class="content">
+      <div class="container-fluid">
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+           <div class="card-header">
+
+            <h3 class="card-title">Search Leave Request </h3>
+        </div>
+            <form method="get" action="">
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="form-group col-md-3">
+                            <label>Employee Name</label>
+                            <input type="text" class="form-control" name="name" value="{{ Request()->name }}"  placeholder="Employee Name">
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label>Clock Number</label>
+                            <input type="text" class="form-control" name="clock_no" value="{{ Request()->clock_no }}"  placeholder="Clock No:.">
+                        </div>
+                        
+
+                       
+                         
+                        <div class="form-group col-md-3">
+                            <label>Date</label>
+                            <input type="date" class="form-control" name="date" value="{{ Request()->date}}">
+                        </div>
+                        <div class="form-group col-md-3">
+                       <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
+                       <a href="{{url('admin/leave')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </form>
+           </div>
+
+
+
+
+           @include('_message')
+           <div class="card">
+            <div class="card-header">
+
+            <h3 class="card-title">Leave Request List</h3>
+            </div>
+            <div class="card-body table-responsive p-0" style="overflow: auto;">
+                <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Leave Type</th>
+                        <th>Start Date </th>
+                        <th>End Date</th>
+                        <th>Days</th>
+                         <th>Type </th>
+                        
+                        <th>Description</th>
+                         <th>Status</th>
+                         <th>Download</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($getRecord as $value)
+
+<tr>
+   <th>{{ $loop->iteration }}</th>
+   <td> {{$value->firstname}} {{$value->lastname}} ({{$value->clock_number}})</td>
+    <td>
+   @if($value->leave_type == 1)
+            Annual Leave
+    @elseif($value->leave_type == 2)
+        Sick Leave
+    @elseif($value->leave_type == 3)
+       Maternity Leave
+     @else
+            Study Leave
+     @endif
+   </td>
+   
+   <td>{{ date('d-M-Y',strtotime($value->start_date ))}}</td>
+   <td>{{ date('d-M-Y',strtotime($value->end_date ))}}</td>
+   <td>{{ $value->number_of_days }}</td>
+
+     <td>
+   @if($value->duration_type == 1)
+            Full Day
+     
+            @else
+            Half Day
+     @endif
+   </td>
+   
+   <td>{!! $value->message !!}</td>
+    <td>
+   @if($value->status == 0)
+            Approved
+     @elseif($value->status == 1)
+        Rejected
+            @else
+            Pending
+     @endif
+   </td>
+   <td>
+                    @if(!empty($value->getDocument()))
+                      <a href="{{$value->getDocument()}}" class="btn btn-primary" download="">Download</a>
+
+                      @endif
+                      </td>
+    <td style="min-width: 150px;">
+      
+       <a href="{{url('admin/leave/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>
+        @if(Auth::user()->parent_id == 2)
+       <a onclick="return confirm('Are you sure want to Delete This Leave  ?')"  href="{{url('admin/leave/delete/'.$value->id)}}" class="btn btn-danger">Delete</a>
+       @endif
+   </td>
+ </tr>
+ @empty
+
+ <tr>
+<td colspan="100%"> No Record Found.</td>
+ </tr>
+ @endforelse 
+                    </tbody>
+                  </table>
+
+            <div style="padding: 10px; float:right;">
+            {!! $getRecord->appends(Illuminate\Support\Facades\Request::except('page'))->links() !!}
+        </div>
+        </div>
+    </div>
+
+
+
+    </section>
+    <!-- /.content -->
+  </div>
+</div>
+  <!-- /.footer -->
+
+
+  <!-- Control Sidebar -->
+  @endsection
