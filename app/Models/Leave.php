@@ -14,8 +14,9 @@ class Leave extends Model
     static public function getRecord()
     {
 
-        $return =self::select('leaves.*','users.name as firstname','users.last_name as lastname','users.admission_number as clock_number')
-                         ->join('users','users.id','leaves.user_id');
+        $return =self::select('leaves.*','users.name as firstname','users.last_name as lastname','users.admission_number as clock_number','leave_type.name as leave_types')
+                         ->join('users','users.id','leaves.user_id')
+                          ->join('leave_type','leave_type.id', '=', 'leaves.leave_type','left');
 
                          if(!empty(Request::get('name')))
                          {
@@ -27,10 +28,15 @@ class Leave extends Model
                              $return = $return->where('users.admission_number', '=', (Request::get('clock_no')));
                          }
 
-                         if(!empty(Request::get('date')))
-                         {
-                             $return = $return->whereDate('leaves.created_at','=', (Request::get('date')));
-                         }
+                        
+                           if(!empty(Request::get('from_admission_date')))
+                            {
+                                $return = $return->where('leaves.created_at','>=', (Request::get('from_admission_date')));
+                            }
+                            if(!empty(Request::get('to_admission_date')))
+                            {
+                                $return = $return->where('leaves.created_at','<=', (Request::get('to_admission_date')));
+                            }
 
                    $return = $return->where('leaves.is_delete','=',0)
                                     ->orderBy('leaves.user_id','asc')

@@ -45,38 +45,37 @@ height: 40px;
                     <div class="form-group">
                       <label for="exampleInputEmail1">Select (Employee  / Supervisor)</label>
                       
-                      <select class="form-control select2" style="width: 100%;" name="user_id">
+                      <select class="form-control select2" style="width: 100%;" name="user_id" required>
 
                       <option value="">Select</option>
                    
                     </select>
                         
                     </div>
-
-                    
-                        <div class="form-group">
+                      <div class="form-group">
                       <label for="exampleInputEmail1">Leave Type</label>
                       <span style="color:red;">*</span>
-                      <select class="form-control" style="width: 100%;"  name="leave_type" id="leave_type" required>
-                         <option>Select Leave Type</option>
-                    
-                          <option value="1">Annual Leave</option>
-                          <option value="2">Sick Leave</option>
-                          <option value="3">Maternity Leave</option>
-                          <option value="4">Study Leave</option>
-                      </select>
+                      <select class="form-control" name="leave_type" required>
+                        <option value="">Select Type</option>
+                        @foreach($getLeaveType as $types)
+                        <option  {{(old('leave_type') == $types->id) ? 'selected' : ''}}  value="{{$types->id}}">{{$types->name}}</option>
+                        @endforeach
+                        </select>
+                        <span style="color:red;">{{$errors->first('leave_type')}}</span>
                     </div>
+                    
+                      
                    
                     <div class="form-group">
                       <label for="exampleInputEmail1">Start Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('start_date')}}" name="start_date" id="start_date">
+                      <input type="date" class="form-control" value="{{ old('start_date')}}" name="start_date" id="start_date" required>
                     </div>
                      
                     <div class="form-group">
                       <label for="exampleInputEmail1">End Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('end_date')}}" name="end_date" id="end_date">
+                      <input type="date" class="form-control" value="{{ old('end_date')}}" name="end_date" id="end_date" required>
                     </div>
                     
                     <div class="form-group">
@@ -127,7 +126,7 @@ height: 40px;
                       </div>
 
                   <div class="card-footer">
-                    <a href="{{url('admin/leave')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/leave/list')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                         <button type="submit" class="btn btn-primary float-right">Submit</button>
                   </div>
                 </form>

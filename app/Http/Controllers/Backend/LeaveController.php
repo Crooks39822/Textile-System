@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Leave;
 use App\Exports\ENPFList;
+use App\Models\LeaveType;
 use Illuminate\Support\Str;
 use App\Mail\UserCreateMail;
-use App\Models\Leave;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +20,7 @@ class LeaveController extends Controller
 {
     public function list(Request $request)
     {
+       $data['getLeaveType'] = LeaveType::getRecord();
       $data['getRecord'] = Leave::getRecord();
       $data['header_title'] = 'Employee Leave List';
        
@@ -28,6 +30,7 @@ class LeaveController extends Controller
     public function add()
     {
       // $data['getRecord'] = Leave::getRecord();
+      $data['getLeaveType'] = LeaveType::getRecord();
       $data['header_title'] = 'Add New Leave';
        return view('backend/leave/add',$data);
     }
@@ -92,14 +95,14 @@ class LeaveController extends Controller
       $leave->save();
       
 
-      return redirect('admin/leave')->with('success','Leave Successfully Added');
+      return redirect('admin/leave/list')->with('success','Leave Successfully Added');
 
     }
 
     public function edit($id)
     {
 
-     
+      $data['getLeaveType'] = LeaveType::getRecord();
       $data['getRecord'] = Leave::getSingle($id);
       if(!empty($data['getRecord']))
       {
@@ -151,7 +154,7 @@ class LeaveController extends Controller
       $leave->save();
       
 
-      return redirect('admin/leave')->with('success','Leave Successfully Update');
+      return redirect('admin/leave/list')->with('success','Leave Successfully Update');
 
     }
     public function delete($id)

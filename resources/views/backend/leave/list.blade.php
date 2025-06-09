@@ -38,25 +38,28 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label>Employee Name</label>
                             <input type="text" class="form-control" name="name" value="{{ Request()->name }}"  placeholder="Employee Name">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
                             <label>Clock Number</label>
                             <input type="text" class="form-control" name="clock_no" value="{{ Request()->clock_no }}"  placeholder="Clock No:.">
                         </div>
                         
-
-                       
-                         
-                        <div class="form-group col-md-3">
-                            <label>Date</label>
-                            <input type="date" class="form-control" name="date" value="{{ Request()->date}}">
+                            <div class="form-group col-md-2">
+                            <label>From Date</label>
+                            <input type="date" class="form-control" name="from_admission_date" value="{{ Request()->from_admission_date}}">
                         </div>
-                        <div class="form-group col-md-3">
+                        <div class="form-group col-md-2">
+                            <label>To  Date</label>
+                            <input type="date" class="form-control" name="to_admission_date" value="{{ Request()->to_admission_date}}">
+                        </div> 
+                       
+                                                 
+                        <div class="form-group col-md-2">
                        <button class="btn btn-primary" type="submit" style="margin-top: 30px">Search</button>
-                       <a href="{{url('admin/leave')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
+                       <a href="{{url('admin/leave/list')}}" class="btn btn-success" style="margin-top: 30px">Clear</a>
                         </div>
 
                     </div>
@@ -99,17 +102,9 @@
 <tr>
    <th>{{ $loop->iteration }}</th>
    <td> {{$value->firstname}} {{$value->lastname}} ({{$value->clock_number}})</td>
-    <td>
-   @if($value->leave_type == 1)
-            Annual Leave
-    @elseif($value->leave_type == 2)
-        Sick Leave
-    @elseif($value->leave_type == 3)
-       Maternity Leave
-     @else
-            Study Leave
-     @endif
-   </td>
+  <td>
+                       {{$value->leave_types}} 
+                        </td>
    
    <td>{{ date('d-M-Y',strtotime($value->start_date ))}}</td>
    <td>{{ date('d-M-Y',strtotime($value->end_date ))}}</td>

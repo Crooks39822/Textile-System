@@ -42,7 +42,7 @@ height: 40px;
                   <div class="card-body">
                   
                     
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="exampleInputEmail1">Select (Employee  / Supervisor)</label>
                       
                       <select class="form-control select2" style="width: 100%;" name="user_id">
@@ -51,32 +51,32 @@ height: 40px;
                    
                     </select>
                         
-                    </div>
-
-                    
-                        <div class="form-group">
+                    </div> -->
+                      <div class="form-group">
                       <label for="exampleInputEmail1">Leave Type</label>
                       <span style="color:red;">*</span>
-                      <select class="form-control" style="width: 100%;"  name="leave_type" id="leave_type" required>
-                        
-                    
-                           <option {{($getRecord->leave_type  == 1) ? 'selected' : ''}} value="1">Annual Leave</option>
-                        <option {{($getRecord->leave_type  == 2) ? 'selected' : ''}} value="2">Sick Leave</option>
-                        <option {{($getRecord->leave_type  ==3) ? 'selected' : ''}} value="3">Maternity Leave</option>
-                        <option {{($getRecord->leave_type  == 4) ? 'selected' : ''}} value="4">Study Leave</option>
-                      </select>
+                      <select class="form-control" name="leave_type" required>
+                        <option value="">Select Status</option>
+                        @foreach($getLeaveType as $types)
+                        <option  {{(old('leave_type',$getRecord->leave_type) == $types->id) ? 'selected' : ''}}  value="{{$types->id}}">{{$types->name}}</option>
+                        @endforeach
+                        </select>
+                        <span style="color:red;">{{$errors->first('leave_type')}}</span>
                     </div>
+
+
+                    
                    
                     <div class="form-group">
                       <label for="exampleInputEmail1">Start Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('start_date' ,$getRecord->start_date)}}"  name="start_date" id="start_date">
+                      <input type="date" class="form-control" value="{{ old('start_date' ,$getRecord->start_date)}}"  name="start_date" id="start_date" required>
                     </div>
                      
                     <div class="form-group">
                       <label for="exampleInputEmail1">End Date</label>
                       <span style="color:red;">*</span>
-                      <input type="date" class="form-control" value="{{ old('end_date' ,$getRecord->end_date)}}" name="end_date" id="end_date">
+                      <input type="date" class="form-control" value="{{ old('end_date' ,$getRecord->end_date)}}" name="end_date" id="end_date" required>
                     </div>
                     
                     <div class="form-group">
@@ -109,11 +109,7 @@ height: 40px;
                           <input type="file"  class="form-control" name="document_file" id="exampleInputFile">
 
                         </div>
-                      @if(!empty($getRecord->getDocument()))
-                      
-                       <iframe src="{{$getRecord->getDocument()}}" width="100%" height="600px">Preview</iframe>
-
-                      @endif
+                     
                       </div>
                       <div class="form-group">
                         <label for="exampleInputEmail1">Status</label>
@@ -128,7 +124,7 @@ height: 40px;
                       </div>
 
                   <div class="card-footer">
-                    <a href="{{url('admin/leave')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/leave/list')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                         <button type="submit" class="btn btn-primary float-right">Update</button>
                   </div>
                 </form>

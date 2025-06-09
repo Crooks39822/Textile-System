@@ -44,7 +44,34 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
           </li>
           @endif
         
-         
+         <li class="nav-item  @if(Request::segment(2) == 'leave') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(2) == 'leave') active  @endif">
+               <i class="nav-icon fas fa-book-reader"></i>
+              <p>
+             Manage Leave
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+            <a href="{{ url('admin/leave/list') }}" class="nav-link @if(Request::segment(3) == 'list') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Employee Leave
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('admin/leave/types') }}" class="nav-link @if(Request::segment(3) == 'types') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Leave Type
+              </p>
+            </a>
+          </li>
+ </ul>
+          </li>
 
           <!-- //supervisor start -->
 
@@ -160,14 +187,10 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
 
             </ul>
           </li>
- <li class="nav-item">
-            <a href="{{ url('admin/leave') }}" class="nav-link @if(Request::segment(2) == 'leave') active @endif">
-            <i class="nav-icon fas fa-book-reader"></i>
-              <p>
-              Manage Leave
-              </p>
-            </a>
-          </li>
+
+
+
+
          
           <li class="nav-item  @if(Request::segment(2) == 'attendance') menu-is-opening menu-open  @endif">
              <a href="#" class="nav-link  @if(Request::segment(2) == 'attendance') active  @endif">

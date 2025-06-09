@@ -26,7 +26,8 @@ use App\Http\Controllers\Backend\AdminPositionController;
 use App\Http\Controllers\Backend\ClassTimetableController;
 use App\Http\Controllers\Backend\EmployeeStatusController;
 use App\Http\Controllers\Backend\FeesCollectionController;
-use App\Http\Controllers\Backend\AssignClassTeacherController;
+use App\Http\Controllers\Backend\AssignClassTeacherController; 
+use App\Http\Controllers\Backend\LeaveTypeController; 
 
 
 /*
@@ -126,7 +127,7 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('admin/department/delete/{id}',[ClassroomController::class, 'delete']);
 
  //Leave url
-    Route::get('admin/leave',[LeaveController::class, 'list']);
+    Route::get('admin/leave/list',[LeaveController::class, 'list']);
     Route::get('admin/leave/add',[LeaveController::class, 'add']);
     Route::post('admin/leave/add',[LeaveController::class, 'register']);
     Route::get('admin/leave/edit/{id}',[LeaveController::class, 'edit']);
@@ -149,6 +150,14 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('employee_status/edit/{id}',[EmployeeStatusController::class, 'edit']);
     Route::post('employee_status/edit/{id}',[EmployeeStatusController::class, 'update']);
     Route::get('employee_status/delete/{id}',[EmployeeStatusController::class, 'delete']); 
+
+     //Leave Type
+    Route::get('admin/leave/types',[LeaveTypeController::class, 'list']);
+    Route::get('admin/leave/type/add',[LeaveTypeController::class, 'add']);
+    Route::post('admin/leave/type/add',[LeaveTypeController::class, 'insert']);
+    Route::get('admin/leave/type/edit/{id}',[LeaveTypeController::class, 'edit']);
+    Route::post('admin/leave/type/edit/{id}',[LeaveTypeController::class, 'update']);
+    Route::get('admin/leave/type/delete/{id}',[LeaveTypeController::class, 'delete']); 
 
 //admin/assignment/assignment
 Route::get('admin/assignment/assignment',[AssignmentController::class, 'list']);
