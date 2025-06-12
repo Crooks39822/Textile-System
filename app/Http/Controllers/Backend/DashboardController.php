@@ -30,7 +30,7 @@ class DashboardController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         $data['header_title'] = 'Dashboard';
         if(Auth::User()->is_role == '1'){
@@ -53,6 +53,44 @@ class DashboardController extends Controller
             ->where('probation_status','=',0)
             ->groupBy('id')
              ->get();
+
+         if(!empty($request->year))
+            {
+            $year = $request->year;
+            }
+            else
+            {
+
+            $year = date('Y');
+            }
+
+
+            $getTotalCustomerMonth = '';
+            $getTotalOrderMonth = '';
+            for($month = 1; $month <= 12; $month++)
+            {
+            $startDate = new \DateTime("$year-$month-01");
+            $endDate = new \DateTime("$year-$month-01");
+            $endDate->modify('last day of this month');
+
+            $start_date = $startDate->format('Y-m-d');
+            $end_date = $endDate->format('Y-m-d');
+
+            $customer = User::getTotalCustomerMonth($start_date, $end_date);
+            $getTotalCustomerMonth .= $customer.',';
+
+              
+
+            }
+            $data['TotalCustomer'] = rtrim($getTotalCustomerMonth, ",");
+             $data['getTotalGenderM'] = User::getTotalGenderM();
+                 $data['getTotalGenderF'] = User::getTotalGenderF();
+                  $data['getTotalGenderO'] = User::getTotalGenderO();
+            $data['year'] =  $year;
+
+
+
+
             return view('backend.admin.list',$data);
         }
         elseif(Auth::user()->is_role == 2) 

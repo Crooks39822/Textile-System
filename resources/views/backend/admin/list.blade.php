@@ -121,7 +121,71 @@
         </div>
         
 
-        <div class="card">
+<!-- start -->
+
+<div class="row">
+          <div class="col-lg-6">
+           <div class="card">
+              <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                  <h3 class="card-title">Employees Employed per Month List</h3>
+                  <select class="form-control ChangeYear" style="width:100px;">
+
+                @for($i=2022; $i<=date('Y'); $i++)
+               <option {{ ($year == $i) ? 'selected' : '' }} value="{{ $i }}"> {{ $i }} </option>
+                @endfor
+                </select>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="d-flex">
+                </div>
+                <div class="position-relative mb-4">
+                  <canvas id="sales-chart-oder" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                </div>
+                </div>
+              </div>
+              
+            <!-- /.card -->
+
+           
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card card-danger">
+              <div class="card-header">
+                <h3 class="card-title">Gender</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+               <div class="card-body">
+                <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            </div>
+            <!-- /.card -->
+
+            
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+
+
+<!-- end -->
+
+
+
+              <div class="card">
               <div class="card-header border-0">
                 <h3 class="card-title"><b>Probation End For This Month </b></h3>
                 
@@ -194,12 +258,127 @@
               </div>
             </div>
       </div>
+      </div>
+        </div>
+
+        
       
     </section>
 
-  </div>
+  
 
 
 
 
-  @endsection
+ @endsection
+  @section('script')
+  
+  <script type="text/javascript">
+ /* global Chart:false */
+  $('.ChangeYear').change(function(){
+
+  var year = $(this).val();
+  window.location.href = "{{url('admin/dashboard?year=')}}"+year;
+  });
+  
+
+
+
+
+var ticksStyle = {
+    fontColor: '#495057',
+    fontStyle: 'bold'
+  }
+
+  var mode = 'index'
+  var intersect = true
+
+  var $salesChart = $('#sales-chart-oder')
+  // eslint-disable-next-line no-unused-vars
+  var salesChart = new Chart($salesChart, {
+    type: 'bar',
+    data: {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      datasets: [
+        {
+          backgroundColor: '#007bff',
+          borderColor: '#007bff',
+          data: [{{$TotalCustomer}}]
+        }
+      ]
+    },
+    options: {
+      maintainAspectRatio: false,
+      tooltips: {
+        mode: mode,
+        intersect: intersect
+      },
+      hover: {
+        mode: mode,
+        intersect: intersect
+      },
+      legend: {
+        display: false
+      },
+      scales: {
+        yAxes: [{
+          // display: false,
+          gridLines: {
+            display: true,
+            lineWidth: '4px',
+            color: 'rgba(0, 0, 0, .2)',
+            zeroLineColor: 'transparent'
+          },
+          ticks: $.extend({
+            beginAtZero: true,
+
+            // Include a dollar sign in the ticks
+            callback: function (value) {
+              if (value >= 1000) {
+                value /= 1000
+                value 
+              }
+
+              return value
+            }
+          }, ticksStyle)
+        }],
+        xAxes: [{
+          display: true,
+          gridLines: {
+            display: false
+          },
+          ticks: ticksStyle
+        }]
+      }
+    }
+  })
+  var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Male',
+          'Female',
+          'Other',
+      ],
+      datasets: [
+        {
+          data: [{{$getTotalGenderM}},{{$getTotalGenderF}},{{$getTotalGenderO}}],
+          backgroundColor : ['#f56954', '#00a65a','#f39c12',],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+     new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+
+// lgtm [js/unused-local-variable]
+
+      
+</script>
+@endsection

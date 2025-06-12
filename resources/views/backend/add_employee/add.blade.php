@@ -129,7 +129,7 @@
                       <option value="">Select Gender</option>
                         <option {{(old('gender') == 'Male') ? 'selected' : ''}} value="Male">Male</option>
                         <option {{(old('gender') == 'Female') ? 'selected' : ''}} value="Female">Female</option>
-                        <option {{(old('gender') == 'Other') ? 'selected' : ''}} value="Female">Other</option>
+                        <option {{(old('gender') == 'Other') ? 'selected' : ''}} value="Other">Other</option>
                         </select>
                         <span style="color:red;">{{$errors->first('gender')}}</span>
                     </div>

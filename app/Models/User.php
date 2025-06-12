@@ -239,6 +239,44 @@ public function getDocument()
         return  StudentAddFee::getPaidAmount($student_id,$class_id);
     }
 
+
+ static public function getTotalGenderF()
+        {
+        return self::select('id')
+                ->where('is_delete','=',0)
+                 ->where('users.is_role','=',3)
+              ->where('users.gender','=','Female')
+                ->count();
+        }
+        static public function getTotalGenderO()
+        {
+        return self::select('id')
+                ->where('is_delete','=',0)
+                 ->where('users.is_role','=',3)
+              ->where('users.gender','=','Other')
+                ->count();
+        }
+
+        static public function getTotalGenderM()
+        {
+        return self::select('id')
+                ->where('is_delete','=',0)
+                 ->where('users.is_role','=',3)
+              ->where('users.gender','=','Male')
+                ->count();
+        }
+
+    
+     static public function getTotalCustomerMonth($start_date, $end_date)
+        {
+        return self::select('id')
+                ->where('is_delete','=',0)
+                 ->where('users.is_role','=',3)
+                ->whereDate('admission_date','>=', $start_date)
+                ->whereDate('admission_date','<=', $end_date)
+                ->count();
+        }
+
     static public function getCllectFeeStudent(){
 
                      $return =self::select('users.*','classrooms.name as class_name','classrooms.amount as total_amount')
