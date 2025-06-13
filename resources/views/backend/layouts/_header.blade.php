@@ -32,9 +32,9 @@ $getHeaderSetting = App\Models\Setting::getSingle();
   <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper" id="wrapper_1" style="position:relative">
   <!-- Preloader -->
-<div class="preloader flex-column justify-content-center align-items-center">
+<!-- <div class="preloader flex-column justify-content-center align-items-center">
   <img class="animation__shake" src="{{ asset('backend/dist/img/dd.png') }}" alt="AdminLTELogo" height="60" width="60">
-</div>
+</div> -->
 
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
