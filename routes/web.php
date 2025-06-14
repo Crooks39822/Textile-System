@@ -28,6 +28,8 @@ use App\Http\Controllers\Backend\EmployeeStatusController;
 use App\Http\Controllers\Backend\FeesCollectionController;
 use App\Http\Controllers\Backend\AssignClassTeacherController; 
 use App\Http\Controllers\Backend\LeaveTypeController; 
+use App\Http\Controllers\Backend\DisciplinaryController; 
+use App\Http\Controllers\Backend\ActionController; 
 
 
 /*
@@ -158,6 +160,23 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('admin/leave/type/edit/{id}',[LeaveTypeController::class, 'edit']);
     Route::post('admin/leave/type/edit/{id}',[LeaveTypeController::class, 'update']);
     Route::get('admin/leave/type/delete/{id}',[LeaveTypeController::class, 'delete']); 
+
+    //action Type
+    Route::get('admin/employees/disciplinary/action',[ActionController::class, 'list']);
+    Route::get('admin/employees/disciplinary/action/add',[ActionController::class, 'add']);
+    Route::post('admin/employees/disciplinary/action/add',[ActionController::class, 'insert']);
+    Route::get('admin/employees/disciplinary/action/edit/{id}',[ActionController::class, 'edit']);
+    Route::post('admin/employees/disciplinary/action/edit/{id}',[ActionController::class, 'update']);
+    Route::get('admin/employees/disciplinary/action/delete/{id}',[ActionController::class, 'delete']); 
+
+
+     //disciplinary action
+    Route::get('admin/employees/disciplinary/list',[DisciplinaryController::class, 'list']);
+    Route::get('admin/employees/disciplinary/add',[DisciplinaryController::class, 'add']);
+    Route::post('admin/employees/disciplinary/add',[DisciplinaryController::class, 'insert']);
+    Route::get('admin/employees/disciplinary/edit/{id}',[DisciplinaryController::class, 'edit']);
+    Route::post('admin/employees/disciplinary/edit/{id}',[DisciplinaryController::class, 'update']);
+    Route::get('admin/employees/disciplinary/delete/{id}',[DisciplinaryController::class, 'delete']); 
 
 //admin/assignment/assignment
 Route::get('admin/assignment/assignment',[AssignmentController::class, 'list']);

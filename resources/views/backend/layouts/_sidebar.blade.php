@@ -73,6 +73,36 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
  </ul>
           </li>
 
+          <li class="nav-item  @if(Request::segment(3) == 'disciplinary') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(3) == 'disciplinary') active  @endif">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+              Disciplinary
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+            <a href="{{ url('admin/employees/disciplinary/list') }}" class="nav-link @if(Request::segment(4) == 'list') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Disciplinary Action
+              </p>
+            </a>
+          </li>
+
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('admin/employees/disciplinary/action') }}" class="nav-link @if(Request::segment(4) == 'action') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Manage Actions
+              </p>
+            </a>
+          </li>
+           </ul>
+          </li>
           <!-- //supervisor start -->
 
           <li class="nav-item  @if(Request::segment(2) == 'supervisor') menu-is-opening menu-open  @endif">

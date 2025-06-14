@@ -1,0 +1,188 @@
+
+
+@extends('backend.layouts.app')
+@section('style')
+<link rel="stylesheet" href="{{ asset('backend/plugins/select2/css/select2.min.css') }}">
+<style type="text/css">
+.select2-container .select2-selection--single
+{
+
+height: 40px;
+
+}
+</style>
+  @endsection
+@section('content')
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Disciplinary Action</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+   @include('_message')
+
+        <div class="row">
+          <div class="col-lg-12">
+           <div class="card-header">
+            <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Disciplinary Action</h3>
+                </div>
+
+                <form action="" method="post" enctype="multipart/form-data">
+                    @csrf
+                  <div class="card-body">
+                  
+                    
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Select (Employee  / Supervisor)</label>
+                      
+                      <select class="form-control select2" style="width: 100%;" name="user_id" required>
+
+                      <option value="">Select</option>
+                   
+                    </select>
+                        
+                    </div>
+                      <div class="form-group">
+                      <label for="exampleInputEmail1">Action Type</label>
+                      <span style="color:red;">*</span>
+                      <select class="form-control" name="actiontype" required>
+                        <option value="">Select Type</option>
+                        @foreach($getActionType as $types)
+                        <option  {{(old('actiontype') == $types->id) ? 'selected' : ''}}  value="{{$types->id}}">{{$types->name}}</option>
+                        @endforeach
+                        </select>
+                        <span style="color:red;">{{$errors->first('actiontype')}}</span>
+                    </div>
+                    
+                      
+                   
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Disciplinary Date</label>
+                      <span style="color:red;">*</span>
+                      <input type="date" class="form-control" value="{{ old('start_date')}}" name="start_date" id="start_date" required>
+                    </div>
+                     
+                    <!-- <div class="form-group">
+                      <label for="exampleInputEmail1">End Date</label>
+                      <span style="color:red;">*</span>
+                      <input type="date" class="form-control" value="{{ old('end_date')}}" name="end_date" id="end_date" required>
+                    </div> -->
+                    
+                    
+
+                    
+
+                      <div class="form-group">
+                        <label for="exampleInputEmail1"> Description </label>
+                    <textarea class="form-control" value="{{ old('message')}}" name="message" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  
+                        
+                        
+                          </textarea>
+                      </div>
+
+                      <div class="form-group">
+                      <label for="exampleInputFile">Document Upload</label>
+                      
+                        <div class="custom-file">
+                          <input type="file"  class="form-control" name="document_file" id="exampleInputFile">
+
+                        </div>
+
+                      </div>
+                      
+
+                  <div class="card-footer">
+                    <a href="{{url('admin/employees/disciplinary/list')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                        <button type="submit" class="btn btn-primary float-right">Submit</button>
+                  </div>
+                </form>
+              </div>
+           </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </section>
+      </div>
+  @endsection
+  @section('script')
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{{ asset('backend/plugins/summernote/summernote-bs4.min.js') }}"></script>
+  <script src="{{ asset('backend/plugins/select2/js/select2.full.min.js')}}"></script>
+ 
+
+  <script type="text/javascript">
+
+    $(function () {
+
+        $('.select2').select2({
+        ajax: {
+        url: '{{ url('admin/leave/search_user') }}',
+        dataType: 'json',
+        delay: 250,
+        data: function (data) {
+            return {
+            search: data.term,
+
+            };
+        },
+      
+        
+        processResults: function (response){
+                return {
+                results:response
+                  };
+                },
+            }
+        });
+
+       $('#compose-textarea').summernote({
+            height: 250,   //set editable area's height
+
+          });
+
+    });
+
+   
+    function calculateDays() {
+        const start = new Date($('#start_date').val());
+        const end = new Date($('#end_date').val());
+        const durationType = $('#duration_type').val();
+
+        if (!isNaN(start) && !isNaN(end)) {
+            let timeDiff = end - start;
+            let dayDiff = timeDiff / (1000 * 3600 * 24) + 1; // inclusive
+
+            if (dayDiff > 0) {
+                if (dayDiff === 1 && durationType === 'half') {
+                    $('#number_of_days').val(0.5);
+                } else {
+                    $('#number_of_days').val(dayDiff);
+                }
+            } else {
+                $('#number_of_days').val('');
+            }
+        }
+    }
+
+    $('#start_date, #end_date, #duration_type').on('change', function () {
+        calculateDays();
+    });
+</script>
+
+
+  @endsection
+

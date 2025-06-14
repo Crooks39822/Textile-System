@@ -90,6 +90,10 @@ class User extends Authenticatable
 	->where('users.id','=',$id)
 	->first();
 }
+
+
+
+
 public function getDocument()
 {
     if(!empty($this->document_file) && file_exists('upload/documents/'.$this->document_file))
@@ -854,6 +858,12 @@ public function getDocument()
 public function leaves()
     {
         return $this->hasMany(Leave::class,'user_id');
+    }
+
+    
+public function actions()
+    {
+        return $this->hasMany(Disciplinary::class,'user_id');
     }
 
 }

@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Leave extends Model
+class Disciplinary extends Model
 {
     use HasFactory;
-    protected $table = 'leaves';
+    protected $table = 'disciplinary';
 
     static public function getRecord()
     {
 
-        $return =self::select('leaves.*','users.name as firstname','users.last_name as lastname','users.admission_number as clock_number','leave_type.name as leave_types')
-                         ->join('users','users.id','leaves.user_id')
-                          ->join('leave_type','leave_type.id', '=', 'leaves.leave_type','left');
+        $return =self::select('disciplinary.*','users.name as firstname','users.last_name as lastname','users.admission_number as clock_number','action_type.name as action_types')
+                         ->join('users','users.id','disciplinary.user_id')
+                          ->join('action_type','action_type.id', '=', 'disciplinary.actiontype');
 
                          if(!empty(Request::get('name')))
                          {
@@ -31,15 +31,15 @@ class Leave extends Model
                         
                            if(!empty(Request::get('from_admission_date')))
                             {
-                                $return = $return->where('leaves.created_at','>=', (Request::get('from_admission_date')));
+                                $return = $return->where('disciplinary.created_at','>=', (Request::get('from_admission_date')));
                             }
                             if(!empty(Request::get('to_admission_date')))
                             {
-                                $return = $return->where('leaves.created_at','<=', (Request::get('to_admission_date')));
+                                $return = $return->where('disciplinary.created_at','<=', (Request::get('to_admission_date')));
                             }
 
-                   $return = $return->where('leaves.is_delete','=',0)
-                                    ->orderBy('leaves.user_id','asc')
+                   $return = $return->where('disciplinary.is_delete','=',0)
+                                    ->orderBy('disciplinary.user_id','asc')
                                     ->paginate(50);
                                 return  $return;
     }
@@ -53,16 +53,16 @@ class Leave extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function leavetypes()
+    public function typess()
     {
-        return $this->belongsTo(LeaveType::class,'leave_type');
+        return $this->belongsTo(ActionType::class,'actiontype');
     }
 
     public function getDocument()
 {
-    if(!empty($this->document_file) && file_exists('upload/documents_leave/'.$this->document_file))
+    if(!empty($this->document_file) && file_exists('upload/documents_action/'.$this->document_file))
     {
-        return url('upload/documents_leave/'.$this->document_file);
+        return url('upload/documents_action/'.$this->document_file);
     }
     else
     {
