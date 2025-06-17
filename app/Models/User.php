@@ -219,6 +219,7 @@ public function getDocument()
                      $return =self::select('users.*')
                                     ->where('users.parent_id','=',0)
                                     ->where('users.is_delete','=',0)
+                                     ->where('users.admission_number','!=','')
                                     ->orderBy('users.id','desc')
                                     ->get();
                                         return  $return;
