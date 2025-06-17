@@ -170,12 +170,12 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
                         <th >Rate/hr/Day</th>
                         <th>ID Number</th>
                         <th>Phone</th>
-                         <th>Department/Line</th>
+                         <th>Dept/Line</th>
                         <th>Gender</th>
-                        <th>Designation</th>
+                        <th>Position</th>
                         <!-- <th>EXIT</th> -->
                         <th>Join Date</th>
-                        <th>Probation End Date</th>
+                        <th>Probation End</th>
                         <th>Status</th>
                         <th>Update At</th>
                         <th>Action</th>
@@ -239,9 +239,9 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
                         <td>{{ date('d-m-Y',strtotime($value->updated_at ))}}</td>
                         <td style="min-width: 150px;">
                         <a href="{{url('admin/employee/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>
-                            <a href="{{url('admin/employee/edit/'.$value->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{{url('admin/employee/edit/'.$value->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
                             @if(Auth::user()->parent_id == 2)
-                            <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/employee/delete/'.$value->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                            <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/employee/delete/'.$value->id)}}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
                             @endif
                            
                           </td>

@@ -118,9 +118,9 @@
                       </td>
     <td style="min-width: 150px;">
       
-       <a href="{{url('admin/employees/disciplinary/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>
+       <a href="{{url('admin/employees/disciplinary/edit/'.$value->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
         @if(Auth::user()->parent_id == 2)
-       <a onclick="return confirm('Are you sure want to Delete This Leave  ?')"  href="{{url('admin/employees/disciplinary/delete/'.$value->id)}}" class="btn btn-danger">Delete</a>
+       <a onclick="return confirm('Are you sure want to Delete This Leave  ?')"  href="{{url('admin/employees/disciplinary/delete/'.$value->id)}}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
        @endif
    </td>
  </tr>

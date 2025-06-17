@@ -97,10 +97,10 @@
    
 
    <td>{{ date('d-m-Y H:i A',strtotime($value->created_at ))}}</td>
-   <td>
+   <td style="min-width: 100px;">
 
-       <a href="{{url('admin/leave/type/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>
-       <a href="{{url('admin/leave/type/delete/'.$value->id)}}" class="btn btn-danger">Delete</a>
+       <a href="{{url('admin/leave/type/edit/'.$value->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+       <a href="{{url('admin/leave/type/delete/'.$value->id)}}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
    </td>
  </tr>
  @empty

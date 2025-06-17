@@ -135,11 +135,11 @@
 
                       @endif
                       </td>
-    <td style="min-width: 150px;">
+    <td style="min-width: 100px;">
       
-       <a href="{{url('admin/leave/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>
+       <a href="{{url('admin/leave/edit/'.$value->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
         @if(Auth::user()->parent_id == 2)
-       <a onclick="return confirm('Are you sure want to Delete This Leave  ?')"  href="{{url('admin/leave/delete/'.$value->id)}}" class="btn btn-danger">Delete</a>
+       <a onclick="return confirm('Are you sure want to Delete This Leave  ?')"  href="{{url('admin/leave/delete/'.$value->id)}}" class="btn btn-danger"><i class="far fa-trash-alt"></i> </a>
        @endif
    </td>
  </tr>

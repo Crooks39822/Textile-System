@@ -183,8 +183,8 @@
                         <td>{{ date('d-m-Y',strtotime($value->updated_at ))}}</td>
    <td style="min-width: 150px;">
    <!-- <a href="{{url('admin/supervisor/view/'.$value->id)}}" class="btn btn-success">View Profile</a> -->
-       <a href="{{url('admin/supervisor/edit/'.$value->id)}}" class="btn btn-primary">Edit</a>
-       <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/supervisor/delete/'.$value->id)}}" class="btn btn-danger">Delete</a>
+       <a href="{{url('admin/supervisor/edit/'.$value->id)}}" class="btn btn-primary"><i class="fas fa-pencil-alt"></i></a>
+       <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/supervisor/delete/'.$value->id)}}" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
       
    </td>
  </tr>

@@ -171,8 +171,8 @@
 
                         <td>
                         <a href="{{url('admin/staff/view/'.$value->id)}}" class="btn btn-success btn-sm">View Profile</a>
-                            <a href="{{url('admin/staff/edit/'.$value->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                            <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/staff/delete/'.$value->id)}}" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="{{url('admin/staff/edit/'.$value->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                            <a onclick="return confirm('Are you sure want to Delete This Record?')" href="{{url('admin/staff/delete/'.$value->id)}}" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></a>
                            
                           </td>
                       </tr>
