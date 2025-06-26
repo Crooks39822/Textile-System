@@ -44,6 +44,74 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
           </li>
           @endif
         
+          <li class="nav-item  @if(Request::segment(1) == 'passout') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(1) == 'passout') active  @endif">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+              Pass-Out
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+            <a href="{{ url('passout/list') }}" class="nav-link @if(Request::segment(2) == 'list') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Pass-Out Request
+              </p>
+            </a>
+          </li>
+
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('passout/today') }}" class="nav-link @if(Request::segment(2) == 'today') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Today's Pass-Outs
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ url('passout/report') }}" class="nav-link @if(Request::segment(2) == 'reports') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+               Monthly Pass-Out Report
+              </p>
+            </a>
+          </li>
+           </ul>
+          </li>
+
+<li class="nav-item  @if(Request::segment(1) == 'attendance-report') menu-is-opening menu-open  @endif">
+             <a href="#" class="nav-link  @if(Request::segment(1) == 'attendance-report') active  @endif">
+              <i class="nav-icon fas fa-calendar-alt"></i>
+              <p>
+             Biometric Attendance
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+
+              <li class="nav-item">
+            <a href="{{ url('attendance-report') }}" class="nav-link @if(Request::segment(1) == 'attendance-report') active @endif">
+            <i class="far fa-circle nav-icon"></i>
+              <p>
+              Reports
+              </p>
+            </a>
+          </li>
+
+          </li>
+          
+
+          
+           </ul>
+          </li>
+
+
+
          <li class="nav-item  @if(Request::segment(2) == 'leave') menu-is-opening menu-open  @endif">
              <a href="#" class="nav-link  @if(Request::segment(2) == 'leave') active  @endif">
                <i class="nav-icon fas fa-book-reader"></i>
@@ -72,6 +140,9 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
           </li>
  </ul>
           </li>
+
+
+          
 
           <li class="nav-item  @if(Request::segment(3) == 'disciplinary') menu-is-opening menu-open  @endif">
              <a href="#" class="nav-link  @if(Request::segment(3) == 'disciplinary') active  @endif">

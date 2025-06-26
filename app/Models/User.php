@@ -855,7 +855,11 @@ public function getDocument()
 
     }
 
+        public function user_line()
+            {
 
+            return $this->belongsTo(Classroom::class,'class_id');
+            }
 public function leaves()
     {
         return $this->hasMany(Leave::class,'user_id');
@@ -866,5 +870,9 @@ public function actions()
     {
         return $this->hasMany(Disciplinary::class,'user_id');
     }
+    public function passOuts()
+{
+    return $this->hasMany(PassOut::class, 'user_id');
+}
 
 }

@@ -93,6 +93,22 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+    'cpanel' => [
+    'driver' => 'mysql',
+    'host' => env('CPANEL_DB_HOST'),
+    'port' => env('CPANEL_DB_PORT', '3306'),
+    'database' => env('CPANEL_DB_DATABASE'),
+    'username' => env('CPANEL_DB_USERNAME'),
+    'password' => env('CPANEL_DB_PASSWORD'),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    'strict' => true,
+    'engine' => null,
+],
+
+
+
     ],
 
     /*

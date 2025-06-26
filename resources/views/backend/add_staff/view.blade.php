@@ -77,7 +77,7 @@
               </li>
               
               <div class="card-footer">
-                    <a href="{{url('admin/supervisor')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
+                    <a href="{{url('admin/staff')}}" class="btn btn-danger"><i class="fa-solid fas fa-reply mr-2"></i>Back</a>
                        
                   </div>
             </ul>

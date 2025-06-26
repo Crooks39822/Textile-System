@@ -11,6 +11,8 @@ use App\Http\Controllers\Backend\UsersContoller;
 use App\Http\Controllers\Backend\LeaveController;
 use App\Http\Controllers\Backend\StaffController;
 use App\Http\Controllers\Backend\ExitedController;
+use App\Http\Controllers\Backend\ActionController; 
+use App\Http\Controllers\Backend\PassOutController;
 use App\Http\Controllers\Backend\SubjectController;
 use App\Http\Controllers\Backend\TeacherController;
 use App\Http\Controllers\Backend\CalendarController;
@@ -20,16 +22,15 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PositionsController;
 use App\Http\Controllers\Backend\AssignmentController;
 use App\Http\Controllers\Backend\AttendanceController;
+use App\Http\Controllers\Backend\LeaveTypeController; 
 use App\Http\Controllers\Backend\CommunicateController;
 use App\Http\Controllers\Backend\ClassSubjectController;
 use App\Http\Controllers\Backend\AdminPositionController;
+use App\Http\Controllers\Backend\DisciplinaryController; 
 use App\Http\Controllers\Backend\ClassTimetableController;
 use App\Http\Controllers\Backend\EmployeeStatusController;
 use App\Http\Controllers\Backend\FeesCollectionController;
 use App\Http\Controllers\Backend\AssignClassTeacherController; 
-use App\Http\Controllers\Backend\LeaveTypeController; 
-use App\Http\Controllers\Backend\DisciplinaryController; 
-use App\Http\Controllers\Backend\ActionController; 
 
 
 /*
@@ -169,6 +170,13 @@ Route::group(['middleware' => 'admin'], function(){
     Route::post('admin/employees/disciplinary/action/edit/{id}',[ActionController::class, 'update']);
     Route::get('admin/employees/disciplinary/action/delete/{id}',[ActionController::class, 'delete']); 
 
+    //passout
+    Route::get('passout/list',[PassOutController::class, 'list']);
+     Route::get('passout/add',[PassOutController::class, 'add']);
+    Route::post('passout/add',[PassOutController::class, 'register']);
+    Route::get('passout/report', [PassOutController::class, 'monthlyReport']);
+    Route::get('passout/today', [PassOutController::class, 'todayPassOuts']);
+    Route::put('passout/return/{id}', [PassOutController::class, 'update']);
 
      //disciplinary action
     Route::get('admin/employees/disciplinary/list',[DisciplinaryController::class, 'list']);
@@ -245,6 +253,17 @@ Route::get('admin/fees_collection/collect_fees_repot',[FeesCollectionController:
     Route::get('admin/attendance/employee',[AttendanceController::class, 'AttendanceStudent']);
     Route::post('admin/attendance/employee/save',[AttendanceController::class, 'AttendanceStudentSubmit']);
     Route::get('admin/attendance/attendance_report',[AttendanceController::class, 'AttendanceReport']);
+    // Route::get('/attendance/export/excel', [AttendanceController::class, 'exportExcel']);
+    Route::get('/admin/attendance/export', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
+
+    Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf']);
+    Route::get('/attendance-report', [AttendanceController::class, 'report']);
+    Route::get('/zk-sync', [AttendanceController::class, 'sync'])->name('zk.sync');
+    Route::get('/sync-local-to-cpanel', [SyncController::class, 'synclocal'])->name('sync.local');
+
+
+
+
 //Notice Board
 
 Route::get('admin/communicate/notice_board',[CommunicateController::class, 'NoticeBoard']);

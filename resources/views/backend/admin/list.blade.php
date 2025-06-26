@@ -116,12 +116,69 @@
               <a href="{{ url('admin/department') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+
+          <div class="col-lg-3 col-6">
+  <div class="small-box bg-maroon">
+    <div class="inner">
+      <h3>{{ $consecutiveAbsentees }}</h3>
+      <p>Absent ≥ 3 Consecutive Days</p>
+    </div>
+    <div class="icon">
+      <i class="fas fa-user-times"></i>
+    </div>
+    <!-- <a href="{{ url('admin/consecutive-absentees-report') }}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+  </div>
+</div>
          
 
         </div>
         
 
 <!-- start -->
+ <div class="row">
+  <div class="col-md-6">
+    <div class="card card-info">
+      <div class="card-header">
+        <h3 class="card-title">Employee Attendance (Today)</h3>
+      </div>
+      <div class="card-body">
+        <canvas id="attendanceStatusChart" style="min-height: 250px; height: 250px;"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card card-info">
+  <div class="card-header">
+    <h3 class="card-title"><b>Absent Employees Today ({{ \Carbon\Carbon::today()->format('d-m-Y') }})</b></h3>
+  </div>
+</div>
+  <div class="card-body table-responsive p-0" style="max-height: 300px; overflow-y:auto;">
+    <table class="table table-hover text-nowrap">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Employee Number</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($absentEmployees as $employee)
+        <tr>
+          <td>{{ $employee->name }} {{ $employee->last_name }}</td>
+          <td>{{ $employee->admission_number }}</td>
+          <td>{{ $employee->user_line->name ?? 'N/A' }}</td>
+        </tr>
+        @empty
+        <tr>
+          <td colspan="3">All employees are present today.</td>
+        </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</div>
 
 <div class="row">
           <div class="col-lg-6">
@@ -378,6 +435,26 @@ var ticksStyle = {
     })
 
 // lgtm [js/unused-local-variable]
+var attendanceStatusCtx = $('#attendanceStatusChart').get(0).getContext('2d');
+
+var attendanceData = {
+  labels: ['Present', 'Absent'],
+  datasets: [{
+    data: [{{ $presentToday }}, {{ $absentToday }}],
+    backgroundColor: ['#28a745', '#dc3545'],
+  }]
+};
+
+var attendanceOptions = {
+  maintainAspectRatio: false,
+  responsive: true,
+};
+
+new Chart(attendanceStatusCtx, {
+  type: 'doughnut',
+  data: attendanceData,
+  options: attendanceOptions
+});
 
       
 </script>

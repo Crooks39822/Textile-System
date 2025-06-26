@@ -1,0 +1,166 @@
+To **add a graph showing present vs absent employees**, you can use a **doughnut chart** or a **bar chart**. A **doughnut chart** is better for showing proportions, while a **bar chart** is good for comparing numbers.
+
+Here’s how you can add a **doughnut chart** showing "Present" vs "Absent" employees:
+
+---
+
+### ✅ 1. Add This Blade Section Inside `.content` (e.g. after other cards)
+
+```blade
+<div class="row">
+  <div class="col-md-6">
+    <div class="card card-info">
+      <div class="card-header">
+        <h3 class="card-title">Employee Attendance (Today)</h3>
+      </div>
+      <div class="card-body">
+        <canvas id="attendanceStatusChart" style="min-height: 250px; height: 250px;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+### ✅ 2. Pass These Variables From Controller
+
+In your `DashboardController`, calculate and pass:
+
+```php
+use App\Models\User;
+use App\Models\Attendance;
+use Carbon\Carbon;
+
+$today = Carbon::today()->toDateString();
+$totalEmployees = User::where('is_role', 3)->count(); // Assuming role 3 = employee
+
+$presentToday = Attendance::where('date', $today)->distinct('employee_number')->count('employee_number');
+$absentToday = $totalEmployees - $presentToday;
+
+return view('your_dashboard_view', [
+    // other variables...
+    'presentToday' => $presentToday,
+    'absentToday' => $absentToday,
+]);
+```
+
+---
+
+### ✅ 3. Add Chart Script in `@section('script')`
+
+Append this to your existing JS:
+
+```js
+var attendanceStatusCtx = $('#attendanceStatusChart').get(0).getContext('2d');
+
+var attendanceData = {
+  labels: ['Present', 'Absent'],
+  datasets: [{
+    data: [{{ $presentToday }}, {{ $absentToday }}],
+    backgroundColor: ['#28a745', '#dc3545'],
+  }]
+};
+
+var attendanceOptions = {
+  maintainAspectRatio: false,
+  responsive: true,
+};
+
+new Chart(attendanceStatusCtx, {
+  type: 'doughnut',
+  data: attendanceData,
+  options: attendanceOptions
+});
+```
+
+---
+
+### ✅ Done!
+
+Now your dashboard will show a live chart of how many employees are **present vs absent today**.
+
+Let me know if you want to make it date-selectable or exportable.
+
+
+
+GET THE LIST OF ABSENT EMPLOYEES
+
+Here’s how to **display a table of absent employees** under your new "Present vs Absent" chart.
+
+---
+
+### ✅ 1. In Your Controller
+
+Make sure you're getting the absent employees correctly. For example:
+
+```php
+use App\Models\User;
+use App\Models\Attendance;
+use Carbon\Carbon;
+
+$today = Carbon::today()->toDateString();
+
+// Get IDs of employees who clocked in today
+$presentEmployeeIds = Attendance::where('date', $today)->pluck('employee_number')->toArray();
+
+// Get employees who did NOT clock in today
+$absentEmployees = User::where('is_role', 3) // assuming 3 = employee
+    ->whereNotIn('admission_number', $presentEmployeeIds)
+    ->get();
+
+return view('your_dashboard_view', [
+    'absentEmployees' => $absentEmployees,
+    'presentToday' => count($presentEmployeeIds),
+    'absentToday' => $absentEmployees->count(),
+    // ... other data
+]);
+```
+
+---
+
+### ✅ 2. In Your Blade View (`dashboard.blade.php`)
+
+Add this **below the chart**:
+
+```blade
+<div class="card mt-3">
+  <div class="card-header">
+    <h3 class="card-title"><b>Absent Employees Today ({{ \Carbon\Carbon::today()->format('d-m-Y') }})</b></h3>
+  </div>
+  <div class="card-body table-responsive p-0" style="max-height: 300px; overflow-y:auto;">
+    <table class="table table-hover text-nowrap">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Employee Number</th>
+          <th>Department</th>
+        </tr>
+      </thead>
+      <tbody>
+        @forelse ($absentEmployees as $employee)
+        <tr>
+          <td>{{ $employee->name }} {{ $employee->last_name }}</td>
+          <td>{{ $employee->admission_number }}</td>
+          <td>{{ $employee->getDepartment->name ?? 'N/A' }}</td>
+        </tr>
+        @empty
+        <tr>
+          <td colspan="3">All employees are present today.</td>
+        </tr>
+        @endforelse
+      </tbody>
+    </table>
+  </div>
+</div>
+```
+
+---
+
+### 📝 Notes
+
+* This assumes `User` model has a relationship `getDepartment`.
+* Adjust `admission_number` if your employee ID field has a different name.
+* If needed, I can help you paginate the results or make them searchable.
+
+Let me know if you'd also like to show a list of **present employees** or filter by department.

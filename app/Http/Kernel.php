@@ -74,4 +74,10 @@ class Kernel extends HttpKernel
 
         
     ];
+
+    protected function schedule(Schedule $schedule)
+{
+    $schedule->command('zkteco:sync')->everyFiveMinutes();
+}
+
 }

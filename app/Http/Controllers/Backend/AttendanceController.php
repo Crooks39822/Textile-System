@@ -2,16 +2,108 @@
 
 namespace App\Http\Controllers\Backend;
 
+use PDF;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Classroom;
+use App\Models\Attendance;
 use Illuminate\Http\Request;
+use App\Exports\AttendanceExport;
 use App\Models\StudentAttendance;
 use App\Models\AssignClassTeacher;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Artisan;
 
 class AttendanceController extends Controller
 {
+      public function exportExcel(Request $request)
+        {
+            $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
+            $to = $request->input('to') ?? now()->endOfMonth()->toDateString();
+            $employee = $request->input('employee');
+
+            $query = Attendance::with('user')
+                ->whereBetween('date', [$from, $to])
+                ->whereHas('user');
+
+            if ($employee) {
+                $query->where(function ($q) use ($employee) {
+                    $q->where('employee_number', '=', $employee)
+                    ->orWhereHas('user', function ($uq) use ($employee) {
+                        $uq->where('name', 'like', "%$employee%");
+                    });
+                });
+            }
+
+            $records = $query->get();
+
+            return Excel::download(new AttendanceExport($records), 'attendance_' . date('d-m-Y') . '.xls');
+        }
+
+
+          public function synclocal()
+    {
+        Artisan::call('sync:local-to-cpanel');
+
+        return back()->with('success', 'Sync command executed successfully!');
+    }
+
+        public function sync()
+        {
+            Artisan::call('zkteco:sync');
+
+            return redirect()->back()->with('success', 'ZKTeco Sync Completed!');
+        }
+
+        public function exportPdf(Request $request)
+            {
+                $data = $this->fetchAttendanceData($request); // reuse logic
+                $pdf = PDF::loadView('attendance.export-pdf', $data)->setPaper('A4', 'landscape');
+                return $pdf->download('Attendance_Report.pdf');
+            }
+
+public function report(Request $request)
+{
+    $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
+    $to = $request->input('to') ?? now()->endOfMonth()->toDateString();
+    $employee = $request->input('employee');
+
+    $query = Attendance::with('user')
+        ->whereBetween('date', [$from, $to])
+        ->whereHas('user');
+
+    if ($employee) {
+        $query->where(function ($q) use ($employee) {
+            $q->where('employee_number', '=', $employee)
+              ->orWhereHas('user', function ($uq) use ($employee) {
+                  $uq->where('name', 'like', "%$employee%");
+              });
+        });
+    }
+
+    $attendances = $query->get();
+    
+
+    $grouped = $attendances->groupBy('employee_number')->map(function ($group) {
+        return [
+            'employee' => $group->first()->user->name ?? 'Unknown',
+            'class_id' => $group->first()->user->user_line->name ?? '',
+            'last_name' => $group->first()->user->last_name ?? '',
+            'employee_number' => $group->first()->employee_number,
+            'total_minutes' => $group->sum('worked_hours'),
+            'records' => $group
+        ];
+    })->sortBy('employee_number'); // ✅ Sort by employee_number
+
+    $grandTotalMinutes = $attendances->sum('worked_hours');
+
+    return view('backend/attendance/report', compact('grouped', 'from', 'to', 'employee', 'grandTotalMinutes'));
+
+
+}
+
     public function AttendanceStudent(Request $request)
     {
         $data['getClass'] = Classroom::getClass();
