@@ -42,7 +42,8 @@
                     </div>
                    <div class="col-md-6 mt-4 d-flex align-items-end gap-1">
                         <button type="submit" class="btn btn-primary">Search</button>&nbsp;&nbsp;
-                         <!-- <a href="{{ url('attendance/export/pdf', request()->query()) }}" class="btn btn-danger">Export PDF</a>&nbsp;&nbsp; -->
+                        <a href="{{ url('admin/attendance/export/pdf?from=' . $from . '&to=' . $to . '&employee=' . $employee) }}" class="btn btn-danger">Export PDF</a>
+
                         <a href="{{ route('attendance.export', ['from' => $from, 'to' => $to, 'employee' => $employee]) }}" class="btn btn-success">Export Excel</a>&nbsp;
                          <a href="{{ url('attendance-report')}}" class="btn btn-warning">Clear</a>&nbsp; 
                          <!-- <a href="{{ route('sync.local') }}" class="btn btn-success">Online Sync</a>&nbsp; -->

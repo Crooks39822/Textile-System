@@ -255,6 +255,8 @@ Route::get('admin/fees_collection/collect_fees_repot',[FeesCollectionController:
     Route::get('admin/attendance/attendance_report',[AttendanceController::class, 'AttendanceReport']);
     // Route::get('/attendance/export/excel', [AttendanceController::class, 'exportExcel']);
     Route::get('/admin/attendance/export', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
+    Route::get('/admin/attendance/export/pdf', [AttendanceController::class, 'exportPdf'])->name('attendance.export.pdf');
+
 
     Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf']);
     Route::get('/attendance-report', [AttendanceController::class, 'report']);
