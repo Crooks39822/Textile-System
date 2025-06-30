@@ -131,7 +131,7 @@ class DashboardController extends Controller
 
 
 
-                     $start = Carbon::now()->startOfMonth()->toDateString();
+    $start = Carbon::now()->startOfMonth()->toDateString();
     $end = Carbon::now()->endOfMonth()->toDateString();
 
     $employees = User::where('is_role', 3)->where('is_delete', 0)->get();

@@ -71,7 +71,7 @@ class EmployeeController extends Controller
         }
     }
 
-    public function checkEmployeeNumber(Request $request)
+    public function checkIDNumber(Request $request)
     {
         $employee_number = $request->input('id_number');
         $isExists = User::where('id_number','=', $employee_number)->first();
@@ -92,7 +92,7 @@ class EmployeeController extends Controller
         'name' => 'required',
         
         'class_id' => 'required',
-        'employee_number' => 'required',
+        'employee_number' => 'required|unique:users',
        'admission_date' => 'required',
         'last_name' => 'required',
         'phone' => 'min:8|unique:users',

@@ -47,13 +47,17 @@ class Attendance extends Model
 
     $totalMinutes = $checkIn->diffInMinutes($checkOut);
 
-    // Deduct lunch if clock-in was before 12:00 PM
-    $lunchStart = \Carbon\Carbon::createFromTimeString('12:00:00')->setDateFrom($checkIn);
-    if ($checkIn->lt($lunchStart)) {
-        $totalMinutes -= 45;
-    }
+    $lunchTime = 45;
+$lunchThreshold = \Carbon\Carbon::createFromTimeString('12:00:00')->setDateFrom($checkIn);
 
-    return max($totalMinutes, 0);
+        // Deduct lunch only if check-in was before 12:00 and check-out was after 12:00
+        if ($checkIn->lt($lunchThreshold) && $checkOut->gt($lunchThreshold)) {
+            $totalMinutes -= $lunchTime;
+        }
+
+        // Ensure total is not negative
+        return max($totalMinutes, 0);
+
 }
 
 

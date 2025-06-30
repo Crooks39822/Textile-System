@@ -177,8 +177,8 @@ public function monthlyReport(Request $request)
             'details' => $records,
         ];
     }
-
-    return view('backend/passout/report', compact('employees', 'summary', 'month', 'employeeId'));
+        $header_title = 'Monthly Pass-out';
+    return view('backend/passout/report', compact('employees', 'summary', 'month', 'employeeId','header_title'));
 
   }
     
@@ -190,8 +190,8 @@ public function monthlyReport(Request $request)
             ->whereDate('time_out', $today)
             ->orderBy('time_out', 'desc')
             ->get();
-
-        return view('backend/passout/today', compact('passOuts'));
+$header_title = 'Todays Pass-out';
+        return view('backend/passout/today', compact('passOuts','header_title'));
     }
 
 

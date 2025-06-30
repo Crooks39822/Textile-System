@@ -103,8 +103,8 @@ Route::group(['middleware' => 'admin'], function(){
     Route::get('admin/employee/delete/{id}',[EmployeeController::class, 'delete'])->name('delete');
     Route::post('admin/employee_export',[EmployeeController::class, 'employee_export']);
     Route::get('admin/enpf_export',[EmployeeController::class, 'enpf_export']);
-    Route::post('check_clock_number',[EmployeeController::class, 'checkClockNumber']);
-    Route::post('check_employee_number',[EmployeeController::class, 'checkEmployeeNumber']);
+    Route::post('check_employee_number',[EmployeeController::class, 'checkClockNumber']);
+    Route::post('check_id_number',[EmployeeController::class, 'checkIDNumber']);
     Route::get('admin/employee_update/{id}',[EmployeeController::class, 'employee_update']);
     //Exited Employees
     Route::get('admin/exited_employees',[ExitedController::class, 'list'])->name('list');
@@ -256,6 +256,9 @@ Route::get('admin/fees_collection/collect_fees_repot',[FeesCollectionController:
     // Route::get('/attendance/export/excel', [AttendanceController::class, 'exportExcel']);
     Route::get('/admin/attendance/export', [AttendanceController::class, 'exportExcel'])->name('attendance.export');
     Route::get('/admin/attendance/export/pdf', [AttendanceController::class, 'exportPdf'])->name('attendance.export.pdf');
+    Route::get('admin/attendance/manual-attendance', [AttendanceController::class, 'createManual'])->name('manual.attendance.create');
+    Route::post('admin/attendance/manual-attendance', [AttendanceController::class, 'storeManual'])->name('manual.attendance.store');
+
 
 
     Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf']);
@@ -321,6 +324,7 @@ Route::get('teacher/assignment/delete/{id}',[AssignmentController::class, 'delet
     Route::get('teacher/attendance/attendance_report',[AttendanceController::class, 'AttendanceReportTeacher']);
     Route::get('teacher/my_notice_board',[CommunicateController::class, 'MyNoticeBoardTeacher']);
     Route::get('teacher/assignment/submitted/{id}',[AssignmentController::class, 'Teachersubmitted']);
+    Route::get('attendance_report/search_user',[AttendanceController::class, 'SearchUser']);
 });
 
 Route::group(['middleware' => 'student'], function(){

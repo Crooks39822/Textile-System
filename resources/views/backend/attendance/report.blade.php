@@ -11,7 +11,12 @@
           <div class="col-sm-6">
             <h1> Biometric Attendance Report <span style="color: blue;"></span></h1>
           </div>
+           @if(Auth::user()->parent_id == 2)
+    <div class="col-sm-6" style="text-align:right;">
+                <a href="{{url('admin/attendance/manual-attendance')}}" class="btn btn-primary mb-2">Attendance Request</a>
+              </div><!-- /.col -->
 
+              @endif
         </div>
       </div>
     </div>

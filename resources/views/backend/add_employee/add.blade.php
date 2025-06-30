@@ -38,7 +38,7 @@
                   <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Employee Number</label>
                       <span style="color:red;"></span>
-                      <input type="text" class="form-control" value="{{ old('employee_number')}}"
+                      <input type="number" class="form-control" value="{{ old('employee_number')}}"
                        name="employee_number" placeholder="Enter Employee Number" onblur="duplicateEmployeeNumber(this)">
                       <span style="color:red;" class="dublicate_message">{{$errors->first('employee_number')}}</span>
                     </div>
@@ -69,7 +69,7 @@
                       <span style="color:red;"></span>
                       <input type="number" class="form-control" value="{{ old('id_number')}}"
                        name="id_number" placeholder="Enter ID Number" onblur="duplicateEmail(this)">
-                      <span style="color:red;" class="dublicate_message">{{$errors->first('id_number')}}</span>
+                      <span style="color:red;" class="dublicate_messages">{{$errors->first('id_number')}}</span>
                     </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">Marital Status</label>
@@ -262,34 +262,7 @@
     </section>
     </div>
 
-
-
-    <script type="text/javascript">
-       function duplicateEmail(element)
-      {
-        var admission_number = $(element).val();
-        $.ajax({
-           type: "POST",
-           url: '{{ url('check_clock_number') }}',
-           data: {
-            admission_number: admission_number,
-            _token: "{{ csrf_token() }}"
-
-           },
-            dataType: "json",
-            success: function(res){
-            if(res.exists){
-              $(".dublicate_message").html("This Clock Number is Already Registered. Try Another one...");
-            }else{
-              $(".dublicate_message").html("");
-            }
-            },
-            error: function(jqXHR,exception){
-
-            }
-        });
-      }
-
+<script type="text/javascript">
       function duplicateEmployeeNumber(element)
       {
         var employee_number = $(element).val();
@@ -297,7 +270,7 @@
            type: "POST",
            url: '{{ url('check_employee_number') }}',
            data: {
-            employee_number: employee_number,
+            admission_number: employee_number,
             _token: "{{ csrf_token() }}"
 
            },
@@ -314,7 +287,41 @@
             }
         });
       }
-      
+
+      </script>
+
+    <script type="text/javascript">
+
+
+       function duplicateEmail(element)
+      {
+        var id_number = $(element).val();
+        $.ajax({
+           type: "POST",
+           url: '{{ url('check_id_number') }}',
+           data: {
+            id_number: id_number,
+            _token: "{{ csrf_token() }}"
+
+           },
+            dataType: "json",
+            success: function(res){
+            if(res.exists){
+              $(".dublicate_messages").html("This ID Number is Already Registered. Try Another one...");
+            }else{
+              $(".dublicate_messages").html("");
+            }
+            },
+            error: function(jqXHR,exception){
+
+            }
+        });
+      }
+      </script>
+
+
+
+      <script type="text/javascript">
 
 document.getElementById('dob').addEventListener('change', function() {
     var dob = new Date(this.value);

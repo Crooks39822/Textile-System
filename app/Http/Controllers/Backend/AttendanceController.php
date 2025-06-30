@@ -19,6 +19,61 @@ use Illuminate\Support\Facades\Artisan;
 
 class AttendanceController extends Controller
 {
+
+     public function createManual() 
+            { 
+
+            $employees = User::where('is_role', 3)->get(); 
+              $header_title = 'Employee Attendance Request';
+            return view('backend/attendance/manual_attendance', compact('employees','header_title'));
+
+            } 
+            public function storeManual(Request $request) 
+            { 
+
+
+
+         $request->validate([
+                        'employee_number' => 'required', 
+                        'date' => 'required|date', 
+                        'clock_in' => 'nullable|date_format:H:i',
+                        'clock_out' => 'nullable|date_format:H:i', ]); 
+                        
+        //                 $employeeNumber = $request->input('employee_number');
+        //                  $date = $request->input('date');
+        //                   $clockIn = $request->input('clock_in');
+        //                    $clockOut = $request->input('clock_out');
+
+        //  $existing = Attendance::where('employee_number', $employeeNumber)
+        //               ->where('date', $date)
+        //               ->first();
+       
+                        
+                        
+        //     if (!$existing || $existing->source == 'biometric') {
+        //         Attendance::updateOrCreate(
+        //         [
+        //             'employee_number' => $employeeNumber,
+        //             'date' => $date,
+        //         ],
+        //         [
+        //             'check_in' => $clockIn,
+        //             'check_out' => $clockOut,
+        //             'source' => 'manual',
+        //         ]
+
+        //                 ); 
+        Attendance::updateOrCreate( [ 
+            'employee_number' => $request->employee_number,
+            'date' => $request->date,
+         ], 
+            [ 'check_in' => $request->clock_in, 
+            'check_out' => $request->clock_out, ] ); 
+
+
+             return redirect('attendance-report')->with('success', 'Attendance updated successfully.');
+            } 
+
       public function exportExcel(Request $request)
         {
             $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
@@ -136,11 +191,14 @@ public function report(Request $request)
     })->sortBy('employee_number'); // ✅ Sort by employee_number
 
     $grandTotalMinutes = $attendances->sum('worked_hours');
+     $header_title = 'Employee Attendance List';
 
-    return view('backend/attendance/report', compact('grouped', 'from', 'to', 'employee', 'grandTotalMinutes'));
+    return view('backend/attendance/report', compact('grouped', 'from', 'to', 'employee', 'grandTotalMinutes','header_title'));
 
 
 }
+
+
 
     public function AttendanceStudent(Request $request)
     {
