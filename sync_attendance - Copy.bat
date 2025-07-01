@@ -5,5 +5,9 @@ echo Running zkteco:sync...
 php artisan zkteco:sync
 
 echo.
+echo Now syncing local to CPanel...
+php artisan sync:local-to-cpanel
+
+echo.
 echo Done.
 pause

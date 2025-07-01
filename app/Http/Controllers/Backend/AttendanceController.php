@@ -36,8 +36,7 @@ class AttendanceController extends Controller
          $request->validate([
                         'employee_number' => 'required', 
                         'date' => 'required|date', 
-                        'clock_in' => 'nullable|date_format:H:i',
-                        'clock_out' => 'nullable|date_format:H:i', ]); 
+                         'clock_out' => 'nullable|date_format:H:i', ]); 
                         
         //                 $employeeNumber = $request->input('employee_number');
         //                  $date = $request->input('date');
@@ -67,7 +66,8 @@ class AttendanceController extends Controller
             'employee_number' => $request->employee_number,
             'date' => $request->date,
          ], 
-            [ 'check_in' => $request->clock_in, 
+            [ 
+               
             'check_out' => $request->clock_out, ] ); 
 
 

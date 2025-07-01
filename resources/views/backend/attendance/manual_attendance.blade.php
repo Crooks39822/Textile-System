@@ -64,10 +64,10 @@ height: 40px;
                     <label>Date</label> 
                     <input type="date" name="date" class="form-control" required>
                     </div> 
-                    <div class="form-group"> <label>Clock In Time</label> 
+                    <!-- <div class="form-group"> <label>Clock In Time</label> 
 
                     <input type="time" name="clock_in" class="form-control" required> 
-                    </div>
+                    </div> -->
                     <div class="form-group">
                     <label>Clock Out Time</label> 
                     <input type="time" name="clock_out" class="form-control" required>
