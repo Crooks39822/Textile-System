@@ -126,7 +126,7 @@
                 <p class="mb-0">Age:</p>
               </div>
               <div class="col-sm-9">
-                <p class="text-muted mb-0">{{ old('age',$getRecord->age)}} </p>
+                <p class="text-muted mb-0">{{$getRecord->age}} </p>
               </div>
             </div>
             <hr>

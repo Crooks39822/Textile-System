@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
@@ -56,7 +57,13 @@ class User extends Authenticatable
                     ->where('is_delete','=',0)
                     ->count();
         }
-
+                
+        public function getAgeAttribute()
+        {
+            return $this->date_of_birth
+                ? Carbon::parse($this->date_of_birth)->age
+                : null;
+        }
         static public function getExiteds()
         {
             return self::select('users.id')
