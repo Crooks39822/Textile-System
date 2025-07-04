@@ -101,7 +101,7 @@ class DashboardController extends Controller
             
 
 
-                $data['totalEmployees'] = User::where('is_role', 3)
+                $data['totalEmployees'] = User::whereIn('is_role', [2, 3])
                     ->where('is_delete', 0)
                     ->count();
 
@@ -119,7 +119,7 @@ class DashboardController extends Controller
                     $presentEmployeeIds = Attendance::where('date', $today)->pluck('employee_number')->toArray();
 
                     // Get employees who did NOT clock in today
-                    $data['absentEmployees'] = User::where('is_role', 3) // assuming role 3 = employee
+                    $data['absentEmployees'] = User::whereIn('is_role', [2, 3]) // assuming role 3 = employee
                     ->where('is_delete', 0) 
                         ->whereNotIn('admission_number', $presentEmployeeIds)
                         ->get();
@@ -134,7 +134,7 @@ class DashboardController extends Controller
     $start = Carbon::now()->startOfMonth()->toDateString();
     $end = Carbon::now()->endOfMonth()->toDateString();
 
-    $employees = User::where('is_role', 3)->where('is_delete', 0)->get();
+    $employees = User::whereIn('is_role', [2, 3])->where('is_delete', 0)->get();
 
     $attendanceMap = Attendance::whereBetween('date', [$start, $end])
         ->pluck('date', 'employee_number')
@@ -179,7 +179,7 @@ class DashboardController extends Controller
     $data['consecutiveAbsentees'] = $consecutiveAbsenteeCount;
 
     // Add your existing dashboard data like:
-    $data['totalEmployees'] = User::where('is_role', 3)->where('is_delete', 0)->count();
+    $data['totalEmployees'] = User::whereIn('is_role', [2, 3])->where('is_delete', 0)->count();
     $data['presentToday'] = Attendance::where('date', Carbon::today()->toDateString())->distinct('employee_number')->count('employee_number');
     $data['absentToday'] = $data['totalEmployees'] - $data['presentToday'];
 

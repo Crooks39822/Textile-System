@@ -23,7 +23,9 @@ class AttendanceController extends Controller
      public function createManual() 
             { 
 
-            $employees = User::where('is_role', 3)->get(); 
+            $employees = User::whereIn('is_role', [2, 3])
+             ->where('is_delete', 0)
+            ->get(); 
               $header_title = 'Employee Attendance Request';
             return view('backend/attendance/manual_attendance', compact('employees','header_title'));
 
