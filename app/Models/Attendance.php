@@ -82,17 +82,23 @@ private function fetchAttendanceData(Request $request)
 }
 
 
- public function getOvertimeMinutesAttribute()
+
+public function getOvertimeMinutesAttribute()
 {
-    if (!$this->check_out) return 0;
+    if (!$this->check_out) {
+        return 0;
+    }
 
     $checkOut = \Carbon\Carbon::parse($this->check_out);
-    $officialEnd = \Carbon\Carbon::createFromTimeString('16:45:00')->setDateFrom($checkOut);
+    $overtimeStart = \Carbon\Carbon::createFromTimeString('17:00:00')->setDateFrom($checkOut);
 
-    return $checkOut->gt($officialEnd)
-        ? $checkOut->diffInMinutes($officialEnd)
-        : 0;
+    if ($checkOut->lte($overtimeStart)) {
+        return 0;
+    }
+
+    return $overtimeStart->diffInMinutes($checkOut);
 }
+
 
 
     public function user()

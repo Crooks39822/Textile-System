@@ -166,7 +166,14 @@
                       <input type="date" class="form-control" value="{{ old('admission_date')}}" name="admission_date" placeholder="Enter Admission Date ">
                     </div>
                     <span style="color:red;">{{$errors->first('admission_date')}}</span>
-
+<div class="form-group col-md-6">
+                    <label for="pay_type">Pay Type</label>
+                    <select name="pay_type" class="form-control" required>
+                        <option value="">-- Select Pay Type --</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="fortnight">Fortnight</option>
+                    </select>
+                </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputFile">Supervisor Photo</label>
                       <div class="input-group">

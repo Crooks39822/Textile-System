@@ -163,12 +163,19 @@ public function report(Request $request)
 {
     $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
     $to = $request->input('to') ?? now()->endOfMonth()->toDateString();
+    if ($from > $to) {
+    // Swap the dates
+    [$from, $to] = [$to, $from];
+}
+    
     $employee = $request->input('employee');
+    $payType = $request->input('pay_type'); // 👈 get pay type from request
 
     $query = Attendance::with('user')
         ->whereBetween('date', [$from, $to])
         ->whereHas('user');
 
+    // Filter by employee number or name
     if ($employee) {
         $query->where(function ($q) use ($employee) {
             $q->where('employee_number', '=', $employee)
@@ -178,9 +185,15 @@ public function report(Request $request)
         });
     }
 
+    // ✅ Filter by pay_type (e.g., monthly, fortnight)
+    if ($payType) {
+        $query->whereHas('user', function ($uq) use ($payType) {
+            $uq->where('pay_type', $payType); // assumes `pay_type` is a column in the users table
+        });
+    }
+
     $attendances = $query->get();
     
-
     $grouped = $attendances->groupBy('employee_number')->map(function ($group) {
         return [
             'employee' => $group->first()->user->name ?? 'Unknown',
@@ -190,15 +203,16 @@ public function report(Request $request)
             'total_minutes' => $group->sum('worked_hours'),
             'records' => $group
         ];
-    })->sortBy('employee_number'); // ✅ Sort by employee_number
+    })->sortBy('employee_number');
 
     $grandTotalMinutes = $attendances->sum('worked_hours');
-     $header_title = 'Employee Attendance List';
+    $header_title = 'Employee Attendance List';
 
-    return view('backend/attendance/report', compact('grouped', 'from', 'to', 'employee', 'grandTotalMinutes','header_title'));
-
-
+    return view('backend/attendance/report', compact(
+        'grouped', 'from', 'to', 'employee', 'payType', 'grandTotalMinutes', 'header_title'
+    ));
 }
+
 
 
 

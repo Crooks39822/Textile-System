@@ -171,7 +171,16 @@
                       <input type="date" class="form-control" value="{{ old('admission_date',$getRecord->admission_date)}}" name="admission_date" placeholder="Enter Admission Date ">
                     </div>
                     <span style="color:red;">{{$errors->first('admission_date')}}</span>
-
+                    <div class="form-group col-md-6">
+                      <label for="exampleInputEmail1">Pay Type</label>
+                      <span style="color:red;">*</span>
+                      <select class="form-control" name="pay_type">
+                      
+                        <option {{(old('pay_type',$getRecord->pay_type) == 'monthly') ? 'selected' : ''}}  value="monthly">Monthly</option>
+                        <option {{(old('pay_type',$getRecord->pay_type) == 'fortnight') ? 'selected' : ''}}  value="fortnight">Fortnight</option>
+                        </select>
+                        <span style="color:red;">{{$errors->first('status')}}</span>
+                    </div>
                     <div class="form-group col-md-6">
                       <label for="exampleInputEmail1">  Probation Date</label>
                       <span style="color:red;">*</span>

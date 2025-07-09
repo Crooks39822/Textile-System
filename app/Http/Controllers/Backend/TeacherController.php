@@ -70,7 +70,8 @@ class TeacherController extends Controller
           $user->date_of_birth  =trim($request->date_of_birth);
         }
 
-      $user->occupation  =trim($request->occupation);
+      $user->occupation  =trim($request->occupation); 
+      $user->pay_type = trim($request->pay_type);
       $user->id_number  =trim($request->id_number);
       $user->roll_number  =trim($request->roll_number);
       $user->address  =trim($request->address);
@@ -170,7 +171,7 @@ class TeacherController extends Controller
       $user->bank_account  =trim($request->bank_account);
       $user->bank_name  =trim($request->bank_name);
       $user->age  =trim($request->age);
-     
+      $user->pay_type = trim($request->pay_type);
       $user->nxt_contact  =trim($request->nxt_contact);
       $user->nxt_name  =trim($request->nxt_name);
       $user->relationship  =trim($request->relationship);

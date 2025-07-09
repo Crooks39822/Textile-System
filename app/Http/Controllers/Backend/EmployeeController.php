@@ -92,7 +92,7 @@ class EmployeeController extends Controller
         'name' => 'required',
         
         'class_id' => 'required',
-        'employee_number' => 'required|unique:users',
+        'employee_number' => 'required',
        'admission_date' => 'required',
         'last_name' => 'required',
         'phone' => 'min:8|unique:users',
@@ -126,7 +126,7 @@ class EmployeeController extends Controller
         }
 
       $user->age  =trim($request->age);
-    
+    $user->pay_type = trim($request->pay_type);
       $user->address  =trim($request->address);
       $user->previous_school  =trim($request->previous_school);
       $user->bank_account  =trim($request->bank_account);
@@ -224,6 +224,7 @@ class EmployeeController extends Controller
       $user->qualification  =trim($request->qualification);
       $user->marital_status  =trim($request->marital_status);
       $user->age  =trim($request->age);
+      $user->pay_type = trim($request->pay_type);
       $user->nxt_contact  =trim($request->nxt_contact);
       $user->nxt_name  =trim($request->nxt_name);
       $user->relationship  =trim($request->relationship);
