@@ -118,13 +118,17 @@ class AttendanceController extends Controller
      
 
 
+
+
 public function exportPdf(Request $request)
 {
     $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
     $to = $request->input('to') ?? now()->endOfMonth()->toDateString();
     $employee = $request->input('employee');
+    $payType = $request->input('pay_type');
+    $department = $request->input('department');
 
-    $query = Attendance::with('user')
+    $query = Attendance::with('user.user_line') // ensure user_line is eager loaded
         ->whereBetween('date', [$from, $to])
         ->whereHas('user');
 
@@ -134,6 +138,18 @@ public function exportPdf(Request $request)
               ->orWhereHas('user', function ($uq) use ($employee) {
                   $uq->where('name', 'like', "%$employee%");
               });
+        });
+    }
+
+    if ($payType) {
+        $query->whereHas('user', function ($uq) use ($payType) {
+            $uq->where('pay_type', $payType);
+        });
+    }
+
+    if ($department) {
+        $query->whereHas('user.user_line', function ($q) use ($department) {
+            $q->where('id', $department);
         });
     }
 
@@ -152,7 +168,9 @@ public function exportPdf(Request $request)
 
     $grandTotalMinutes = $attendances->sum('worked_hours');
 
-    $pdf = Pdf::loadView('backend/attendance/pdf', compact('grouped', 'from', 'to', 'employee', 'grandTotalMinutes'));
+    $pdf = Pdf::loadView('backend/attendance/pdf', compact(
+        'grouped', 'from', 'to', 'employee', 'grandTotalMinutes', 'payType', 'department'
+    ));
 
     return $pdf->download('attendance_report_' . now()->format('Ymd_His') . '.pdf');
 }
@@ -164,18 +182,17 @@ public function report(Request $request)
     $from = $request->input('from') ?? now()->startOfMonth()->toDateString();
     $to = $request->input('to') ?? now()->endOfMonth()->toDateString();
     if ($from > $to) {
-    // Swap the dates
-    [$from, $to] = [$to, $from];
-}
-    
+        [$from, $to] = [$to, $from];
+    }
+
     $employee = $request->input('employee');
-    $payType = $request->input('pay_type'); // 👈 get pay type from request
+    $payType = $request->input('pay_type');
+    $department = $request->input('department');
 
     $query = Attendance::with('user')
         ->whereBetween('date', [$from, $to])
         ->whereHas('user');
 
-    // Filter by employee number or name
     if ($employee) {
         $query->where(function ($q) use ($employee) {
             $q->where('employee_number', '=', $employee)
@@ -185,15 +202,20 @@ public function report(Request $request)
         });
     }
 
-    // ✅ Filter by pay_type (e.g., monthly, fortnight)
     if ($payType) {
         $query->whereHas('user', function ($uq) use ($payType) {
-            $uq->where('pay_type', $payType); // assumes `pay_type` is a column in the users table
+            $uq->where('pay_type', $payType);
+        });
+    }
+
+    if ($department) {
+        $query->whereHas('user', function ($uq) use ($department) {
+            $uq->where('class_id', $department); // adjust if your column is different
         });
     }
 
     $attendances = $query->get();
-    
+
     $grouped = $attendances->groupBy('employee_number')->map(function ($group) {
         return [
             'employee' => $group->first()->user->name ?? 'Unknown',
@@ -206,12 +228,15 @@ public function report(Request $request)
     })->sortBy('employee_number');
 
     $grandTotalMinutes = $attendances->sum('worked_hours');
+    $departments = \App\Models\Classroom::all(); // or Department::all()
     $header_title = 'Employee Attendance List';
 
     return view('backend/attendance/report', compact(
-        'grouped', 'from', 'to', 'employee', 'payType', 'grandTotalMinutes', 'header_title'
+        'grouped', 'from', 'to', 'employee', 'payType', 'department', 'departments', 'grandTotalMinutes', 'header_title'
     ));
 }
+
+
 
 
 

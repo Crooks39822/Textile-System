@@ -50,10 +50,24 @@
                                             <option value="fortnight" {{ request('pay_type') == 'fortnight' ? 'selected' : '' }}>Fortnight</option>
                                         </select>
                                     </div>
+                                    <div class="col-md-2">
+                                    <label>Department</label>
+                                    <select name="department" class="form-control">
+                                        <option value="">-- All Departments --</option>
+                                        @foreach($departments as $dept)
+                                            <option value="{{ $dept->id }}" {{ request('department') == $dept->id ? 'selected' : '' }}>
+                                                {{ $dept->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
                                     <div class="col-md-4 mt-4 d-flex align-items-end gap-1">
-                                        <button type="submit" class="btn btn-primary">Search</button>
-                                        <a href="{{ url('admin/attendance/export/pdf?from=' . $from . '&to=' . $to . '&employee=' . $employee . '&pay_type=' . request('pay_type')) }}" class="btn btn-danger">Export PDF</a>
-                                        <a href="{{ route('attendance.export', ['from' => $from, 'to' => $to, 'employee' => $employee, 'pay_type' => request('pay_type')]) }}" class="btn btn-success">Export Excel</a>
+                                        <button type="submit" class="btn btn-primary">Search</button>&nbsp;
+                                        <a href="{{ url('admin/attendance/export/pdf?from=' . $from . '&to=' . $to . '&employee=' . $employee . '&pay_type=' . request('pay_type') . '&department=' . request('department')) }}" class="btn btn-danger">Export PDF</a>&nbsp;
+
+                                        <a href="{{ route('attendance.export', ['from' => $from, 'to' => $to, 'employee' => $employee, 'pay_type' => request('pay_type'), 'department' => request('department')]) }}" class="btn btn-success">Export Excel</a>&nbsp;
+
                                         <a href="{{ url('attendance-report') }}" class="btn btn-warning">Clear</a>
                                     </div>
                                 </div>

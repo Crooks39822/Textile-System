@@ -265,6 +265,8 @@ Route::get('admin/fees_collection/collect_fees_repot',[FeesCollectionController:
     Route::get('/attendance-report', [AttendanceController::class, 'report']);
     Route::get('/zk-sync', [AttendanceController::class, 'sync'])->name('zk.sync');
     Route::get('/sync-local-to-cpanel', [SyncController::class, 'synclocal'])->name('sync.local');
+    Route::get('/admin/attendance/consecutive-absentees', [DashboardController::class, 'consecutiveAbsentees'])->name('attendance.absentees');
+
 
 
 

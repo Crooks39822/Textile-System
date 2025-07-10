@@ -120,7 +120,7 @@ class DashboardController extends Controller
 
                     // Get employees who did NOT clock in today
                     $data['absentEmployees'] = User::whereIn('is_role', [2, 3]) // assuming role 3 = employee
-                    ->where('is_delete', 0) 
+                               ->where('is_delete', 0) 
                         ->whereNotIn('admission_number', $presentEmployeeIds)
                         ->get();
 
@@ -129,55 +129,66 @@ class DashboardController extends Controller
                     $data['absentToday'] = $data['absentEmployees']->count();
 
 
+$starts = Carbon::now()->startOfMonth()->toDateString();
+$ends = Carbon::today()->toDateString(); // ⬅️ limit to today only
 
 
-    $start = Carbon::now()->startOfMonth()->toDateString();
-    $end = Carbon::now()->endOfMonth()->toDateString();
+$employees = User::whereIn('is_role', [2, 3])
+    ->where('is_delete', 0)
+    ->get();
 
-    $employees = User::whereIn('is_role', [2, 3])->where('is_delete', 0)->get();
+// Map of employee_number => [dates attended]
+$attendanceData = Attendance::whereBetween('date', [$starts, $ends])
+    ->get()
+    ->groupBy('employee_number')
+    ->map(function ($items) {
+        return $items->pluck('date')->map(fn($d) => Carbon::parse($d)->toDateString())->unique()->sort()->values();
+    });
 
-    $attendanceMap = Attendance::whereBetween('date', [$start, $end])
-        ->pluck('date', 'employee_number')
-        ->groupBy(function ($date, $employee_number) {
-            return $employee_number;
-        });
+$consecutiveAbsentees = 0;
 
-    $consecutiveAbsenteeCount = 0;
+foreach ($employees as $employee) {
+    $admission = $employee->admission_number;
 
-    foreach ($employees as $employee) {
-        $expectedDates = collect(Carbon::parse($start)->daysUntil($end))
-            ->filter(fn($date) => !in_array($date->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY]))
-            ->map(fn($date) => $date->toDateString());
+    // All working days (weekdays only)
+    $workingDays = collect(Carbon::parse($starts)->daysUntil($ends))
+        ->filter(fn($date) => !in_array($date->dayOfWeek, [Carbon::SATURDAY, Carbon::SUNDAY]))
+        ->map(fn($date) => $date->toDateString());
 
-        $presentDates = $attendanceMap[$employee->admission_number] ?? collect();
-        $absentDates = $expectedDates->diff($presentDates)->values();
+    // Days they were present
+    $presentDates = $attendanceData[$admission] ?? collect();
 
-        // Group consecutive days
-        $streak = [];
-        $hasStreak = false;
+    // Days they were absent
+    $absentDates = $workingDays->diff($presentDates)->values()->sort();
 
-        foreach ($absentDates as $i => $dateStr) {
-            $current = Carbon::parse($dateStr);
-            $previous = isset($absentDates[$i - 1]) ? Carbon::parse($absentDates[$i - 1]) : null;
+    // Find streaks of 3+ consecutive weekdays
+    $streak = 1;
+    $last = null;
+    $found = false;
 
-            if ($previous && $current->diffInWeekdays($previous) === 1) {
-                $streak[] = $dateStr;
-            } else {
-                if (count($streak) >= 2) {
-                    $hasStreak = true;
-                    break;
-                }
-                $streak = [$dateStr];
+    foreach ($absentDates as $i => $dateStr) {
+        $current = Carbon::parse($dateStr);
+
+        if ($last && $last->copy()->addWeekday() == $current) {
+            $streak++;
+            if ($streak >= 3) {
+                $found = true;
+                break;
             }
+        } else {
+            $streak = 1;
         }
 
-        if (count($streak) >= 3 || $hasStreak) {
-            $consecutiveAbsenteeCount++;
-        }
+        $last = $current;
     }
 
-    $data['consecutiveAbsentees'] = $consecutiveAbsenteeCount;
+    if ($found) {
+        $consecutiveAbsentees++;
+    }
+}
 
+// Send value to your dashboard blade
+$data['consecutiveAbsentees'] = $consecutiveAbsentees;
     // Add your existing dashboard data like:
     $data['totalEmployees'] = User::whereIn('is_role', [2, 3])->where('is_delete', 0)->count();
     $data['presentToday'] = Attendance::where('date', Carbon::today()->toDateString())->distinct('employee_number')->count('employee_number');
@@ -207,6 +218,90 @@ class DashboardController extends Controller
 
 
     }
+
+
+ public function consecutiveAbsentees()
+{
+   $start = Carbon::now()->startOfMonth()->toDateString();
+$end = Carbon::today()->toDateString(); // ⬅️ limit to today only
+
+
+    $employees = User::whereIn('is_role', [2, 3])
+        ->where('is_delete', 0)
+        ->with('user_line') // Ensure department is eager-loaded
+        ->get();
+
+    $attendanceData = Attendance::whereBetween('date', [$start, $end])
+        ->get()
+        ->groupBy('employee_number')
+        ->map(function ($items) {
+            return $items->pluck('date')->map(fn($d) => Carbon::parse($d)->toDateString())->unique()->sort()->values();
+        });
+
+   $absenteeList = [];
+
+foreach ($employees as $employee) {
+    $admission = $employee->admission_number;
+
+    $workingDays = collect(Carbon::parse($start)->daysUntil($end))
+        ->filter(fn($date) => $date->isWeekday())
+        ->map(fn($date) => $date->toDateString());
+
+    $presentDates = $attendanceData[$admission] ?? collect();
+    $absentDates = $workingDays->diff($presentDates)->values()->sort();
+
+    $streak = [];
+    $previousDate = null;
+
+    $allStreaks = [];  // Collect all streaks for this employee
+
+    foreach ($absentDates as $dateStr) {
+        $current = Carbon::parse($dateStr);
+
+        if ($previousDate) {
+            $nextExpected = $previousDate->copy()->addDay();
+            while ($nextExpected->isWeekend()) {
+                $nextExpected->addDay();
+            }
+
+            if ($current->isSameDay($nextExpected)) {
+                $streak[] = $current->toDateString();
+            } else {
+                // When streak breaks, check if it's long enough to save
+                if (count($streak) >= 3) {
+                    $allStreaks[] = $streak;
+                }
+                $streak = [$current->toDateString()];
+            }
+        } else {
+            $streak = [$current->toDateString()];
+        }
+
+        $previousDate = $current;
+    }
+
+    // Check last streak after loop ends
+    if (count($streak) >= 3) {
+        $allStreaks[] = $streak;
+    }
+
+    if (count($allStreaks) > 0) {
+        $absenteeList[] = [
+            'employee' => $employee->name . ' ' . $employee->last_name,
+            'employee_number' => $admission,
+            'department' => $employee->user_line->name ?? 'N/A',
+            'streaks' => $allStreaks,  // Multiple streaks here
+        ];
+    }
+
+
+
+    }
+    $header_title = 'Employee Absent for 3 Days or More';
+
+    return view('backend.attendance.consecutive_absentees', compact('absenteeList','header_title'));
+}
+
 
     /**
      * Store a newly created resource in storage.
