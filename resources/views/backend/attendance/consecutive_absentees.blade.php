@@ -22,13 +22,13 @@
     <tbody>
         @foreach ($absenteeList as $absentee)
             <tr>
-                <td>{{ $absentee['employee'] }}</td>
-                <td>{{ $absentee['employee_number'] }}</td>
+                <td> ⛔{{ $absentee['employee'] }}</td>
+                <td>{{ $absentee['employee_number'] }}✅</td>
                 <td>{{ $absentee['department'] }}</td>
                 <td>
                     <ul style="padding-left: 18px;">
                         @foreach ($absentee['streaks'] as $streak)
-                            <li>{{ implode(', ', $streak) }}</li>
+                            <li>{{ implode(' ❌ ', $streak) }}</li>
                         @endforeach
                     </ul>
                 </td>

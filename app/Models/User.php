@@ -323,6 +323,11 @@ public function getDocument()
                                         return  $return;
     }
 
+    public function sickLeaves()
+{
+    return $this->hasMany(SickLeave::class, 'user_id');
+}
+
     static public function getExited(){
         //$return =self::select('users.*')
                      //->orderBy('id','desc')

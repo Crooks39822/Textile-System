@@ -64,7 +64,7 @@ class SyncZKTecoAttendance extends Command
 
 
         $grouped = [];
-$cutoffDate = now()->subDays(3);
+$cutoffDate = now()->subDays(4);
 
 foreach ($allLogs as $log) {
     $empNumber = $log['id'];

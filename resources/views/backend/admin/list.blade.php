@@ -266,7 +266,7 @@
                   <tbody>
                     @php
            function maskNumber($number) {
-                        return substr($number, 0, 3) . '******' . substr($number, -3);
+                        return substr($number, 0, 0) . '******' . substr($number, -1);
                     }
                 @endphp
                   @forelse($usersThisMonth as $value)

@@ -141,7 +141,14 @@ $EmployeeStatus = App\Models\EmployeeStatus::getRecord();
  </ul>
           </li>
 
-
+  <li class="nav-item">
+            <a href="{{ url('sick-leaves') }}" class="nav-link @if(Request::segment(1) == 'sick-leaves') active @endif">
+            <i class="nav-icon fas fa-cogs"></i>
+              <p>
+                  Sick Sheets
+              </p>
+            </a>
+          </li>
           
 
           <li class="nav-item  @if(Request::segment(3) == 'disciplinary') menu-is-opening menu-open  @endif">

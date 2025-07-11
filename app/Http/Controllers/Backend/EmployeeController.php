@@ -315,7 +315,8 @@ class EmployeeController extends Controller
     }
     public function view($id)
     {
-      
+      $getRecord = User::with(['leaves', 'actions', 'sickLeaves'])->findOrFail($id);
+
       $data['getClass'] = User::getSingleClass($id);
      
       $data['getPosition'] =User::getStudent($id);

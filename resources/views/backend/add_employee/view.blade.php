@@ -209,14 +209,19 @@
               </div>
             </div>
           </div>
-          
+            @if(!empty($getRecord->getDocument()))
+                      
+             <a href="{{ $getRecord->getDocument() }}" target="_blank">Preview Contract</a>
+
+
+                   @else
+                No Contract Attached
+              @endif
          
         </div>
-        @if(!empty($getRecord->getDocument()))
-                      
-                      <iframe src="{{$getRecord->getDocument()}}" width="100%" height="600px">Preview</iframe>
+      
 
-                      @endif
+                    
       </div>
     </div>
     
@@ -230,6 +235,48 @@
 
 
         </div>
+        <div class="card mt-4">
+  <div class="card-header">
+    <h3 class="card-title">Sick Sheets History</h3>
+  </div>
+  <div class="card-body">
+    @if($getRecord->sickLeaves->count() > 0)
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Description</th>
+            <th>Doctor's Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach($getRecord->sickLeaves as $sick)
+          <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ \Carbon\Carbon::parse($sick->start_date)->format('d M Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($sick->end_date)->format('d M Y') }}</td>
+            <td>{{ $sick->reason }}</td>
+            <td>
+              @if($sick->doctor_note_path)
+                <a href="{{ asset('upload/sick_notes/' . $sick->doctor_note_path) }}" target="_blank">View Note</a>
+              @else
+                No File
+              @endif
+            </td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    @else
+      <p class="text-muted">No sick leave records available for this employee.</p>
+    @endif
+  </div>
+</div>
+
         <!-- /.row -->
 <div class="card mt-4">
   <div class="card-header">

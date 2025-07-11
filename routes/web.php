@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\EmployeeController;
 use App\Http\Controllers\Backend\ClassroomController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\PositionsController;
+use App\Http\Controllers\Backend\SickLeaveController;
 use App\Http\Controllers\Backend\AssignmentController;
 use App\Http\Controllers\Backend\AttendanceController;
 use App\Http\Controllers\Backend\LeaveTypeController; 
@@ -260,6 +261,10 @@ Route::get('admin/fees_collection/collect_fees_repot',[FeesCollectionController:
     Route::post('admin/attendance/manual-attendance', [AttendanceController::class, 'storeManual'])->name('manual.attendance.store');
 
 
+     Route::get('/sick-leaves', [SickLeaveController::class, 'index'])->name('sick-leaves.index');
+    Route::get('/sick-leaves/create', [SickLeaveController::class, 'create'])->name('sick-leaves.create');
+    Route::post('/sick-leaves', [SickLeaveController::class, 'store'])->name('sick-leaves.store');
+    Route::get('sick-leaves/{id}',[SickLeaveController::class, 'delete']);
 
     Route::get('/attendance/export/pdf', [AttendanceController::class, 'exportPdf']);
     Route::get('/attendance-report', [AttendanceController::class, 'report']);

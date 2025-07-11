@@ -154,7 +154,7 @@ public function monthlyReport(Request $request)
         $query->where('user_id', $employeeId);
     }
 
-    $passOuts = $query->orderBy('time_out')->get();
+    $passOuts = $query->orderBy('time_out', 'desc')->get();
 
     // Group by employee
     $grouped = $passOuts->groupBy('user_id');
